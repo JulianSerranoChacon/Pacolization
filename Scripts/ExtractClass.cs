@@ -43,7 +43,7 @@ public class ExtractClass
                 EditorSceneManager.CloseScene(SceneManager.GetSceneByBuildIndex(i), true);
             }
         }
-
+        LocalCore.GetInstance().Flush();
     }
 
 }

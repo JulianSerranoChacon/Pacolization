@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
+using UnityEngine;
+using System.Xml.Serialization;
 
 public class LocalCore
 {
@@ -19,7 +21,10 @@ public class LocalCore
 
 #region Singleton
     //La clase necesitara ser un singleton ya que solo queremos que exista una
-    private LocalCore() {}
+    public LocalCore() {
+        //TODO: Definir los idiomas que vamos a añadir
+        Initiate(2);
+    }
 
     private static LocalCore _instance;
 
@@ -28,7 +33,7 @@ public class LocalCore
        return  Instance();
     }
 
-    private static Instance()
+    private static LocalCore Instance()
     {
          if (_instance == null)
         {
@@ -41,6 +46,7 @@ public class LocalCore
 #region Metodos
     //Inicia los atributos de la clase
     //Establece el maximo de idiomas a langAm
+
     public void Initiate(int langAm)
     {
         if(langAm <= 0)
@@ -77,6 +83,11 @@ public class LocalCore
         }
     }
 
+    public void Flush()
+    {
+
+    }
+
     //Cambia el idioma que esta usando la clase
     //Falla si es un idioma fuera del alcance especificado.
     public void ChangeLang(int newLang)
@@ -85,11 +96,6 @@ public class LocalCore
             throw new ArgumentException("New language value exceeding range of languages.");
 
         currentLang = newLang; 
-    }
-
-    public void Awake()
-    {
-        Instance();
     }
 
 #endregion
