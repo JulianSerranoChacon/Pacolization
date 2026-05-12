@@ -6,9 +6,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class ExtractClass : MonoBehaviour
+public class TextExtraction : MonoBehaviour
 {
     List<TMP_Text> tmp = new List<TMP_Text>();
+    // Start is called before the first frame update
     void ExtractStrings()
     {
         //cogemos primero la direccion de las escena en la que estamos

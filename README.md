@@ -65,9 +65,9 @@ La comunicación del usuario con el módulo en ejecución y el parseo de strings
 
 #### **SIMPLIFICACIONES:**
 
-El usuario será el encargado de llevar la cuenta del idioma en el que está y de actualizar a la clase LocalCore cuando cambie. Además, el usuario deberá llevar la cuenta de que int corresponde a cada idioma cuando extraiga los strings o guarde los cambios en el CSV
-Asumiremos que solo leeremos y guardaremos los strings que solo están dentro de la escena y no en los assets (salvo por los scriptable objects, eso lo leemos), para evitar repeticiones y problemas de solapamientos al guardar los datos
-Los strings que leeremos serán strings de escenas que están incluidas en la build del juego.
+- El usuario será el encargado de llevar la cuenta del idioma en el que está y de actualizar a la clase LocalCore cuando cambie. Además, el usuario deberá llevar la cuenta de que int corresponde a cada idioma cuando extraiga los strings o guarde los cambios en el CSV
+- Asumiremos que solo leeremos y guardaremos los strings que solo están dentro de la escena y no en los assets (salvo por los scriptable objects, eso lo leemos), para evitar repeticiones y problemas de solapamientos al guardar los datos
+- Los strings que leeremos serán strings de escenas que están incluidas en la build del juego.
 
 ### 3.2 Clases de Unity
 
@@ -102,8 +102,19 @@ Métodos:
 
 `ChangeLang` cambia el idioma que está usando la clase. Falla si es un idioma fuera del alcance especificado.
 
-#### [ReadClass]
+#### [ExtractClass]
 
+Atributos:
+```
+- List<TMP_Text> texts
+```
+Métodos:
+```
+- ExtractStrings()
+```
+`ExtractClass` será una clase que extraiga todas las cadenas de texto del juego guardándo los textos en una List de tipo `TMP_Text`.
+
+`ExtractStrings` lo que va a hacer es usando el el `EditorSceneManager`, abre todas las escenas que están en la build con un for, en el modo `Additive` para evitar cerrar la escena activa en la que estamos, y recorre los objetos de la escena para obtener todos los componentes `TMP_Text` y añadirlos a la `List texts`. Antes de seguir con la siguiente escena, esta cierra la escena que abrió a menos de que sea la escena activa.
 
 
 #### [Translateclass]
