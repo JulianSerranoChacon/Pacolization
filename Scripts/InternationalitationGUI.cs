@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class InternationalitationGUI : EditorWindow
 {
+    ExtractClass extract = new ExtractClass();
     // Incluye una entrada en el menu superior de Unity
     [MenuItem("Custom Plugins/Internationalitaion Plugin")]
+    
     public static void ShowWindow()
     {
         // Nombre del "Tab" en la ventna del editor
@@ -39,7 +41,6 @@ public class InternationalitationGUI : EditorWindow
 
     void ExtractStrings()
     {
-        Debug.Log("Poner el script de extraccion aqui");
-        //TextExtraction.ExtractStrings();
+        extract.ExtractStrings();
     }
 }

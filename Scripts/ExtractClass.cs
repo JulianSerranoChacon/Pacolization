@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class TextExtraction : MonoBehaviour
+public class ExtractClass 
 {
-    List<TMP_Text> tmp = new List<TMP_Text>();
+    List<TMP_Text> tmp; 
     // Start is called before the first frame update
-    void ExtractStrings()
+    public void ExtractStrings()
     {
+        //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
+        tmp = new List<TMP_Text>();
         //cogemos primero la direccion de las escena en la que estamos
         string activeScenePath = SceneManager.GetActiveScene().path;
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
@@ -33,6 +37,7 @@ public class TextExtraction : MonoBehaviour
                 EditorSceneManager.CloseScene(SceneManager.GetSceneByBuildIndex(i), true);
             }
         }
+        Debug.Log(tmp.Count);
     }
 
 }
