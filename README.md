@@ -102,7 +102,7 @@ Métodos:
 
 `ChangeLang` cambia el idioma que está usando la clase. Falla si es un idioma fuera del alcance especificado.
 
-#### [ExtractClass]
+#### **ExtractClass**
 
 
 Métodos:
@@ -114,7 +114,7 @@ Métodos:
 `ExtractStrings` lo que va a hacer es usando el el `EditorSceneManager`, abre todas las escenas que están en la build con un for, en el modo `Additive` para evitar cerrar la escena activa en la que estamos, y recorre los objetos de la escena para obtener todos los componentes `TMP_Text` y añadirlos a la `List texts` y luego pasar los textos al `LocalCore`. Antes de seguir con la siguiente escena, esta cierra la escena que abrió a menos de que sea la escena activa.
 
 
-#### [Translateclass]
+#### **Translateclass**
 //El metodo de getString(ID) con ID como int o string para dejar decidir al usuario 
 
 ### 3.3 
