@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class InternationalitaionGUI : EditorWindow
+public class InternationalitationGUI : EditorWindow
 {
     // Incluye una entrada en el menu superior de Unity
     [MenuItem("Custom Plugins/Internationalitaion Plugin")]
     public static void ShowWindow()
     {
         // Nombre del "Tab" en la ventna del editor
-        GetWindow<InternationalitaionGUI>("Internationalitaion Plugin");
+        GetWindow<InternationalitationGUI>("Internationalitaion Plugin");
     }
 
     // Dibuja la interfaz en la ventana del editor
@@ -40,5 +40,6 @@ public class InternationalitaionGUI : EditorWindow
     void ExtractStrings()
     {
         Debug.Log("Poner el script de extraccion aqui");
+        //TextExtraction.ExtractStrings();
     }
 }
