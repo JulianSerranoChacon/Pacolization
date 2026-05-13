@@ -35,9 +35,14 @@ public class InternationalitationGUI : EditorWindow
         {
             ExtractStrings();
         }
+        // Boton que busca tus Scriptables
+        if (GUILayout.Button("Get All ScriptableObjects"))
+        {
+            FindAllScriptableObjects();
+        }
 
         //Boton que ejecuta la escritura las cadenas de strings a un CSV
-        if(GUILayout.Button("Write To XML"))
+        if (GUILayout.Button("Write To XML"))
         {
             WriteToXML();
         }
@@ -58,7 +63,10 @@ public class InternationalitationGUI : EditorWindow
     {
         extract.ExtractStrings();
     }
-
+    void FindAllScriptableObjects()
+    {
+        extract.FindAssetsByType<ScriptableObject>();
+    }
     void WriteToXML()
     {
         string path = Application.streamingAssetsPath + "/xml/ejemplo.xml";

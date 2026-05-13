@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,6 +12,22 @@ using UnityEngine.UI;
 public class ExtractClass 
 {
     // Start is called before the first frame update
+    public void FindAssetsByType<T>() where T : UnityEngine.Object
+    {
+        List<T> assets = new List<T>();
+        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)));
+
+        for (int i = 0; i < guids.Length; i++)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]); 
+            T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath); 
+            if (asset != null) 
+            {
+              assets.Add(asset);
+                Debug.Log(asset);
+            }
+         }
+    }
     public void ExtractStrings()
     {
         List<TMP_Text> tmp = new List<TMP_Text>();
@@ -41,6 +58,7 @@ public class ExtractClass
             if (scenePath != activeScenePath)
             {
                 EditorSceneManager.CloseScene(SceneManager.GetSceneByBuildIndex(i), true);
+                
             }
         }
         LocalCore.GetInstance().Flush();
