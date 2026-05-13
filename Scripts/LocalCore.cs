@@ -26,12 +26,7 @@ public class LocalCore
 
     private static LocalCore _instance;
 
-    public static LocalCore GetInstance()
-    {
-       return  Instance();
-    }
-
-    private static LocalCore Instance()
+    public static LocalCore Instance()
     {
          if (_instance == null)
         {

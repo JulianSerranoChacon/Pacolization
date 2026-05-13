@@ -32,7 +32,7 @@ public class FileClass
 
 
         //Recorremos todo el unorderedMap
-        foreach(KeyValuePair<uint, string[]> pair in LocalCore.GetInstance().GetLines)
+        foreach(KeyValuePair<uint, string[]> pair in LocalCore.Instance().GetLines)
         {
             uint id = pair.Key;
             string[]texts = pair.Value;
@@ -90,13 +90,12 @@ public class FileClass
                 //Debug.Log(lang.InnerText);
 
                 //Cambiamos el idioma del localCore y anadimos traduccion al Diccionario
-                LocalCore.GetInstance().ChangeLang(j);
-                LocalCore.GetInstance().SetLine(id, lang.InnerText);
+                LocalCore.Instance().ChangeLang(j);
+                LocalCore.Instance().SetLine(id, lang.InnerText);
             }
 
             //Reseteamos el lenguaje del LocalCore (incio de los array de las claves del Diccionario)
-            LocalCore.GetInstance().ChangeLang(0);
+            LocalCore.Instance().ChangeLang(0);
         }
-        LocalCore.GetInstance().print();
     }
 }

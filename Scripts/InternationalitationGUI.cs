@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +12,7 @@ public class InternationalitationGUI : EditorWindow
     LocalInterface inter;
 
     private string dir;
-    private string langNum;
+    private string langNum = "1";
     private bool setup = false;
 
     // Incluye una entrada en el menu superior de Unity
@@ -32,9 +33,15 @@ public class InternationalitationGUI : EditorWindow
 
         if (!setup)
         {
+            langNum = GUILayout.TextField(langNum, 25);
+            
             if (GUILayout.Button("Setup"))
             {
-                InitializeAll(2);
+                if (langNum == null)
+                    InitializeAll(1);
+                else
+                    InitializeAll(Int32.Parse(langNum));
+                setup = true;
             }
         }
 
@@ -117,7 +124,7 @@ public class InternationalitationGUI : EditorWindow
 
     void InitializeAll(int langinit)
     {
-        inter = LocalInterface.GetInstance();
+        inter = LocalInterface.Instance();
         inter.Initiate(langinit);
     }
 }

@@ -51,7 +51,7 @@ public class ExtractClass
                 tmp.AddRange(root.GetComponentsInChildren<TMP_Text>(true));
                 foreach (TMP_Text text in tmp)
                 {
-                    LocalCore.GetInstance().SetLine(ID, text.text);
+                    LocalCore.Instance().SetLine(ID, text.text);
                     ID++;
                 }
                 tmp.Clear();

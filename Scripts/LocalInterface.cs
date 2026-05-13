@@ -5,16 +5,10 @@ public class LocalInterface
 
 #region Singleton
     //La clase necesitara ser un singleton ya que solo queremos que exista una
-    public LocalInterface() {}
 
     private static LocalInterface _instance;
 
-    public static LocalInterface GetInstance()
-    {
-       return  Instance();
-    }
-
-    private static LocalInterface Instance()
+    public static LocalInterface Instance()
     {
          if (_instance == null)
         {
@@ -28,24 +22,24 @@ public class LocalInterface
     private LocalCore _core;
     private ExtractClass _extract;
     private FileClass _files;
-    #private loqueseaClass _loquesea
+    //private loqueseaClass _loquesea
 #endregion
 
-    private Initiate(int lang)
+    public void Initiate(int lang)
     {
-        _core = LocalCore.GetInstance();
+        _core = LocalCore.Instance();
         _core.Initiate(lang);
         _extract = new ExtractClass();
         _files = new FileClass();
-        #_loquesea = new loqueseaClass()
+        //_loquesea = new loqueseaClass()
     }
 
-    private void ChangeLang(int newLang)
+    public void ChangeLang(int newLang)
     {
         _core.ChangeLang(newLang);
     }
 
-    private void Extract()
+    public void Extract()
     {
         _extract.ExtractStrings();
     }
@@ -57,11 +51,11 @@ public class LocalInterface
 
     public void ReadFromXML(string path)
     {
-        _files.ReadXML(path)
+        _files.ReadXML(path);
     }
 
     public void GetLine(int ID)
     {
-        #loqueseaClass
+        //loqueseaClass
     }
 }
