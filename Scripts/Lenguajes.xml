@@ -1,0 +1,58 @@
+<Lenguajes>
+  <Lenguaje id=0>
+    <Nombre>Español</Nombre>
+    <Texto>
+      <Direccion>Iz_Der</Direccion>
+      <Fuente>Comic_Sans</Fuente>      
+    </Texto>
+    <Numeros>
+      <Decimal>,</Decimal>
+      <SeparadorMil>.</SeparadorMil>
+      <Dinero>€</Dinero>
+    </Numeros>    
+    <Input>
+      <Aceptar>
+        <Teclado>Enter</Teclado>
+        <Gamepad>A</Gamepad>
+      </Aceptar>
+      <Cancelar>
+        <Teclado>Escape</Teclado>
+        <Gamepad>B</Gamepad>
+      </Cancelar>
+    </Input>
+    <Pronombres>
+        <Masc>él</Masc>
+        <Fem>ella</Fem>
+        <Neutral>elle</Neutral>        
+    </Pronombres>
+  </Lenguaje>
+
+  <Lenguaje id=1>
+    <Nombre>English</Nombre>
+    <Texto>
+      <Direccion>Iz_Der</Direccion>
+      <Fuente>Comic_Sans</Fuente>      
+    </Texto>
+    <Numeros>
+      <Decimal>.</Decimal>
+      <SeparadorMil>,</SeparadorMil>
+      <Dinero>$</Dinero>
+    </Numeros>    
+    <Input>
+      <Aceptar>
+        <Teclado>Enter</Teclado>
+        <Gamepad>A</Gamepad>
+      </Aceptar>
+      <Cancelar>
+        <Teclado>Escape</Teclado>
+        <Gamepad>B</Gamepad>
+      </Cancelar>
+    </Input>
+    <Pronombres>
+        <Masc>he</Masc>
+        <Fem>she</Fem>
+        <Neutral>they</Neutral>        
+    </Pronombres>
+  </Lenguaje>
+
+</Lenguajes>
