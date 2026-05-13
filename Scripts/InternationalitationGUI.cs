@@ -6,11 +6,13 @@ using UnityEngine;
 
 public class InternationalitationGUI : EditorWindow
 {
-    ExtractClass extract = new ExtractClass();
-    FileClass file = new FileClass();
+    //ExtractClass extract = new ExtractClass();
+    //FileClass file = new FileClass();
+    LocalInterface inter;
 
     private string dir;
     private string langNum;
+    private bool setup = false;
 
     // Incluye una entrada en el menu superior de Unity
     [MenuItem("Custom Plugins/Internationalitaion Plugin")]
@@ -28,31 +30,43 @@ public class InternationalitationGUI : EditorWindow
         
         EditorGUILayout.Space();
 
-        // Boton que ejecuta el script de modificacion de los strings
-        if (GUILayout.Button("Modify All Strings"))
+        if (!setup)
         {
-            ModifyStrings();
+            if (GUILayout.Button("Setup"))
+            {
+                InitializeAll(2);
+            }
         }
 
-        // Boton que ejecuta el script de extraccion
-        if (GUILayout.Button("Extract All Strings"))
+        if (setup)
         {
-            ExtractStrings();
-        }
+            // Boton que ejecuta el script de modificacion de los strings
+            if (GUILayout.Button("Modify All Strings"))
+            {
+                ModifyStrings();
+            }
 
-        EditorGUILayout.Space();
+            // Boton que ejecuta el script de extraccion
+            if (GUILayout.Button("Extract All Strings"))
+            {
+                ExtractStrings();
+            }
 
-        //Boton que ejecuta la escritura las cadenas de strings a un XML
-        if (GUILayout.Button("Write To XML"))
-        {
-            WriteToXML();
-        }
+            EditorGUILayout.Space();
 
-        //Boton que ejecuta la lectura de las cadenas de strings de un XML concreto
-        if (GUILayout.Button("Read from XML"))
-        {
-            ReadFromXML();
+            //Boton que ejecuta la escritura las cadenas de strings a un XML
+            if (GUILayout.Button("Write To XML"))
+            {
+                WriteToXML();
+            }
+
+            //Boton que ejecuta la lectura de las cadenas de strings de un XML concreto
+            if (GUILayout.Button("Read from XML"))
+            {
+                ReadFromXML();
+            }
         }
+       
 
 
     }
@@ -64,7 +78,8 @@ public class InternationalitationGUI : EditorWindow
 
     void ExtractStrings()
     {
-        extract.ExtractStrings();
+        //extract.ExtractStrings();
+        inter.Extract();
     }
 
     void WriteToXML()
@@ -78,7 +93,8 @@ public class InternationalitationGUI : EditorWindow
 
         if (!string.IsNullOrEmpty(selectedPath))
         {
-            file.WriteXML(dir);
+            //file.WriteXML(dir);
+            inter.WriteToXML(dir);
             Debug.Log("File saved in: " + selectedPath);
         }
     }
@@ -93,8 +109,15 @@ public class InternationalitationGUI : EditorWindow
 
         if (!string.IsNullOrEmpty(selectedPath))
         {
-            file.ReadXML(selectedPath);
+            //file.ReadXML(selectedPath);
+            inter.ReadFromXML(selectedPath);
             Debug.Log("File load from: " + selectedPath);
         }
+    }
+
+    void InitializeAll(int langinit)
+    {
+        inter = LocalInterface.GetInstance();
+        inter.Initiate(langinit);
     }
 }
