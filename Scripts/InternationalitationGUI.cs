@@ -27,16 +27,20 @@ public class InternationalitationGUI : EditorWindow
     // Dibuja la interfaz en la ventana del editor
     void OnGUI()
     {
-        GUILayout.Label("Plugin Configuration", EditorStyles.boldLabel);
-   
-        EditorGUILayout.Space();
+        
 
         if (!setup)
         {    
+            GUILayout.Label("Localization Extraction Configuration", EditorStyles.boldLabel);
+   
+            EditorGUILayout.Space();
+
             scanScriptables = GUILayout.Toggle(scanScriptables, "Scan Scriptable Objects?");
             if (scanScriptables)
                 scriptablePath=GUILayout.TextField(scriptablePath, 200);
             
+            EditorGUILayout.Space();
+            GUILayout.Label("Amount of languages:");
             langNum = GUILayout.TextField(langNum, 25);
             
             if (GUILayout.Button("Setup"))
@@ -49,8 +53,13 @@ public class InternationalitationGUI : EditorWindow
             }
         }
 
-        /*if (setup)
+        if (setup)
         {
+            GUILayout.Label("Configuration Finished!", EditorStyles.boldLabel);
+   
+            EditorGUILayout.Space();
+
+            /*
             // Boton que ejecuta el script de modificacion de los strings
             if (GUILayout.Button("Modify All Strings"))
             {
@@ -76,7 +85,8 @@ public class InternationalitationGUI : EditorWindow
             {
                 ReadFromXML();
             }
-        }*/
+            */
+        }
        
 
 
