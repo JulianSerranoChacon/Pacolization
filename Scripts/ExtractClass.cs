@@ -1,40 +1,67 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.VersionControl;
 using UnityEngine;
+
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
+
 
 public class ExtractClass 
 {
-    public ExtractClass() {}
+    private bool scanScriptables = false;
+    private string scriptablePath = "Assets";
+    private uint ID = 0;
+    public ExtractClass(bool scan, string path) {
+    scanScriptables= scan;
+        scriptablePath = path;
+    }
 
-    // Start is called before the first frame update
-    public void FindAssetsByType<T>() where T : UnityEngine.Object
+    //metodo que se usa para encontrar objetos de ciertos tipos en unity
+    public void ScanScriptables<T>() where T : UnityEngine.Object
     {
-        List<T> assets = new List<T>();
-        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)));
-
+        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)),new String[]{ scriptablePath});
         for (int i = 0; i < guids.Length; i++)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]); 
             T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath); 
             if (asset != null) 
             {
-              assets.Add(asset);
-                Debug.Log(asset);
+              ExtractValues<T>(asset);
             }
          }
     }
+
+    public void ExtractValues<T>(T obj)
+    {
+        Type objectType = obj.GetType();
+        foreach (MemberInfo m in objectType.GetMembers())
+        {
+            if(m.MemberType == MemberTypes.Field)
+            { 
+                object val = ((FieldInfo)m).GetValue((obj));
+                if(val is string)
+                {
+                    LocalCore.Instance().SetLine(ID, (string)val);
+                    ID++;
+                }
+            }
+        }    
+   }
+
     public void ExtractStrings()
     {
         List<TMP_Text> tmp = new List<TMP_Text>();
         //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
-        uint ID = 0;
+        ID = 0;
         //cogemos primero la direccion de las escena en la que estamos
         string activeScenePath = SceneManager.GetActiveScene().path;
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
@@ -62,6 +89,11 @@ public class ExtractClass
                 EditorSceneManager.CloseScene(SceneManager.GetSceneByBuildIndex(i), true);
                 
             }
+        }
+
+        if(scanScriptables)
+        {
+            ScanScriptables<ScriptableObject>();
         }
     }
 

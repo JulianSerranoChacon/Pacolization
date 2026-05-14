@@ -7,13 +7,14 @@ using UnityEngine;
 
 public class InternationalitationGUI : EditorWindow
 {
-    //ExtractClass extract = new ExtractClass();
-    //FileClass file = new FileClass();
+
     LocalInterface inter;
 
     private string dir;
     private string langNum = "1";
     private bool setup = false;
+    private bool scanScriptables = false;
+    private string scriptablePath = "Assets";
 
     // Incluye una entrada en el menu superior de Unity
     [MenuItem("Custom Plugins/Internationalitaion Plugin")]
@@ -28,19 +29,23 @@ public class InternationalitationGUI : EditorWindow
     void OnGUI()
     {
         GUILayout.Label("Plugin Configuration", EditorStyles.boldLabel);
-        
+   
         EditorGUILayout.Space();
 
         if (!setup)
-        {
+        {    
+            scanScriptables = GUILayout.Toggle(scanScriptables, "Scan Scriptable Objects?");
+            if (scanScriptables)
+                scriptablePath=GUILayout.TextField(scriptablePath, 200);
+            
             langNum = GUILayout.TextField(langNum, 25);
             
             if (GUILayout.Button("Setup"))
             {
                 if (langNum == null)
-                    InitializeAll(1);
+                    InitializeAll(1,scanScriptables,scriptablePath);
                 else
-                    InitializeAll(Int32.Parse(langNum));
+                    InitializeAll(Int32.Parse(langNum),scanScriptables,scriptablePath);
                 setup = true;
             }
         }
@@ -122,9 +127,10 @@ public class InternationalitationGUI : EditorWindow
         }
     }
 
-    void InitializeAll(int langinit)
+    void InitializeAll(int langinit, bool scan, string path)
     {
         inter = LocalInterface.Instance();
-        inter.Initiate(langinit);
+        inter.Initiate(langinit,scan,path);
     }
+
 }

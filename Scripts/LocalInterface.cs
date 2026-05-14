@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class LocalInterface
 {
 
@@ -25,11 +27,11 @@ public class LocalInterface
     //private loqueseaClass _loquesea
 #endregion
 
-    public void Initiate(int lang)
+    public void Initiate(int lang,bool scan, string path)
     {
         _core = LocalCore.Instance();
         _core.Initiate(lang);
-        _extract = new ExtractClass();
+        _extract = new ExtractClass(scan,path);
         _files = new FileClass();
         //_loquesea = new loqueseaClass()
     }
