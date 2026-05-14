@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -87,9 +88,6 @@ public class InternationalitationGUI : EditorWindow
             }
             */
         }
-       
-
-
     }
 
     void ModifyStrings()
@@ -137,11 +135,12 @@ public class InternationalitationGUI : EditorWindow
         }
     }
 
+
     void InitializeAll(int langinit, bool scan, string scrpath)
     {
         string selectedPath = EditorUtility.SaveFilePanel(
             "Select directory to save XML",
-            Application.dataPath, 
+            Application.dataPath,
             "example.xml", //Nombre por defecto
             "xml");
 
@@ -150,7 +149,31 @@ public class InternationalitationGUI : EditorWindow
         {
             inter = LocalInterface.Instance();
             inter.Initiate(langinit, scan, scrpath);
-            inter.FullExtract(selectedPath);    
+            inter.FullExtract(selectedPath);
+        }
+    }
+    void readListIdioms()
+    {
+        //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
+        string selectedPath = EditorUtility.OpenFilePanel(
+          "Select XML File to read",
+          Application.dataPath,
+          "xml");
+
+        Debug.Log(selectedPath);
+
+        if (!string.IsNullOrEmpty(selectedPath))
+        {
+            List<string> list = new List<string>();
+            //file.ReadXML(selectedPath);
+            Dictionary<string, XmlNode> langList = inter.ReadListIdioms(selectedPath, list);
+
+
+            /*for (int i = 0; i < langList.Count; i++)
+            {
+                Debug.Log(langList[i]);
+            }*/
+            //Debug.Log("File load from: " + selectedPath);
         }
     }
 

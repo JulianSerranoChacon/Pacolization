@@ -99,55 +99,47 @@ public class FileClass
     }
 
 
-    public string[] ReadXMLIdioms(string filename)
+    public Dictionary<string, XmlNode> ReadXMLIdioms(string filename, List<string> lagNames)
     {
-        string[] ret;
+        Dictionary<string, XmlNode> ret = new Dictionary<string, XmlNode>();
+        List<string> langNames = new List<string>();
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
+
         xmlDoc.Load(filename);
+
 
         //Cogemos todos los textos etiquetados con text  
         XmlNodeList texts = xmlDoc.GetElementsByTagName("Lenguaje");
 
+
         Debug.Log(texts.Count);
 
-        ret = new string[texts.Count];
 
-        //Recorremos la lista de textos del XML
-        /*for (int i = 0; i < texts.Count; i++)
+        //ret = new string[texts.Count];
+
+        foreach (XmlNode node in texts)
         {
+            
             //Id del texto (sera la clave del Diccionario de LocalCore)
-            uint id = uint.Parse(texts[i].Attributes["id"].Value);
+            uint id = uint.Parse(node.Attributes["id"].Value);
 
-            ret[i] = texts[i].Attributes["Nombre"].InnerText; 
+            string langName = node.ChildNodes.Item(0).InnerText;
+            langNames.Add(langName);
 
-
-            //Numero de paramtros que tiene el lenguaje
-            //int p = texts[i].ChildNodes.Count;
-
-            /*Dictionary<string,texts[i].Attributes["Nombre"]
-
-            //Debug.Log(numLang);
-
-            Recorremos los hijos
-            for (int j = 0; j < numLang; j++)
-            {
-                //Nodo hijo
-                XmlNode lang = texts[i].ChildNodes[j];
+            
+            ret[langName] = node;
 
 
-                //Debug.Log(lang.InnerText);
+            //ret = node.Attributes["Nombre"].InnerText;
 
-                //Cambiamos el idioma del localCore y anadimos traduccion al Diccionario
-                LocalCore.Instance().ChangeLang(j);
-                LocalCore.Instance().SetLine(id, lang.InnerText);
-            }
+            Debug.Log(node.ChildNodes.Item(0).InnerText);
 
-            //Reseteamos el lenguaje del LocalCore (incio de los array de las claves del Diccionario)
-            LocalCore.Instance().ChangeLang(0);
-        }*/
 
-            return ret;
+        }
+
+
+        return ret;
 
     }
 }
