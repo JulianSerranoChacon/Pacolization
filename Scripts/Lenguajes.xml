@@ -29,9 +29,9 @@
 
     </Input>
 
-    <pronombres>
+    <Pronombres>
 
-      <personales>
+      <Personales>
 
         <PrimeraS>
           <Sujeto>yo</Sujeto>
@@ -101,9 +101,9 @@
           <Reflexivo>se</Reflexivo>
         </TerceraNeutralP>
 
-      </personales>
+      </Personales>
 
-      <posesivos>
+      <Posesivos>
 
         <PrimeraS>
           <AtonoSing>mi</AtonoSing>
@@ -155,9 +155,9 @@
           <TonoFemPlural>suyas</TonoFemPlural>
         </TerceraP>
 
-      </posesivos>
+      </Posesivos>
 
-    </pronombres>
+    </Pronombres>
 
   </Lenguaje>
 
@@ -190,9 +190,9 @@
 
     </Input>
 
-    <pronombres>
+    <Pronombres>
 
-      <personales>
+      <Personales>
 
         <PrimeraS>
           <Sujeto>I</Sujeto>
@@ -254,9 +254,9 @@
           <Reflexivo>themselves</Reflexivo>
         </TerceraNeutralP>
 
-      </personales>
+      </Personales>
 
-      <posesivos>
+      <Posesivos>
 
         <PrimeraS>
           <Atono>my</Atono>
@@ -298,9 +298,9 @@
           <Tono>theirs</Tono>
         </TerceraP>
 
-      </posesivos>
+      </Posesivos>
 
-    </pronombres>
+    </Pronombres>
 
   </Lenguaje>
 
