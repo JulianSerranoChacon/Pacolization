@@ -9,7 +9,7 @@ public class paco : MonoBehaviour
         string paco = "paco";
         TMP_Text texto = GetComponent<TMP_Text>();
         Convert conversion = devuelve;
-        texto.text= conversion(paco);
+        texto.text = conversion(paco);
     }
 
     // Update is called once per frame

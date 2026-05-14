@@ -20,9 +20,14 @@ public class ExtractClass
     private bool scanScriptables = false;
     private string scriptablePath = "Assets";
     private uint ID = 0;
-    public ExtractClass(bool scan, string path) {
-    scanScriptables= scan;
+
+    private Dictionary<int, TMP_Text> objRef;
+
+    public ExtractClass(bool scan, string path) 
+    {
+        scanScriptables= scan;
         scriptablePath = path;
+        objRef = new Dictionary<int, TMP_Text>;
     }
 
     //metodo que se usa para encontrar objetos de ciertos tipos en unity
@@ -35,7 +40,7 @@ public class ExtractClass
             T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath); 
             if (asset != null) 
             {
-              ExtractValues<T>(asset);
+                ExtractValues<T>(asset);
             }
          }
     }
@@ -52,15 +57,17 @@ public class ExtractClass
                     ID++;
                 }      
         }    
-   }
+    }
 
     public void ExtractStrings()
     {
         List<TMP_Text> tmp = new List<TMP_Text>();
+
         //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
-        ID = 0;
+        int ID = 0;
         //cogemos primero la direccion de las escena en la que estamos
         string activeScenePath = SceneManager.GetActiveScene().path;
+
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
             string scenePath = EditorBuildSettings.scenes[i].path;
@@ -76,10 +83,12 @@ public class ExtractClass
                 foreach (TMP_Text text in tmp)
                 {
                     LocalCore.Instance().SetLine(ID, text.text);
+                    objRef[ID] = text;
                     ID++;
                 }
                 tmp.Clear();
             }
+
             //cerramos la escena antes de irnos a la siguiente escena
             if (scenePath != activeScenePath)
             {
@@ -94,4 +103,12 @@ public class ExtractClass
         }
     }
 
+
+    public void ReplaceStrings()
+    {
+        foreach(var item in objRef)
+        {
+            item.Value.text = item.Key;
+        }
+    }
 }

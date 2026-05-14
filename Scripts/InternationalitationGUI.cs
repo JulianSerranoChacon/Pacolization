@@ -105,7 +105,8 @@ public class InternationalitationGUI : EditorWindow
         if (!string.IsNullOrEmpty(selectedPath))
         {
             //file.WriteXML(selectedPath);
-            inter.WriteToXML(selectedPath);
+            //inter.WriteToXML(selectedPath);
+            inter.FullExtract(selectedPath);
             Debug.Log("File saved in: " + selectedPath);
         }
     }

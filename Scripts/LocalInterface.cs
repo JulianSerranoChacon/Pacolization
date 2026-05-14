@@ -60,4 +60,11 @@ public class LocalInterface
     {
         //loqueseaClass
     }
+
+    private void FullExtract(string path)
+    {
+        _extract.ExtractStrings2();
+        _files.WriteToXML(path);
+        _extract.Replace();
+    }
 }
