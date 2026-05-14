@@ -9,8 +9,7 @@ public class InternationalitationGUI : EditorWindow
 {
 
     LocalInterface inter;
-
-    private string dir;
+    
     private string langNum = "1";
     private bool setup = false;
     private bool scanScriptables = false;
@@ -105,8 +104,8 @@ public class InternationalitationGUI : EditorWindow
 
         if (!string.IsNullOrEmpty(selectedPath))
         {
-            //file.WriteXML(dir);
-            inter.WriteToXML(dir);
+            //file.WriteXML(selectedPath);
+            inter.WriteToXML(selectedPath);
             Debug.Log("File saved in: " + selectedPath);
         }
     }
