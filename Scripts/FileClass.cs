@@ -68,7 +68,6 @@ public class FileClass
         //Cogemos todos los textos etiquetados con text  
         XmlNodeList texts = xmlDoc.GetElementsByTagName("text");
 
-        Debug.Log(texts.Count);
         //Recorremos la lista de textos del XML
 
         for (int i = 0; i < texts.Count; i++) 
