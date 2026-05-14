@@ -22,30 +22,32 @@ public class ExtractClass
     private uint ID = 0;
 
     private Dictionary<uint, TMP_Text> objRef;
+    private Dictionary<uint,Tuple< ScriptableObject,FieldInfo>> scriptObjRef;
 
     public ExtractClass(bool scan, string path) 
     {
         scanScriptables= scan;
         scriptablePath = path;
         objRef = new Dictionary<uint, TMP_Text>();
+        scriptObjRef = new Dictionary<uint, Tuple<ScriptableObject, FieldInfo>>();
     }
 
     //metodo que se usa para encontrar objetos de ciertos tipos en unity
-    public void ScanScriptables<T>() where T : UnityEngine.Object
+    public void ScanScriptables()
     {
-        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)),new String[]{ scriptablePath});
+        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(ScriptableObject)),new String[]{ scriptablePath});
         for (int i = 0; i < guids.Length; i++)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]); 
-            T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath); 
+            ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath); 
             if (asset != null) 
             {
-                ExtractValues<T>(asset);
+                ExtractValues(asset);
             }
          }
     }
 
-    public void ExtractValues<T>(T obj)
+    public void ExtractValues(ScriptableObject obj)
     {
         Type objectType = obj.GetType();
         foreach (FieldInfo m in objectType.GetFields())
@@ -53,6 +55,8 @@ public class ExtractClass
                 object val = m.GetValue((obj));
                 if(val is string)
                 {
+                    scriptObjRef[ID] = new Tuple<ScriptableObject,FieldInfo>(obj,m);
+       
                     LocalCore.Instance().SetLine(ID, (string)val);
                     ID++;
                 }      
@@ -96,10 +100,9 @@ public class ExtractClass
                 
             }
         }
-
         if(scanScriptables)
         {
-            ScanScriptables<ScriptableObject>();
+            ScanScriptables();
         }
     }
 
@@ -116,6 +119,11 @@ public class ExtractClass
         foreach(var item in objRef)
         {
             item.Value.text = func(item.Key);
+        }
+
+        foreach(var item in scriptObjRef)
+        {
+            item.Value.Item2.SetValue(item.Value.Item1, func(item.Key));
         }
     }
 }

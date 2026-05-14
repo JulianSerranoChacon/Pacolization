@@ -65,9 +65,9 @@ public class FileClass
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.Load(filename);
 
-        string lang = "English";
+        string language = "English";
         //Cogemos todos los textos etiquetados con text  
-        XmlNodeList texts = xmlDoc.GetElementsByTagName(lang);
+        XmlNodeList texts = xmlDoc.GetElementsByTagName(language);
 
         Debug.Log(texts.Count);
         //Recorremos la lista de textos del XML
