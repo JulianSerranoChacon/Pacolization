@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 public class LocalInterface
 {
 
@@ -52,6 +54,10 @@ public class LocalInterface
     public void ReadFromXML(string path)
     {
         _files.ReadXML(path);
+    }
+    public string[] ReadListIdioms(string path)
+    {
+        return _files.ReadXMLIdioms(path);
     }
 
     public void GetLine(int ID)
