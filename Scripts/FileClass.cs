@@ -120,6 +120,7 @@ public class FileClass
             //Id del texto (sera la clave del Diccionario de LocalCore)
             uint id = uint.Parse(texts[i].Attributes["id"].Value);
 
+            ret[i] = texts[i].Attributes["Nombre"].InnerText]; 
 
 
             //Numero de paramtros que tiene el lenguaje
