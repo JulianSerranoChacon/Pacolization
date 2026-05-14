@@ -21,13 +21,13 @@ public class ExtractClass
     private string scriptablePath = "Assets";
     private uint ID = 0;
 
-    private Dictionary<int, TMP_Text> objRef;
+    private Dictionary<uint, TMP_Text> objRef;
 
     public ExtractClass(bool scan, string path) 
     {
         scanScriptables= scan;
         scriptablePath = path;
-        objRef = new Dictionary<int, TMP_Text>;
+        objRef = new Dictionary<uint, TMP_Text>();
     }
 
     //metodo que se usa para encontrar objetos de ciertos tipos en unity
@@ -64,7 +64,7 @@ public class ExtractClass
         List<TMP_Text> tmp = new List<TMP_Text>();
 
         //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
-        int ID = 0;
+        uint ID = 0;
         //cogemos primero la direccion de las escena en la que estamos
         string activeScenePath = SceneManager.GetActiveScene().path;
 
@@ -108,7 +108,7 @@ public class ExtractClass
     {
         foreach(var item in objRef)
         {
-            item.Value.text = item.Key;
+            item.Value.text = item.Key.ToString();
         }
     }
 }
