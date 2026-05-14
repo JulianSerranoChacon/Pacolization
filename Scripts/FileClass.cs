@@ -100,9 +100,9 @@ public class FileClass
     }
 
 
-    public Dictionary<string, XmlNodeList> ReadXMLIdioms(string filename, List<string> lagNames)
+    public Dictionary<string, XmlNode> ReadXMLIdioms(string filename, List<string> lagNames)
     {
-        Dictionary<string, XmlNodeList> ret = new Dictionary<string, XmlNodeList>();
+        Dictionary<string, XmlNode> ret = new Dictionary<string, XmlNode>();
         List<string> langNames = new List<string>();
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
@@ -128,6 +128,7 @@ public class FileClass
             string langName = node.ChildNodes.Item(0).InnerText;
             langNames.Add(langName);
 
+            
             ret[langName] = node;
 
 
@@ -139,7 +140,7 @@ public class FileClass
         }
 
 
-        return langNames.ToArray();
+        return ret;
 
     }
 }
