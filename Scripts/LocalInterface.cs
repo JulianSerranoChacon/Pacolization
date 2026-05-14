@@ -66,8 +66,9 @@ public class LocalInterface
         _extract.ReplaceStrings();  
     }
 
-    public void StartInExecution()
+    public void StartInExecution(string path)
     {
+        _files.ReadXML(path);
         _extract.GatherTMPReferences();
         _core.ChangeLang(0);
     }

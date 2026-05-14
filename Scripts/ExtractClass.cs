@@ -113,10 +113,9 @@ public class ExtractClass
         {
             item.Value.text = item.Key.ToString();
         }
-
         foreach(var item in scriptObjRef)
         {
-            item.Value.Item2.SetValue(item.Value.Item1, func(item.Key));
+            item.Value.Item2.SetValue(item.Value.Item1, item.Key.ToString());
         }
     }
     
@@ -125,6 +124,10 @@ public class ExtractClass
     //Solo llamar cuando iniciamos juego Y hemos extraido strings
     public void GatherTMPReferences()
     {
+        List<TMP_Text> tmp = new List<TMP_Text>();
+
+        //cogemos primero la direccion de las escena en la que estamos
+        string activeScenePath = SceneManager.GetActiveScene().path;
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
             string scenePath = EditorBuildSettings.scenes[i].path;
@@ -139,7 +142,7 @@ public class ExtractClass
                 tmp.AddRange(root.GetComponentsInChildren<TMP_Text>(true));
                 foreach (TMP_Text text in tmp)
                 {
-                    LocalCore.Instance().SetTMPReference(Uint.Parse(text.text), text);
+                    LocalCore.Instance().SetTMPReference(uint.Parse(text.text), text);
                 }
                 tmp.Clear();
             }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using TMPro;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -93,7 +94,7 @@ public class LocalCore
     }
 
     #region Reference gaming
-    public void SetTMPReference(int ID, TMP_Text reff)
+    public void SetTMPReference(uint ID, TMP_Text reff)
     {
         refTable[ID] = reff;
     }
@@ -105,7 +106,7 @@ public class LocalCore
         {
             string[] box;
 
-            if(stringTable.TryGetValue(ID, out box))
+            if(stringTable.TryGetValue(uint.Parse(reff.text), out box))
                 reff.text = box[currentLang];
         }
     }

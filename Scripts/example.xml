@@ -1,15 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations>
   <text id="0">
-    <Español>New Text</Español>
-    <English>Nuevo Texto</English>
+    <es>0</es>
   </text>
   <text id="1">
-    <Español>Button</Español>
-    <English>Botón</English>
+    <es>MARIO</es>
   </text>
   <text id="2">
-    <Español>OHIO BABTE</Español>
-    <English>Batalla de OHIO</English>
+    <es>OHIO BABTE</es>
   </text>
 </translations>

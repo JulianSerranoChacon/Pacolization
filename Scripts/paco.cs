@@ -1,16 +1,15 @@
 using TMPro;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public class paco : MonoBehaviour
 {
-    float time;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        string paco = "paco";
-        TMP_Text texto = GetComponent<TMP_Text>();
-        Convert conversion = devuelve;
-        texto.text = conversion(paco);
+        LocalInterface.Instance().Initiate(1,false,"s");
+        LocalInterface.Instance().StartInExecution("Assets/Scripts/UAJ-FinalProject/Scripts/example.xml");
     }
 
     // Update is called once per frame
@@ -19,9 +18,5 @@ public class paco : MonoBehaviour
         
     }
     
-    delegate string Convert(string f);
-    private static string devuelve(string f)
-    {
-        return Time.deltaTime.ToString() ;
-    }
+
 }
