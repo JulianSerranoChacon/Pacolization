@@ -22,14 +22,14 @@ public class ExtractClass
     private uint ID = 0;
 
     private Dictionary<uint, TMP_Text> objRef;
-    private Dictionary<uint,Tuple< ScriptableObject,FieldInfo>> scriptObjRef;
+    private Dictionary<uint,Pair< ScriptableObject,FieldInfo>> scriptObjRef;
 
     public ExtractClass(bool scan, string path) 
     {
         scanScriptables= scan;
         scriptablePath = path;
         objRef = new Dictionary<uint, TMP_Text>();
-        scriptObjRef = new Dictionary<uint, Tuple<ScriptableObject, FieldInfo>>();
+        scriptObjRef = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();
     }
 
     //metodo que se usa para encontrar objetos de ciertos tipos en unity
@@ -55,7 +55,7 @@ public class ExtractClass
                 object val = m.GetValue((obj));
                 if(val is string)
                 {
-                    scriptObjRef[ID] = new Tuple<ScriptableObject,FieldInfo>(obj,m);
+                    scriptObjRef[ID] = new Pair<ScriptableObject,FieldInfo>(obj,m);
        
                     LocalCore.Instance().SetLine(ID, (string)val);
                     LocalCore.Instance().SetScriptableObjectReference(ID, obj, m);
@@ -116,7 +116,7 @@ public class ExtractClass
         }
         foreach(var item in scriptObjRef)
         {
-            item.Value.Item2.SetValue(item.Value.Item1, item.Key.ToString());
+            item.Value.second.SetValue(item.Value.first, item.Key.ToString());
         }
     }
     
