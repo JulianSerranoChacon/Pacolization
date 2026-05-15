@@ -10,11 +10,36 @@ public class UIClamper : MonoBehaviour
                                                //y Fixed es si queremos que el cuadro de texto este fijo
 
     [Header("Configuracion del Escalado")]
-    public ScalingMode mode = ScalingMode.Dynamic;
+    [SerializeField]
+    private ScalingMode mode = ScalingMode.Dynamic;
 
     [Tooltip("Limites maximos en unidades del Canvas.")]
-    public float maxX = 700f;
-    public float maxY = 400f;
+    [SerializeField]
+    private float maxX = 700f;
+    [Tooltip("Limites minimos en unidades del Canvas.")]
+    [SerializeField]
+    private float maxY = 400f;
+
+    [Header("Configuracion del autosize")]
+    [Tooltip("Activa o no el Auto Size del texto")]
+    [SerializeField]
+    private bool activateAutoSize = false;
+
+    [Tooltip("SIZE minimo del texto")]
+    [SerializeField]
+    private float minFontSize = 5.0f;
+
+    [Tooltip("SIZE maximo del texto")]
+    [SerializeField]
+    private float maxFontSize = 15.0f;
+
+    [Tooltip("Porcentaje de compresion del texto")]
+    [SerializeField]
+    private float wdPercent = 0.0f;
+
+    [Tooltip("Espacio entre lineas del Auto Size, SOLO VALORES NEGATIVOS")]
+    [SerializeField]
+    private float lineSpacing = 0.0f;
 
     private RectTransform rectTransform;
     private LayoutElement layout;
@@ -52,7 +77,7 @@ public class UIClamper : MonoBehaviour
         }
         else // Modo DINAMICO: Crecer con el texto
         {
-            
+
             layout.minWidth = 0;
             layout.minHeight = 0;
 
@@ -82,6 +107,11 @@ public class UIClamper : MonoBehaviour
             }
         }
 
+        textComp.fontSizeMin = minFontSize;
+        textComp.fontSizeMax = maxFontSize;
+        textComp.characterWidthAdjustment = wdPercent;
+        textComp.lineSpacingAdjustment = lineSpacing;
+
         // Se aplican los topes de LayoutElement
         LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
 
@@ -97,8 +127,8 @@ public class UIClamper : MonoBehaviour
         else
         {
             // AUn hay espacio para poner el texto en SIZE normal
-            textComp.enableAutoSizing = false;
-            textComp.fontSize = textComp.fontSizeMax;
+            textComp.enableAutoSizing = activateAutoSize;
+            textComp.fontSize = maxFontSize;
         }
 
         // Hacemos CLAMP para que el texto NO se salga de la pantalla
