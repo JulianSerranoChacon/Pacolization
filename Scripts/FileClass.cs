@@ -127,7 +127,7 @@ public class FileClass
     {
         Dictionary<string, XmlNode> ret = new Dictionary<string, XmlNode>();
 
-        if(langNames = null)
+        if(langNames == null)
             List<string> langNames = new List<string>();
         
         //Leemos el documento de la ruta correspondiente
