@@ -94,10 +94,11 @@ public class FileClass
                 XmlNode lang = texts[i].ChildNodes[j];
                 //Cambiamos el idioma del localCore y anadimos traduccion al Diccionarioç
 
-                //introduzco el texto en el idioma correspondiente con su id
+                //Si el idoma no existe en la configuracion lo creo en el mapa sin configuracion (default)
                 if(!ret.ContainsKey(lang.Name))  
                     ret.Add(lang.Name,new Dictionary<uint, string>());
 
+                //introduzco el texto en el idioma correspondiente con su id
                 ret[lang.Name].Add(id,lang.InnerText);
                 //LocalCore.Instance().ChangeLang(j);
                 //LocalCore.Instance().SetLine(id, lang.InnerText);
