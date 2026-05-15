@@ -67,7 +67,7 @@ public class FileClass
         Dictionary<string, Dictionary<uint, string>> ret = new Dictionary<string, Dictionary<uint, string>>();
 
         if(langNames == null)
-            List<string> langNames = new List<string>();
+            langNames = new List<string>();
 
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
@@ -101,7 +101,7 @@ public class FileClass
                 //Si el idoma no existe en la configuracion lo creo en el mapa y la lista de nombres sin configuracion (default)
                 if (!ret.ContainsKey(lang.Name))
                 {
-                    langNames.Add(langNames);
+                    langNames.Add(lang.Name);
                     ret.Add(lang.Name,new Dictionary<uint, string>());
                 }
                     
@@ -131,7 +131,7 @@ public class FileClass
         Dictionary<string, XmlNode> ret = new Dictionary<string, XmlNode>();
 
         if(langNames == null)
-            List<string> langNames = new List<string>();
+            langNames = new List<string>();
         
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
@@ -152,8 +152,7 @@ public class FileClass
             uint id = uint.Parse(node.Attributes["id"].Value);
 
             //Nombre del Idioma
-            //string langName = node.ChildNodes.Item(0).InnerText;
-            string langName = node.ChildNodes["Nombre"].InnerText;
+            string langName = node.ChildNodes.Item(0).InnerText;
 
             //Nombre del lenguaje
             langNames.Add(langName);
