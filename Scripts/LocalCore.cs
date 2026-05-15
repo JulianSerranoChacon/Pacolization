@@ -1,8 +1,10 @@
-using System.Collections.Generic;
 using System;
-using TMPro;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Xml.Serialization;
+using TMPro;
+using UnityEngine;
 
 public class LocalCore
 {
@@ -14,7 +16,7 @@ public class LocalCore
     private int languages;
     private Dictionary<uint, string[]> stringTable;
     private Dictionary<uint, TMP_Text> refTable;
-
+    private Dictionary<uint, Tuple<ScriptableObject, FieldInfo>> refScriptObj;
     //Marcador que lleva la cuenta del lenguaje actual
     //Funciona para lectura/escritura y ejecucion
     private int currentLang;
@@ -50,6 +52,8 @@ public class LocalCore
         languages = langAm;
         stringTable = new Dictionary<uint, string[]>();
         refTable = new Dictionary<uint, TMP_Text>();
+        refScriptObj = new Dictionary<uint, Tuple<ScriptableObject, FieldInfo>>();  
+
         currentLang = 0;
     }
 
@@ -99,6 +103,11 @@ public class LocalCore
         refTable[ID] = reff;
     }
 
+    public void SetScriptableObjectReference(uint ID, ScriptableObject obj, FieldInfo info)
+    {
+        refScriptObj[ID] = new Tuple<ScriptableObject, FieldInfo>(obj, info);
+    }
+
     //Se cambia el idioma y todas las respectivas referencias
     private void SetAllStrings()
     {
@@ -108,6 +117,15 @@ public class LocalCore
 
             if(stringTable.TryGetValue(uint.Parse(reff.text), out box))
                 reff.text = box[currentLang];
+        }
+        foreach(var item in refScriptObj)
+        {
+            string[] box;
+           object val =item.Value.Item2.GetValue(item.Value.Item1);
+            if (stringTable.TryGetValue(uint.Parse(val.ToString()),out box))
+            {
+                item.Value.Item2.SetValue(item.Value.Item1, box[currentLang]);
+            }
         }
     }
     #endregion

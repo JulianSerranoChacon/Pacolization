@@ -155,7 +155,7 @@ public class InternationalitationGUI : EditorWindow
             inter.FullExtract(selectedPath);
         }
     }
-    void readListIdioms()
+    void readListLanguage()
     {
         //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
         string selectedPath = EditorUtility.OpenFilePanel(

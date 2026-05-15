@@ -58,6 +58,7 @@ public class ExtractClass
                     scriptObjRef[ID] = new Tuple<ScriptableObject,FieldInfo>(obj,m);
        
                     LocalCore.Instance().SetLine(ID, (string)val);
+                    LocalCore.Instance().SetScriptableObjectReference(ID, obj, m);
                     ID++;
                 }      
         }    
@@ -135,8 +136,6 @@ public class ExtractClass
                 }
                 tmp.Clear();
             }
-
-        
     }
 
 }
