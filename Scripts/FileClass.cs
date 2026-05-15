@@ -158,7 +158,7 @@ public class FileClass
 
             //Metemos el lenguaje devuelto con los idiomas y sus parametros
             ret[langName] = node;
-            UnityEngine.Debug.Log(node.ChildNodes.Item(0).InnerText);
+            UnityEngine.Debug.Log(langName);
         }
         //devolvemos un mapa con los idiomas y sus parametros
         return ret;
