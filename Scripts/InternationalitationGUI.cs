@@ -79,14 +79,13 @@ public class InternationalitationGUI : EditorWindow
             if (GUILayout.Button("Write To XML"))
             {
                 WriteToXML();
-            }
-
+            }*/
             //Boton que ejecuta la lectura de las cadenas de strings de un XML concreto
             if (GUILayout.Button("Read from XML"))
             {
                 ReadFromXML();
             }
-            */
+            
         }
     }
 
