@@ -123,10 +123,13 @@ public class FileClass
     }
 
 
-    public Dictionary<string, XmlNode> ReadXMLLanguage(string filename, List<string> lagNames)
+    public Dictionary<string, XmlNode> ReadXMLLanguage(string filename, List<string> langNames)
     {
         Dictionary<string, XmlNode> ret = new Dictionary<string, XmlNode>();
-        List<string> langNames = new List<string>();
+
+        if(langNames = null)
+            List<string> langNames = new List<string>();
+        
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
 
@@ -137,23 +140,21 @@ public class FileClass
 
         UnityEngine.Debug.Log(texts.Count);
 
-        //ret = new string[texts.Count];
-
         //Limpiamos primero el orden de los idiomas leidos en el XML
         languagesOrder.Clear();
 
         foreach (XmlNode node in texts)
         {
-            //Id del texto (sera la clave del Diccionario de LocalCore)
+            //Id del texto
             uint id = uint.Parse(node.Attributes["id"].Value);
 
-            string langName = node.ChildNodes.Item(0).InnerText;
+            //Nombre del Idioma
+            //string langName = node.ChildNodes.Item(0).InnerText;
+            string langName = node.ChildNodes["Nombre"].InnerText;
             langNames.Add(langName);
             languagesOrder.Add(langName);
 
             ret[langName] = node;
-            //ret = node.Attributes["Nombre"].InnerText;
-
             UnityEngine.Debug.Log(node.ChildNodes.Item(0).InnerText);
         }
         return ret;
