@@ -76,6 +76,11 @@ También debemos de añadir al PADRE otro componente que está incluido en el pl
 
 En el objeto HIJO, que es el propio texto, vamos al componente de "TextMeshPro - Text (UI)" y activamos "Auto Size" (cambiamos las opciones de "Min" y "Max" y demás a gusto del desarrollador). También es necesario añadir el componente de "Layout Element" al HIJO, o sino el texto se sale de la pantalla y el "UIClamper" no funciona.
 
+#### **Implementacion del CLAMP en los textos de la UI en SCRIPTABLE OBJECTS**
+
+En según qué juegos, se usan Scriptable Objects para los textos de la UI. Es normal usarlos cuando por ejemplo hablas con un NPC y este tiene sus diálogos guardados en un fichero de Scriptable Objects, y para coger y cambiar los textos de la UI por los de los Scriptable Objects se usan scripts que hacen dicho trabajo y son hechos por los desarrolladores del videojuego. Si no se quieren que estos textos se salgan de la pantalla, el proceso de configuración es exactamente el mismo que el que se explicó en el apartado anterior de "textos de la UI en la ESCENA", pero si hay varios textos en un Scriptable Object y se quiere que tengan diferentes tamaños de cuadro de texto, porque a lo mejor un texto es muy corto y otro es muy largo, en el componente de "UIClamper" ponemos "Mode" en "Dynamic" y el cuadro de texto tendrá diferente tamaño dependiendo de la cantidad de texto (aunque se construirá de forma dinámica).
+
+Los apartados anteriores de configuración de textos se enfocan en ser una guía GENERAL y en ofrecer una herramienta GENERAL para que los textos no se salgan, sea el idioma que sea, pero ya si un desarrollador quiere hacer algo más específico, entonces puede coger nuestro plugin y adaptarlo a su juego, ahí es cosa suya.
 
 #### **SIMPLIFICACIONES:**
 
