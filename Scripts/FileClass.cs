@@ -77,8 +77,18 @@ public class FileClass
         XmlNodeList texts = xmlDoc.GetElementsByTagName("text");
 
         //creo los idiomas con sus tablas dentro del diccionario
-        for(int i = 0; i < langNames.Count ; i++)
-            ret.Add(langNames[i],new Dictionary<uint, string>());
+        //for(int i = 0; i < langNames.Count ; i++)
+        //    ret.Add(langNames[i],new Dictionary<uint, string>());
+
+        int nLg = texts[0].ChildNodes.Count;
+
+        for (int j = 0; j < numLang; j++)
+        {
+            XmlNode lang = texts[0].ChildNodes[j];
+
+            if(!langNames.Contains(lang.Name))
+                langNames.Add(lang.Name);
+        }
 
         //Recorremos la lista de textos del XML
 
@@ -96,17 +106,18 @@ public class FileClass
             {
                 //Nodo hijo
                 XmlNode lang = texts[i].ChildNodes[j];
-                //Cambiamos el idioma del localCore y anadimos traduccion al Diccionarioç
+                //Cambiamos el idioma del localCore y anadimos traduccion al Diccionario
 
                 //Si el idoma no existe en la configuracion lo creo en el mapa y la lista de nombres sin configuracion (default)
-                if (!ret.ContainsKey(lang.Name))
+                /*if (!ret.ContainsKey(lang.Name))
                 {
                     langNames.Add(lang.Name);
                     ret.Add(lang.Name,new Dictionary<uint, string>());
-                }
+                }*/
                     
                 //introduzco el texto en el idioma correspondiente con su id
-                ret[lang.Name].Add(id,lang.InnerText);
+                //ret[lang.Name].Add(id,lang.InnerText);
+                LocalCore.Instance().SetLine(id, j, lang.InnerText)
             }
         }
 

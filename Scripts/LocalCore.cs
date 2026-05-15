@@ -86,6 +86,22 @@ public class LocalCore
         //Debug.Log(currentLang);
     }
 
+    public void SetLine(uint ID, int lang, string value)
+    {
+        string[] box;
+
+        if(stringTable.TryGetValue(ID, out box))
+            box[lang] = value;
+        else
+        {
+            box = new string[languages];
+            box[lang] = value;
+            stringTable[ID] = box;
+        }
+
+        //Debug.Log(currentLang);
+    }
+
     //Cambia el idioma que esta usando la clase
     //Falla si es un idioma fuera del alcance especificado.
     public void ChangeLang(int newLang)
