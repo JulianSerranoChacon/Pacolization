@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
+using UnityEngine.SceneManagement;
 
 public class LocalInterface
 {
@@ -77,17 +78,21 @@ public class LocalInterface
 
     public void StartInExecution(string path, int lang)
     {
-        _files.ReadXML(path);
+        List<string> langNames = new List<string>();
+        langNames.Add("Español");
+        langNames.Add("English");
+        _files.ReadXML(path, langNames);
+        SceneManager.sceneLoaded += NewScene;
         //_extract.GatherTMPReferences();
         //if (scan == true)
-            //Extraer scriptable objects a lo mejor?
+        //Extraer scriptable objects a lo mejor?
         _core.ChangeLang(lang);
     }
 
-    public void NewScene()
+    public void NewScene(Scene scene, LoadSceneMode mode)
     {
         _core.ClearReferences();
         _extract.GatherTMPReferences();
-        _core.NewScene();
+        _core.SceneLoaded();
     }
 }

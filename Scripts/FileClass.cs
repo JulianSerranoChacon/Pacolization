@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEditor;
 using TMPro;
 using System.Data;
-using System.Diagnostics;
 
 public class FileClass
 {
@@ -105,12 +104,15 @@ public class FileClass
             //LocalCore.Instance().ChangeLang(0);
         }
 
-        Debug.log(ret.ToString());
-        foreach(Dictionary<uint, string>i in ret)
+         
+        foreach(var item in ret)
         {
-            Debug.log(i.ToString());
+            UnityEngine.Debug.Log(item.Key);
+            foreach (var values in item.Value)
+            {
+                UnityEngine.Debug.Log(values.Value);
+            }
         }
-
         return ret;
     }
 
@@ -127,7 +129,7 @@ public class FileClass
         //Cogemos todos los textos etiquetados con text  
         XmlNodeList texts = xmlDoc.GetElementsByTagName("Lenguaje");
 
-        Debug.Log(texts.Count);
+        UnityEngine.Debug.Log(texts.Count);
 
         //ret = new string[texts.Count];
 
@@ -146,7 +148,7 @@ public class FileClass
             ret[langName] = node;
             //ret = node.Attributes["Nombre"].InnerText;
 
-            Debug.Log(node.ChildNodes.Item(0).InnerText);
+            UnityEngine.Debug.Log(node.ChildNodes.Item(0).InnerText);
         }
         return ret;
 

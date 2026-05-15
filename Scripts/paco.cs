@@ -9,7 +9,7 @@ public class paco : MonoBehaviour
     void Awake()
     {
         LocalInterface.Instance().Initiate(1,false,"s");
-        LocalInterface.Instance().StartInExecution("Assets/Scripts/UAJ-FinalProject/Scripts/example.xml");
+        LocalInterface.Instance().StartInExecution("Assets/Scripts/UAJ-FinalProject/Scripts/example.xml",0);
     }
 
     // Update is called once per frame
