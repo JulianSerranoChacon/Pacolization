@@ -108,10 +108,13 @@ public class FileClass
 
         foreach (var item in ret)
         {
-            UnityEngine.Debug.Log(item.Key);
+            UnityEngine.Debug.Log("Idioma: " + item.Key);
+
             foreach (var values in item.Value)
             {
-                UnityEngine.Debug.Log(values.Value);
+                UnityEngine.Debug.Log(
+                    "ID: " + values.Key +
+                    " -> " + values.Value);
             }
         }
 
