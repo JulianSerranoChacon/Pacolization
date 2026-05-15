@@ -166,7 +166,7 @@ public class InternationalitationGUI : EditorWindow
         {
             List<string> list = new List<string>();
             //file.ReadXML(selectedPath);
-            Dictionary<string, XmlNode> langList = inter.ReadListIdioms(selectedPath, list);
+            Dictionary<string, XmlNode> langList = inter.ReadListLanguage(selectedPath, list);
 
 
             /*for (int i = 0; i < langList.Count; i++)

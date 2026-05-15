@@ -57,9 +57,9 @@ public class LocalInterface
     {
         _files.ReadXML(path);
     }
-    public Dictionary<string, XmlNode>ReadListIdioms(string path, List<string> lagNames)
+    public Dictionary<string, XmlNode>ReadListLanguage(string path, List<string> lagNames)
     {
-        return _files.ReadXMLIdioms(path,lagNames);
+        return _files.ReadXMLLanguage(path,lagNames);
     }
 
     public void GetLine(int ID)

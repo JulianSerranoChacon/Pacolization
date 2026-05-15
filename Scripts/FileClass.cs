@@ -96,7 +96,7 @@ public class FileClass
     }
 
 
-    public Dictionary<string, XmlNode> ReadXMLIdioms(string filename, List<string> lagNames)
+    public Dictionary<string, XmlNode> ReadXMLLanguage(string filename, List<string> lagNames)
     {
         Dictionary<string, XmlNode> ret = new Dictionary<string, XmlNode>();
         List<string> langNames = new List<string>();
