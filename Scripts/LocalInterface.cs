@@ -57,7 +57,8 @@ public class LocalInterface
     {
         _files.ReadXML(path,langNames);
     }
-    public Dictionary<string, XmlNode>ReadListLanguage(string path, List<string> lagNames)
+
+    public Dictionary<string, XmlNode> ReadListLanguage(string path, List<string> lagNames)
     {
         return _files.ReadXMLLanguage(path,lagNames);
     }
@@ -74,10 +75,19 @@ public class LocalInterface
         _extract.ReplaceStrings();  
     }
 
-    public void StartInExecution(string path)
+    public void StartInExecution(string path, int lang)
     {
         _files.ReadXML(path);
+        //_extract.GatherTMPReferences();
+        //if (scan == true)
+            //Extraer scriptable objects a lo mejor?
+        _core.ChangeLang(lang);
+    }
+
+    public void NewScene()
+    {
+        _core.ClearReferences();
         _extract.GatherTMPReferences();
-        _core.ChangeLang(0);
+        _core.NewScene();
     }
 }

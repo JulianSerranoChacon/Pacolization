@@ -94,7 +94,12 @@ public class LocalCore
             throw new ArgumentException("New language value exceeding range of languages.");
 
         currentLang = newLang; 
-        SetAllStrings();
+        //SetAllStrings();
+    }
+
+    public void SceneLoaded()
+    {
+        SetTMPStrings();
     }
 
     #region Reference gaming
@@ -109,7 +114,7 @@ public class LocalCore
     }
 
     //Se cambia el idioma y todas las respectivas referencias
-    private void SetAllStrings()
+    private void SetTMPStrings()
     {
         foreach(TMP_Text reff in refTable.Values)
         {
@@ -118,15 +123,25 @@ public class LocalCore
             if(stringTable.TryGetValue(uint.Parse(reff.text), out box))
                 reff.text = box[currentLang];
         }
+        
+    }
+
+    private void SetScriptableStrings()
+    {
         foreach(var item in refScriptObj)
         {
             string[] box;
-           object val =item.Value.Item2.GetValue(item.Value.Item1);
+            object val =item.Value.Item2.GetValue(item.Value.Item1);
             if (stringTable.TryGetValue(uint.Parse(val.ToString()),out box))
             {
                 item.Value.Item2.SetValue(item.Value.Item1, box[currentLang]);
             }
         }
+    }
+
+    public void ClearReferences()
+    {
+        refTable.Clear();
     }
     #endregion
 

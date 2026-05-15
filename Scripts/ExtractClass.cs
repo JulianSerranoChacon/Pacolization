@@ -89,7 +89,7 @@ public class ExtractClass
                 {
                     LocalCore.Instance().SetLine(ID, text.text);
                     objRef[ID] = text;
-                    LocalCore.Instance().SetTMPReference(ID, text);
+                    //LocalCore.Instance().SetTMPReference(ID, text);
                     ID++;
                 }
                 tmp.Clear();
@@ -122,7 +122,7 @@ public class ExtractClass
     
     //CUIDADO: NO LLAMAR FUERA DE LUGAR
     //Recoge las referencias de todos los TMP_Text
-    //Solo llamar cuando iniciamos juego Y hemos extraido strings
+    //Solo llamar cuando cambiamos escena
     public void GatherTMPReferences()
     {
             List<TMP_Text> tmp = new List<TMP_Text>();
