@@ -56,6 +56,7 @@ public class LocalCore
 
         //stringTable = new Dictionary<uint, string[]>();
         stringMap = new Dictionary<uint, Dictionary<uint, string>>();
+        stringMap.Add(0,new Dictionary<uint, string>());
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();  
 
         currentLang = 0;
@@ -81,21 +82,14 @@ public class LocalCore
     //Si la ID es nueva, crea un array y lo almacena
     public void SetLine(uint ID, string value)
     {
-        /*string[] box;
-
-        if(stringTable.TryGetValue(ID, out box))
-            box[currentLang] = value;
+        if (!stringMap.ContainsKey(currentLang))
+        {
+            throw new ArgumentException("No value assigned to corresponding Lang.");
+        }
         else
         {
-            box = new string[languages];
-            box[currentLang] = value;
-            stringTable[ID] = box;
-        }*/
-
-        if (!stringMap.ContainsKey(currentLang)){
-            stringMap.Add(currentLang, new Dictionary<uint, string>());
+            stringMap[currentLang].Add(ID, value);
         }
-        stringMap[currentLang].Add(ID, value);
         //Debug.Log(currentLang);
 
         
@@ -106,19 +100,28 @@ public class LocalCore
         return languages;
     }
 
-    public void SetLine(uint ID, int lang, string value)
+    public void SetLine(uint ID, uint lang, string value)
     {
-        string[] box;
-        Debug.Log(languages);
-        Debug.Log(lang);
-        if (stringTable.TryGetValue(ID, out box))
-            box[lang] = value;
-        else
+        if (!stringMap.ContainsKey(lang))
         {
-            box = new string[languages];
-            box[lang] = value;
-            stringTable[ID] = box;
+            throw new ArgumentException("No value assigned to corresponding Lang.");
         }
+        else {
+            stringMap[lang].Add(ID, value);
+        }
+
+
+        //string[] box;
+        //Debug.Log(languages);
+        //Debug.Log(lang);
+        //if (stringTable.TryGetValue(ID, out box))
+        //    box[lang] = value;
+        //else
+        //{
+        //    box = new string[languages];
+        //    box[lang] = value;
+        //    stringTable[ID] = box;
+        //}
 
         //Debug.Log(currentLang);
     }
@@ -146,16 +149,21 @@ public class LocalCore
         refScriptObj[ID] = new Pair<ScriptableObject, FieldInfo>(obj, info);
     }
 
-    private void SetScriptableStrings()
+    public void SetScriptableStrings()
     {
         foreach(var item in refScriptObj)
         {
-            string[] box;
             object val = item.Value.second.GetValue(item.Value.first);
-            if (stringTable.TryGetValue(uint.Parse(val.ToString()), out box))
+
+            if (!stringMap.ContainsKey(currentLang) || !stringMap[currentLang].ContainsKey(uint.Parse(val.ToString())))
             {
-                item.Value.second.SetValue(item.Value.first, box[currentLang]);
+                throw new ArgumentException("No value found for ScriptableObject.");
             }
+            else
+            {
+                item.Value.second.SetValue(item.Value.first, stringMap[currentLang][uint.Parse(val.ToString())]);
+            }
+
         }
     }
   

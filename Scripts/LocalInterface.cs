@@ -35,7 +35,6 @@ public class LocalInterface
         _core.Initiate(lang);
         _extract = new ExtractClass(scan, path);
         _files = new FileClass();
-        //_loquesea = new loqueseaClass()
     }
 
     public void ChangeLang(uint newLang)
