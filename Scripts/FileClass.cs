@@ -68,10 +68,10 @@ public class FileClass
         xmlDoc.Save(path);
     }
 
-    public Dictionary<string, Dictionary<uint, string>> ReadXML(string filename, List<string> langNames) 
+    public Dictionary<uint, Dictionary<uint, string>> ReadXML(string filename, List<string> langNames) 
     {
         // Mapa que contiene los mapas de los textos de cada idioma usando el propio idioma como clave
-        Dictionary<string, Dictionary<uint, string>> ret = new Dictionary<string, Dictionary<uint, string>>();
+        Dictionary<uint, Dictionary<uint, string>> ret = new Dictionary<string, Dictionary<uint, string>>();
 
         if(langNames == null)
             langNames = new List<string>();
@@ -133,9 +133,9 @@ public class FileClass
     }
 
 
-    public Dictionary<string, XmlNode> ReadXMLLanguage(string filename, List<string> langNames)
+    public Dictionary<uint, XmlNode> ReadXMLLanguage(string filename, List<string> langNames)
     {
-        Dictionary<string, XmlNode> ret = new Dictionary<string, XmlNode>();
+        Dictionary<uint, XmlNode> ret = new Dictionary<string, XmlNode>();
 
         if(langNames == null)
             langNames = new List<string>();
@@ -166,7 +166,7 @@ public class FileClass
             languagesOrder.Add(langName);
 
             //Metemos el lenguaje devuelto con los idiomas y sus parametros
-            ret[langName] = node;
+            ret[id] = node;
             UnityEngine.Debug.Log(langName);
         }
         //devolvemos un mapa con los idiomas y sus parametros
