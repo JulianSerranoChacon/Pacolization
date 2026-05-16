@@ -69,10 +69,10 @@ public class FileClass
         xmlDoc.Save(path);
     }
 
-    public Dictionary<uint, Dictionary<uint, string>> ReadXML(string filename, List<string> langNames) 
+    public void ReadXML(string filename,Dictionary<uint, Dictionary<uint, string>> ret, List<string> langNames) 
     {
         // Mapa que contiene los mapas de los textos de cada idioma usando el propio idioma como clave
-        Dictionary<uint, Dictionary<uint, string>> ret = new Dictionary<uint, Dictionary<uint, string>>();
+        //Dictionary<uint, Dictionary<uint, string>> ret = new Dictionary<uint, Dictionary<uint, string>>();
 
         if(langNames == null)
             langNames = new List<string>();
@@ -133,8 +133,6 @@ public class FileClass
                     " -> " + values.Value);
             }
         }
-
-        return ret;
     }
 
 
