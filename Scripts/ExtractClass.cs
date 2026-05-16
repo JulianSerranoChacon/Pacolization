@@ -242,6 +242,35 @@ public class ExtractClass
            item.Value.second.SetValue(item.Value.first, item.Key.ToString());
         }
     }
-    
+    public void ExtractRefs(ScriptableObject obj)
+    {
+        Type objectType = obj.GetType();
+        foreach (FieldInfo m in objectType.GetFields())
+        {
+            if (m.Attributes == FieldAttributes.Public)
+            {
+                object val = m.GetValue((obj));
+                if (val is string)
+                {
+                    LocalCore.Instance().SetScriptableObjectReference(uint.Parse((string)val), obj, m);
+                }
+            }
+        }
+    }
+
+    public void setScriptableRefereces()
+    {
+        scriptObjRef.Clear();
+        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(ScriptableObject)), new String[] { scriptablePath });
+        for (int i = 0; i < guids.Length; i++)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+            ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
+            if (asset != null)
+            {
+                ExtractRefs(asset);
+            }
+        }
+    }
 
 }

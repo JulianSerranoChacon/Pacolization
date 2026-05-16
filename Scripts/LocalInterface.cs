@@ -41,7 +41,7 @@ public class LocalInterface
     public void ChangeLang(int newLang)
     {
         _core.ChangeLang(newLang);
-        _extract.ReplaceStrings();
+        _core.SetScriptableStrings();
     }
 
     public void Extract()
@@ -80,10 +80,15 @@ public class LocalInterface
     public void StartInExecution(string path, int lang)
     {
         List<string> langNames = new List<string>();
-        _files.ReadXML(path, langNames);
-        _core.ChangeLang(lang);
+        _files.ReadXML(path, langNames);  
+        _extract.setScriptableRefereces();
+        ChangeLang(lang);
     }
 
+    public void OnQuit()
+    {
+        _core.FlushScriptableReferences();  
+    }
     public void SetupUIClampers()
     {
         if (_extract != null)
@@ -92,7 +97,7 @@ public class LocalInterface
         }
         else
         {
-            UnityEngine.Debug.LogError("¡El sistema de localización no ha sido inicializado todavía!");
+            UnityEngine.Debug.LogError("ï¿½El sistema de localizaciï¿½n no ha sido inicializado todavï¿½a!");
         }
     }
 

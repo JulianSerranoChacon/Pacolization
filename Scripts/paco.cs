@@ -12,7 +12,7 @@ public class paco : MonoBehaviour
     [SerializeField]
     public string scriptablePath;
     [SerializeField]
-    public string filePath; //"Assets/Scripts/UAJ-FinalProject/Scripts/example.xml"
+    public string filePath;
 
     private static paco _instance;
     public static paco Instance()
@@ -36,7 +36,11 @@ public class paco : MonoBehaviour
             Destroy(this);
         }
     }
-     void Start()
+     void OnApplicationQuit()
+    {
+      LocalInterface.Instance().OnQuit();    
+    }
+    void Start()
     {
     }
     // Update is called once per frame

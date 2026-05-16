@@ -119,7 +119,7 @@ public class LocalCore
         refScriptObj[ID] = new Pair<ScriptableObject, FieldInfo>(obj, info);
     }
 
-    private void SetScriptableStrings()
+    public void SetScriptableStrings()
     {
         foreach(var item in refScriptObj)
         {
@@ -131,7 +131,13 @@ public class LocalCore
             }
         }
     }
-
+    public void FlushScriptableReferences()
+    {
+        foreach (var item in refScriptObj)
+        {
+                item.Value.second.SetValue(item.Value.first, item.Key.ToString());       
+        }
+    }
     #endregion
 
 #endregion
