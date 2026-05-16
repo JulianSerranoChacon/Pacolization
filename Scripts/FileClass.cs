@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Xml;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
+using TMPro;
+using System.Data;
 
 public class FileClass
 {
@@ -13,7 +12,7 @@ public class FileClass
 
     //Lista de los idiomas ordenados al leer el XML de lenguajes
     private List<string> languagesOrder = new List<string>();
-    private  Dictionary<string, uint> transLang = new Dictionary<string, uint>();
+    private public Dictionary<string, uint> transLang = new Dictionary<string, uint>();
 
     public void WriteXML(string path)
     {
@@ -89,7 +88,7 @@ public class FileClass
         for(int i = 0; i < langNames.Count ; i++)
         {
             if(!transLang.ContainsKey(langNames[i]))
-                throw new ArgumentException("Inavlid Language.");
+                throw "Not valid idiom";
 
             ret.Add(transLang[langNames[i]],new Dictionary<uint, string>());
         }
@@ -113,9 +112,9 @@ public class FileClass
                 //Cambiamos el idioma del localCore y anadimos traduccion al Diccionarioç
 
                 //Si el idoma no existe en la configuracion lo creo en el mapa y la lista de nombres sin configuracion (default)
-                if (!ret.ContainsKey(transLang[lang.Name]))
+                if (!ret.ContainsKey(lang.Name))
                 {
-                    throw new ArgumentException("Inavlid Language.");
+                    throw "Not valid idiom";
                 }
                     
                 //introduzco el texto en el idioma correspondiente con su id
