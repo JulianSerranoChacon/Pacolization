@@ -28,12 +28,19 @@ public class FileClass
 
 
         //Recorremos todo el unorderedMap
-        foreach(KeyValuePair<uint, string[]> pair in LocalCore.Instance().GetLines)
+        foreach(KeyValuePair<uint, Dictionary<uint, string>> pair in LocalCore.Instance().GetLines)
         {
             //id es el ID del texto el stringTable del localCore
             uint id = pair.Key;
             //Cantidad de traducciones que tiene el texto ID
-            string[]texts = pair.Value;
+            string[] texts = new string[LocalCore.Instance().getLang()];
+
+            foreach (KeyValuePair<uint,string> s in pair.Value)
+            {
+                texts[pair.Key] = s.Value;
+            }
+            
+
 
             //Nodo del texto y seteo de su id en el XML
             XmlElement textNode = xmlDoc.CreateElement("text");
