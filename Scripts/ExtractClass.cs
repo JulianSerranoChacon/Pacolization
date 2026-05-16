@@ -57,7 +57,6 @@ public class ExtractClass
                 if (val is string)
                 {
                     scriptObjRef[ID] = new Pair<ScriptableObject, FieldInfo>(obj, m);
-                    Debug.Log(ID);
                     LocalCore.Instance().SetLine(ID, (string)val);
                     LocalCore.Instance().SetScriptableObjectReference(ID, obj, m);
 
@@ -91,7 +90,12 @@ public class ExtractClass
                 foreach (TMP_Text text in tmp)
                 {
                     LocalCore.Instance().SetLine(ID, text.text);
-                    TextUpdate temp = text.AddComponent<TextUpdate>();
+                    TextUpdate temp= text.GetComponent<TextUpdate>();
+                    if (temp!=null)
+                    {
+                        UnityEngine.Object.DestroyImmediate(temp);
+                    }
+                    temp = text.AddComponent<TextUpdate>();
                     Debug.Log(ID);
                     temp.ID = ID;
                     ID++;
