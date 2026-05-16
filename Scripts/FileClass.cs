@@ -51,10 +51,10 @@ public class FileClass
                     if(i < languagesOrder.Count)
                         langName = languagesOrder[(int)langId];
                     else
-                        langName = "langNotDefined_" + langId;
+                        langName = "langNotDefined_" + (int)langId;
 
                     //Creamos el nodo hijo del texto
-                    if (textnodes.ContainsKey(item.key))
+                    if (!textnodes.ContainsKey(item.key))
                     {
                         textnodes.Add(item.key, xmlDoc.CreateElement("text"));
                         textnodes[item.key].SetAttribute("id", item.key.ToString());
@@ -67,7 +67,7 @@ public class FileClass
                     if(!pair.Value.ContainsKey(item.Key))
                         throw new ArgumentException("el idioma " + langName + " no contiene el texto " + item.Key);
 
-                    langNode.InnerText = pair.Value[item.Key];
+                    langNode.InnerText = item.Value;
                     textnodes[item.Key].AppendChild(langNode);
                 }
             }
