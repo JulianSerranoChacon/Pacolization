@@ -26,7 +26,7 @@ public class LocalCore
     private uint currentLang;
 
     //public IReadOnlyDictionary<uint, string[]> GetLines => stringTable;
-    public IReadOnlyDictionary<uint, string> GetLines => stringMap[currentLang];
+    public IReadOnlyDictionary<uint, Dictionary<uint, string>> GetLines => stringMap;
 #endregion
 
 #region Singleton

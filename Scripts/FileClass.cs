@@ -32,20 +32,20 @@ public class FileClass
         foreach(KeyValuePair<uint, Dictionary<uint, string>> pair in LocalCore.Instance().GetLines)
         {
             //id es el ID del texto el stringTable del localCore
-            uint id = pair.Key;
+            uint langId = pair.Key;
             //Cantidad de traducciones que tiene el texto ID
-            string[] texts = new string[LocalCore.Instance().getLang()];
+            /*string[] texts = new string[LocalCore.Instance().getLang()];
 
             foreach (KeyValuePair<uint,string> s in pair.Value)
             {
                 texts[pair.Key] = s.Value;
-            }
+            }*/
             
 
 
             //Nodo del texto y seteo de su id en el XML
             XmlElement textNode = xmlDoc.CreateElement("text");
-            textNode.SetAttribute("id", id.ToString());
+            textNode.SetAttribute("id", langId.ToString());
 
             //Recorremos el array de los textos traducidos a los distintos idiomas
             for(int i = 0; i < texts.Length; i++)
@@ -54,13 +54,17 @@ public class FileClass
                 //Si el indice del text[i] pertence al rango de idiomas disponibles lo ponemos dentro del
                 //XML como su hijo y con la etiqueta langName correspondiente
                 if(i < languagesOrder.Count)
-                    langName = texts[i];
+                    langName = transLang[langId];
                 else
                     langName = "langNotDefined_" + i;
                 
                 //Creamos el nodo hijo del texto
                 XmlElement langNode = xmlDoc.CreateElement(langName);
-                langNode.InnerText = texts[i];
+                
+                if(!pair.Value.ContainsKey(i))
+                    throw new ArgumentException("el idioma " + langName + " no contiene el texto " + i);
+
+                langNode.InnerText = pair.Value[i];
                 textNode.AppendChild(langNode);
             }
             root.AppendChild(textNode);
