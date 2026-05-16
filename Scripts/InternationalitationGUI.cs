@@ -85,7 +85,12 @@ public class InternationalitationGUI : EditorWindow
             {
                 ReadFromXML();
             }
-            
+
+            if (GUILayout.Button("Auto Setup All UI Clampers"))
+            {
+                inter.SetupUIClampers();
+            }
+
         }
     }
 

@@ -84,5 +84,17 @@ public class LocalInterface
         _core.ChangeLang(lang);
     }
 
+    public void SetupUIClampers()
+    {
+        if (_extract != null)
+        {
+            _extract.AutoUIClampSetup();
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("¡El sistema de localización no ha sido inicializado todavía!");
+        }
+    }
+
 
 }
