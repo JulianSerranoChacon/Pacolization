@@ -29,8 +29,6 @@ public class InternationalitationGUI : EditorWindow
     // Dibuja la interfaz en la ventana del editor
     void OnGUI()
     {
-        
-
         if (!setup)
         {    
             GUILayout.Label("Localization Extraction Configuration", EditorStyles.boldLabel);
@@ -147,7 +145,7 @@ public class InternationalitationGUI : EditorWindow
     void InitializeAll(uint langinit, bool scan, string scrpath)
     {
         string selectedPath = EditorUtility.SaveFilePanel(
-            "Select directory to save XML",
+            "Select directory to save XML extraction",
             Application.dataPath,
             "example.xml", //Nombre por defecto
             "xml");
@@ -157,31 +155,28 @@ public class InternationalitationGUI : EditorWindow
         {
             inter = LocalInterface.Instance();
             inter.Initiate(langinit, scan, scrpath);
+
+            //Leemos primero el XML de los idiomas, antes de la extraccion
+            readListLanguage();
+            //Ahora si que hacenis la extracción
             inter.FullExtract(selectedPath);
         }
     }
+
     void readListLanguage()
     {
         //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
         string selectedPath = EditorUtility.OpenFilePanel(
-          "Select XML File to read",
+          "Select XML File Lenguage Configuration",
           Application.dataPath,
           "xml");
-
-        Debug.Log(selectedPath);
+        //Debug.Log(selectedPath);
 
         if (!string.IsNullOrEmpty(selectedPath))
         {
             List<string> list = new List<string>();
             //file.ReadXML(selectedPath);
             Dictionary<uint, XmlNode> langList = inter.ReadListLanguage(selectedPath, list);
-
-
-            /*for (int i = 0; i < langList.Count; i++)
-            {
-                Debug.Log(langList[i]);
-            }*/
-            //Debug.Log("File load from: " + selectedPath);
         }
     }
 

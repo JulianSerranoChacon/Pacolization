@@ -58,9 +58,13 @@ public class LocalCore
 
         //stringTable = new Dictionary<uint, string[]>();
         stringMap = new Dictionary<uint, Dictionary<uint, string>>();
-        languageMap= new Dictionary<uint, Dictionary<uint, string>>();
-        stringMap.Add(0,new Dictionary<uint, string>());
-        refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();  
+        languageMap = new Dictionary<uint, Dictionary<uint, string>>();
+
+        stringMap.Add(0, new Dictionary<uint, string>());
+        stringMap.Add(1, new Dictionary<uint, string>());
+
+        stringMap[1].Add(0, "YotokoTuano");
+        refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();
 
         currentLang = 0;
     }

@@ -14,7 +14,7 @@ public class LocalInterface
 
     public static LocalInterface Instance()
     {
-         if (_instance == null)
+        if (_instance == null)
         {
             _instance = new LocalInterface();
         }
