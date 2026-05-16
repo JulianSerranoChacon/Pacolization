@@ -14,7 +14,7 @@ public class LocalCore
     //stringTable es un diccionario (en C# se implementan mediante unordered maps). 
     //Cada key alberga un array de tamano languages. 
     //En cada posicion del array se encuentra el string en un idioma concreto.
-    private int languages;
+    private uint languages;
     //private Dictionary<uint, string[]> stringTable;
 
     private Dictionary<uint, Dictionary<uint, string>> languageMap;
