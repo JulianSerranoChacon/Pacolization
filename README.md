@@ -70,7 +70,7 @@ Configuración manual a realizar:
 
 Cuando añadimos un botón o un cuadro de texto por ejemplo, este tiene un objeto HIJO que es el texto. En el objeto PADRE, que es donde esta el cuadro de texto, debemos tener asignados los siguientes componentes: "Content Size Filter" (con "Horizontal Fit" y "Vertical Fit" en valor "Preferred Size"), y "Vertical Layout Group" (donde marcamos ambos valores de "Control Child Size" a TRUE y el resto a FALSE, ponemos el "Child Alingment" en "Middle Center", y asignamos a los valores de "Padding" un valor superior a 0 para que el cuadro no este tan pegado al texto).
 
-En el objeto PADRE debemos de cambiar una cosa del componente "Image", concretamente la variable "Image Type" le cambiamos a "Sliced" para que el cuadro de texto se redimensione mejor y no parezca que se estire como un chicle (la Imagen debe de estar configurada de antes en el Sprite Editor para que se sepan los bordes del cuadro de texto de forma clara).
+En el objeto PADRE debemos de cambiar una cosa del componente "Image", concretamente la variable "Image Type" le cambiamos a "Sliced" para que el cuadro de texto se redimensione mejor y no parezca que se estire como un chicle (la Imagen debe de estar configurada de antes en el Sprite Editor para que se sepan los bordes del cuadro de texto de forma clara), o lo dejamos en "Simple", ya eso es criterio del desarrollador.
 
 También debemos de añadir al PADRE otro componente que está incluido en el plugin, el "UIClamper", que se encarga de mantener el cuadro de texto dentro de la pantalla y procura que el texto se escriba sin desbordarse del cuadro de texto (el cual puede modificarse en plena escritura de manera dinámica o fija de pendiendo de la variable "Mode"), tiene dos parametros "Max X" y "Max Y" que son el ancho y alto maximo de resolución que puede tener el cuadro de texto EN RELACIÓN con la RESOLUCION DEL CANVAS.
 
@@ -87,6 +87,13 @@ Para cambiar la alineación del texto, si se pone a los lados, en el centro, jus
 En según qué juegos, se usan Scriptable Objects para los textos de la UI. Es normal usarlos cuando por ejemplo hablas con un NPC y este tiene sus diálogos guardados en un fichero de Scriptable Objects, y para coger y cambiar los textos de la UI por los de los Scriptable Objects se usan scripts que hacen dicho trabajo y son hechos por los desarrolladores del videojuego. Si no se quieren que estos textos se salgan de la pantalla, el proceso de configuración es exactamente el mismo que el que se explicó en el apartado anterior de "textos de la UI en la ESCENA", pero si hay varios textos en un Scriptable Object y se quiere que tengan diferentes tamaños de cuadro de texto, porque a lo mejor un texto es muy corto y otro es muy largo, en el componente de "UIClamper" ponemos "Mode" en "Dynamic" y el cuadro de texto tendrá diferente tamaño dependiendo de la cantidad de texto (aunque se construirá de forma dinámica).
 
 Los apartados anteriores de configuración de textos se enfocan en ser una guía GENERAL y en ofrecer una herramienta GENERAL para que los textos no se salgan, sea el idioma que sea, pero ya si un desarrollador quiere hacer algo más específico, entonces puede coger nuestro plugin y adaptarlo a su juego, ahí es cosa suya.
+
+#### **Implementacion AUTOMATICA del CLAMP en los textos de la UI**
+En el plugin de "Internationalitation Plugin", hay una opción después del setup que pone "Auto Setup All UI Clampers". Configura gran parte de las cosas mencionadas anteriormente, añadiendo los componentes necesarios y valores por defecto, salvo por lo del "Image type" en "Rect Transform" del objeto PADRE que eso ya es cosa de tocarlo manual por parte del usuario.
+
+Es totalmente RECOMENDADO (por no decir casi obligatorio) que el Canvas Scaler que contenga los objetos con los recuadros y los textos de la UI tenga resolucion 1920x1080 o superior, y que el "UI Scale Mode" esté puesto en "Scale With Screen Size", o al ejecutar todo de manera automática se pueden descuadrar demasiado las posiciones de los cuadros de textos en la UI.
+
+Aun así, puede que sí o sí haya que ir mirando si cambiar o no el tamaño y la posición de algunos cuadros de texto de manera manual, pero al menos la parte de ir añadiendo componentes está automatizada y reduce la carga de trabajo en el usuario.
 
 #### **SIMPLIFICACIONES:**
 

@@ -41,6 +41,7 @@ public class LocalInterface
     public void ChangeLang(uint newLang)
     {
         _core.ChangeLang(newLang);
+        _core.SetScriptableStrings();
     }
 
     public void Extract()
@@ -63,9 +64,10 @@ public class LocalInterface
         return _files.ReadXMLLanguage(path,lagNames);
     }
 
-    public void GetLine(int ID)
+    public string GetLine(uint ID)
     {
         //loqueseaClass
+       return _core.GetLine(ID);
     }
 
     public void FullExtract(string path)
@@ -78,20 +80,26 @@ public class LocalInterface
     public void StartInExecution(string path, uint lang)
     {
         List<string> langNames = new List<string>();
-        langNames.Add("Espa�ol");
-        langNames.Add("English");
-        _files.ReadXML(path, langNames);
-        SceneManager.sceneLoaded += NewScene;
-        //_extract.GatherTMPReferences();
-        //if (scan == true)
-        //Extraer scriptable objects a lo mejor?
-        _core.ChangeLang(lang);
+        _files.ReadXML(path, langNames);  
+        _extract.setScriptableRefereces();
+        ChangeLang(lang);
     }
 
-    public void NewScene(Scene scene, LoadSceneMode mode)
+    public void OnQuit()
     {
-        _core.ClearReferences();
-        _extract.GatherTMPReferences();
-        _core.SceneLoaded();
+        _core.FlushScriptableReferences();  
     }
+    public void SetupUIClampers()
+    {
+        if (_extract != null)
+        {
+            _extract.AutoUIClampSetup();
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("�El sistema de localizaci�n no ha sido inicializado todav�a!");
+        }
+    }
+
+
 }

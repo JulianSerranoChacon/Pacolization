@@ -17,7 +17,6 @@ public class LocalCore
     //private Dictionary<uint, string[]> stringTable;
 
     private Dictionary<uint, Dictionary<uint, string>> stringMap;
-    private Dictionary<uint, TMP_Text> refTable;
     private Dictionary<uint, Pair<ScriptableObject, FieldInfo>> refScriptObj;
 
     //Marcador que lleva la cuenta del lenguaje actual
@@ -54,9 +53,9 @@ public class LocalCore
             throw new ArgumentException("Ammount of languages cannot be negative or 0.");
 
         languages = langAm;
+
         //stringTable = new Dictionary<uint, string[]>();
         stringMap = new Dictionary<uint, Dictionary<uint, string>>();
-        refTable = new Dictionary<uint, TMP_Text>();
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();  
 
         currentLang = 0;
@@ -107,6 +106,23 @@ public class LocalCore
         return languages;
     }
 
+    public void SetLine(uint ID, int lang, string value)
+    {
+        string[] box;
+        Debug.Log(languages);
+        Debug.Log(lang);
+        if (stringTable.TryGetValue(ID, out box))
+            box[lang] = value;
+        else
+        {
+            box = new string[languages];
+            box[lang] = value;
+            stringTable[ID] = box;
+        }
+
+        //Debug.Log(currentLang);
+    }
+
     //Cambia el idioma que esta usando la clase
     //Falla si es un idioma fuera del alcance especificado.
     public void ChangeLang(uint newLang)
@@ -115,7 +131,6 @@ public class LocalCore
             throw new ArgumentException("New language value exceeding range of languages.");
 
         currentLang = newLang; 
-        //SetAllStrings();
     }
 
     public void SceneLoaded()
@@ -124,27 +139,11 @@ public class LocalCore
     }
 
     #region Reference gaming
-    public void SetTMPReference(uint ID, TMP_Text reff)
-    {
-        refTable[ID] = reff;
-    }
+
 
     public void SetScriptableObjectReference(uint ID, ScriptableObject obj, FieldInfo info)
     {
         refScriptObj[ID] = new Pair<ScriptableObject, FieldInfo>(obj, info);
-    }
-
-    //Se cambia el idioma y todas las respectivas referencias
-    /*private void SetTMPStrings()
-    {
-        foreach(TMP_Text reff in refTable.Values)
-        {
-            string[] box;
-
-            if(stringTable.TryGetValue(uint.Parse(reff.text), out box))
-                reff.text = box[currentLang];
-        }
-        
     }
 
     private void SetScriptableStrings()
@@ -152,17 +151,20 @@ public class LocalCore
         foreach(var item in refScriptObj)
         {
             string[] box;
-            object val =item.Value.second.GetValue(item.Value.first);
-            if (stringTable.TryGetValue(uint.Parse(val.ToString()),out box))
+            object val = item.Value.second.GetValue(item.Value.first);
+            if (stringTable.TryGetValue(uint.Parse(val.ToString()), out box))
             {
                 item.Value.second.SetValue(item.Value.first, box[currentLang]);
             }
         }
-    }*/
-
-    public void ClearReferences()
+    }
+  
+    public void FlushScriptableReferences()
     {
-        refTable.Clear();
+        foreach (var item in refScriptObj)
+        {
+                item.Value.second.SetValue(item.Value.first, item.Key.ToString());       
+        }
     }
     #endregion
 
