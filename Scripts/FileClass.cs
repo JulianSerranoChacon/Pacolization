@@ -138,7 +138,7 @@ public class FileClass
     }
 
 
-    public Dictionary<uint, XmlNode> ReadXMLLanguage(string filename, List<string> langNames,Dictionary<uint, string> sM)
+    public Dictionary<uint, XmlNode> ReadXMLLanguage(string filename, List<string> langNames, Dictionary<uint, Dictionary<uint, string>> sM)
     {
         Dictionary<uint, XmlNode> ret = new Dictionary<uint, XmlNode>();
 
@@ -161,8 +161,9 @@ public class FileClass
         {
             //Id del lenguaje
             uint id = uint.Parse(node.Attributes["id"].Value);
-            
-            sM.Add(id,new mapDictionary<uint, string>());
+
+            //añadimos a mapas como lenguajes haya
+            sM.Add(id, new Dictionary<uint, string>());
 
             //Nombre del Idioma (etiqueta Lenguaje)
             string langName = node.ChildNodes.Item(0).InnerText;

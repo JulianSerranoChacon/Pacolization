@@ -62,14 +62,19 @@ public class LocalCore
 
         stringMap.Add(0, new Dictionary<uint, string>());
         stringMap.Add(1, new Dictionary<uint, string>());
-
         stringMap[1].Add(0, "YotokoTuano");
+
+
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();
 
         currentLang = 0;
     }
     public Dictionary<uint, Dictionary<uint, string>> GetLanguageMap()
         { return languageMap; }
+    public Dictionary<uint, Dictionary<uint, string>> GetStringMap()
+        { return stringMap; }
+
+
 
     //Devuelve el string de la ID correspondiente del idioma que esta activo.
     public string GetLine(uint ID)
