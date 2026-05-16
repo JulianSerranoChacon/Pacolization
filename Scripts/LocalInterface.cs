@@ -89,5 +89,17 @@ public class LocalInterface
     {
         _core.FlushScriptableReferences();  
     }
+    public void SetupUIClampers()
+    {
+        if (_extract != null)
+        {
+            _extract.AutoUIClampSetup();
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("�El sistema de localizaci�n no ha sido inicializado todav�a!");
+        }
+    }
+
 
 }

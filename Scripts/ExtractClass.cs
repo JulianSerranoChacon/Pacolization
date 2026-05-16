@@ -113,7 +113,8 @@ public class ExtractClass
             ScanScriptables();
         }
     }
-    public void UISetup()
+
+    public void AutoUIClampSetup()
     {
         List<TMP_Text> tmp = new List<TMP_Text>();
 
@@ -124,6 +125,8 @@ public class ExtractClass
 
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
+            // Control de seguridad por si la escena está deshabilitada en el Build Settings
+            if (!EditorBuildSettings.scenes[i].enabled) continue;
 
             string scenePath = EditorBuildSettings.scenes[i].path;
             //En caso de que ya estemos en la escena, no la cargamos
@@ -131,13 +134,94 @@ public class ExtractClass
             {
                 EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
             }
-            Scene currentScene = SceneManager.GetSceneByBuildIndex(i);
+
+            // Se obtiene la escena de forma segura mediante su ruta para el bucle en el Editor
+            Scene currentScene = EditorSceneManager.GetSceneByPath(scenePath);
+            if (!currentScene.IsValid() || !currentScene.isLoaded) continue;
+
             foreach (var root in currentScene.GetRootGameObjects())
             {
                 tmp.AddRange(root.GetComponentsInChildren<TMP_Text>(true));
                 foreach (TMP_Text text in tmp)
                 {
+                    GameObject textGo = text.gameObject;
+                    RectTransform textRect = textGo.GetComponent<RectTransform>();
 
+                    // Se guarda el SIZE del texto antes de meter componentes
+                    Vector2 originalTextSize = textRect != null ? textRect.sizeDelta : Vector2.zero;
+
+                    // Se incluye el LayoutElement al HIJO (objeto con texto) si no lo tiene
+                    LayoutElement layoutElement = textGo.GetComponent<LayoutElement>();
+                    if (layoutElement == null)
+                    {
+                        layoutElement = Undo.AddComponent<LayoutElement>(textGo);
+                    }
+
+                    // Se le asigna el SIZE original como el SIZE preferido 
+                    // para que el VerticalLayoutGroup sepa cuanto mide y no colapse el texto en vertical.
+                    if (textRect != null && originalTextSize != Vector2.zero)
+                    {
+                        layoutElement.preferredWidth = originalTextSize.x;
+                        layoutElement.preferredHeight = originalTextSize.y;
+                    }
+
+                    // Se buca el contenedor PADRE
+                    Transform parentTransform = textGo.transform.parent;
+                    if (parentTransform != null)
+                    {
+                        GameObject parentGo = parentTransform.gameObject;
+                        RectTransform parentRect = parentGo.GetComponent<RectTransform>();
+
+                        // Guardamos el SIZE original del PADRE para congelar su posicion
+                        Vector2 originalParentSize = parentRect != null ? parentRect.sizeDelta : Vector2.zero;
+
+                        // Guardamos los datos de posicionamiento espacial del PADRE para evitar que salte de posicion
+                        Vector2 originalAnchorMin = parentRect != null ? parentRect.anchorMin : Vector2.zero;
+                        Vector2 originalAnchorMax = parentRect != null ? parentRect.anchorMax : Vector2.zero;
+                        Vector2 originalPivot = parentRect != null ? parentRect.pivot : Vector2.zero;
+                        Vector2 originalAnchoredPos = parentRect != null ? parentRect.anchoredPosition : Vector2.zero;
+
+                        // Se incluye el Content Size Fitter al PADRE
+                        if (parentGo.GetComponent<ContentSizeFitter>() == null)
+                        {
+                            ContentSizeFitter fitter = Undo.AddComponent<ContentSizeFitter>(parentGo);
+                            fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+                            fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+                        }
+
+                        // Se incluye el Vertical Layout Group al PADRE
+                        if (parentGo.GetComponent<VerticalLayoutGroup>() == null)
+                        {
+                            VerticalLayoutGroup layoutGroup = Undo.AddComponent<VerticalLayoutGroup>(parentGo);
+                            layoutGroup.padding = new RectOffset(5, 5, 5, 5); // Valores por defecto que se pueden cambiar
+                            layoutGroup.childAlignment = TextAnchor.MiddleCenter;
+
+                            // Ahora si se activa el control para que el PADRE use los SIZE preferidos que se le dan al LayoutElement
+                            layoutGroup.childControlWidth = true;
+                            layoutGroup.childControlHeight = true;
+                            layoutGroup.childForceExpandWidth = false;
+                            layoutGroup.childForceExpandHeight = false;
+                        }
+
+                        // Se incluye el script UIClamper en el PADRE
+                        if (parentGo.GetComponent<UIClamper>() == null)
+                        {
+                            Undo.AddComponent<UIClamper>(parentGo);
+                        }
+
+                        // Se fuerza un refresco inmediato del layout en el editor para asentar las posiciones
+                        LayoutRebuilder.ForceRebuildLayoutImmediate(parentRect);
+
+                        // Se restauran las dimensiones exactas que el PADRE tenia en la interfaz original
+                        if (parentRect != null && originalParentSize != Vector2.zero)
+                        {
+                            parentRect.anchorMin = originalAnchorMin;
+                            parentRect.anchorMax = originalAnchorMax;
+                            parentRect.pivot = originalPivot;
+                            parentRect.anchoredPosition = originalAnchoredPos;
+                            parentRect.sizeDelta = originalParentSize;
+                        }
+                    }
                 }
                 tmp.Clear();
             }
@@ -147,7 +231,6 @@ public class ExtractClass
             if (scenePath != activeScenePath)
             {
                 EditorSceneManager.CloseScene(currentScene, true);
-
             }
         }
     }
