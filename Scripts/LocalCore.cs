@@ -15,13 +15,16 @@ public class LocalCore
     //En cada posicion del array se encuentra el string en un idioma concreto.
     private int languages;
     private Dictionary<uint, string[]> stringTable;
+
+    private Dictionary<uint, Dictionary<uint, string>> stringMap;
     private Dictionary<uint, TMP_Text> refTable;
     private Dictionary<uint, Pair<ScriptableObject, FieldInfo>> refScriptObj;
     //Marcador que lleva la cuenta del lenguaje actual
     //Funciona para lectura/escritura y ejecucion
-    private int currentLang;
+    private uint currentLang;
 
-    public IReadOnlyDictionary<uint, string[]> GetLines => stringTable;
+    //public IReadOnlyDictionary<uint, string[]> GetLines => stringTable;
+    public IReadOnlyDictionary<string, Dictionary<uint, string>> GetMapLines => stringMap;
 #endregion
 
 #region Singleton
@@ -50,7 +53,8 @@ public class LocalCore
             throw new ArgumentException("Ammount of languages cannot be negative or 0.");
 
         languages = langAm;
-        stringTable = new Dictionary<uint, string[]>();
+        //stringTable = new Dictionary<uint, string[]>();
+        stringMap = new Dictionary<string, Dictionary<uint, string>>();
         refTable = new Dictionary<uint, TMP_Text>();
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();  
 
@@ -60,19 +64,24 @@ public class LocalCore
     //Devuelve el string de la ID correspondiente del idioma que esta activo.
     public string GetLine(uint ID)
     {
-        string[] box;
+        //string[] box;
 
-        if(stringTable.TryGetValue(ID, out box))
+        /*if(stringTable.TryGetValue(ID, out box))
             return box[currentLang];
         else
+            throw new ArgumentException("No value assigned to corresponding key.");*/
+
+        if(!stringMap.ContainsKey(currentLang) || !stringMap[currentLang].ContainsKey(ID))
             throw new ArgumentException("No value assigned to corresponding key.");
+
+        return stringMap[currentLang][ID];
     }
 
     //Escribe la linea de la ID correspondiente al idioma que esta activo. 
     //Si la ID es nueva, crea un array y lo almacena
     public void SetLine(uint ID, string value)
     {
-        string[] box;
+        /*string[] box;
 
         if(stringTable.TryGetValue(ID, out box))
             box[currentLang] = value;
@@ -81,9 +90,12 @@ public class LocalCore
             box = new string[languages];
             box[currentLang] = value;
             stringTable[ID] = box;
-        }
+        }*/
 
+        stringMap[currentLang][ID] = value;
         //Debug.Log(currentLang);
+
+        
     }
 
     //Cambia el idioma que esta usando la clase
@@ -122,6 +134,9 @@ public class LocalCore
 
             if(stringTable.TryGetValue(uint.Parse(reff.text), out box))
                 reff.text = box[currentLang];
+
+            /*if(TryGetValue(uint.Parse(reff.text)))
+                reff.text = stringMap[currentLang];*/
         }
         
     }
