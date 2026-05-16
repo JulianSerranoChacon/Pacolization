@@ -14,7 +14,7 @@ public class LocalCore
     //Cada key alberga un array de tamano languages. 
     //En cada posicion del array se encuentra el string en un idioma concreto.
     private int languages;
-    private Dictionary<uint, string[]> stringTable;
+    //private Dictionary<uint, string[]> stringTable;
 
     private Dictionary<uint, Dictionary<uint, string>> stringMap;
     private Dictionary<uint, TMP_Text> refTable;
@@ -134,9 +134,6 @@ public class LocalCore
 
             if(stringTable.TryGetValue(uint.Parse(reff.text), out box))
                 reff.text = box[currentLang];
-
-            /*if(TryGetValue(uint.Parse(reff.text)))
-                reff.text = stringMap[currentLang];*/
         }
         
     }
