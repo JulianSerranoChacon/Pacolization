@@ -120,7 +120,7 @@ public class LocalCore
 
     public void SceneLoaded()
     {
-        SetTMPStrings();
+        //SetTMPStrings();
     }
 
     #region Reference gaming
@@ -135,7 +135,7 @@ public class LocalCore
     }
 
     //Se cambia el idioma y todas las respectivas referencias
-    private void SetTMPStrings()
+    /*private void SetTMPStrings()
     {
         foreach(TMP_Text reff in refTable.Values)
         {
@@ -158,7 +158,7 @@ public class LocalCore
                 item.Value.second.SetValue(item.Value.first, box[currentLang]);
             }
         }
-    }
+    }*/
 
     public void ClearReferences()
     {
