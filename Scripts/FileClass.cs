@@ -28,77 +28,45 @@ public class FileClass
         XmlElement root = xmlDoc.CreateElement("translations");
         xmlDoc.AppendChild(root);
 
+        //
+        Dictionary<uint, XmlElement> textnodes = new Dictionary<uint, XmlElement>();
 
-        //Recorremos todo el unorderedMap
-        foreach(KeyValuePair<uint, Dictionary<uint, string>> pair in LocalCore.Instance().GetLines)
+        //Recorremos todo el unorderedMap de textos del idioma ID
+        foreach (KeyValuePair<uint, Dictionary<uint, string>> pair in LocalCore.Instance().GetLines)
         {
-            //id es el ID del texto el stringTable del localCore
+            //Es el ID del idioma en el unordermap que almacena todos los idiomas
             uint langId = pair.Key;
-            //Cantidad de traducciones que tiene el texto ID
-            /*string[] texts = new string[LocalCore.Instance().getLang()];
 
-            foreach (KeyValuePair<uint,string> s in pair.Value)
+            //Comprobamos el ID del idioma la que pertenecen los textos
+            string langName;
+            if (langId < languagesOrder.Count)
+                langName = languagesOrder[(int)langId];
+            else
+                langName = "langNotDefined_" + (int)langId;
+
+            foreach (KeyValuePair<uint, string> item in pair.Value) 
             {
-                texts[pair.Key] = s.Value;
-            }*/
-            Dictionary<uint, XmlElement> textnodes = new  Dictionary<uint, XmlElement>();
-
-            foreach(KeyValuePair<uint, string> item in pair.values[langId])
+                //Id del texto en el unordered_map
+                uint textId = item.Key;
+                //Si no esta en la tabla auxiliar de nodos xml creamos el nodo <text>
+                if (!textnodes.ContainsKey(textId)) 
                 {
-                    string langName;
-                    //Si el indice del text[i] pertence al rango de idiomas disponibles lo ponemos dentro del
-                    //XML como su hijo y con la etiqueta langName correspondiente
-                    if(i < languagesOrder.Count)
-                        langName = languagesOrder[(int)langId];
-                    else
-                        langName = "langNotDefined_" + (int)langId;
+                    XmlElement textElement = xmlDoc.CreateElement("text");
+                    textElement.SetAttribute("id", textId.ToString());
+                    //Añadimos al root el elemento <text>
+                    root.AppendChild(textElement);
 
-                    //Creamos el nodo hijo del texto
-                    if (!textnodes.ContainsKey(item.key))
-                    {
-                        textnodes.Add(item.key, xmlDoc.CreateElement("text"));
-                        textnodes[item.key].SetAttribute("id", item.key.ToString());
-                        root.AppendChild(textnodes[item.key]);
-                    }
-
-                    //Creamos el nodo hijo del texto
-                    XmlElement langNode = xmlDoc.CreateElement(langName);
-
-                    if(!pair.Value.ContainsKey(item.Key))
-                        throw new ArgumentException("el idioma " + langName + " no contiene el texto " + item.Key);
-
-                    langNode.InnerText = item.Value;
-                    textnodes[item.Key].AppendChild(langNode);
+                    textnodes.Add(textId, textElement);
                 }
-            }
-        
 
-            /*//Recorremos el array de los textos traducidos a los distintos idiomas
-            for(uint i = 0; i < lenguages; i++)
-            {
-                //Nodo del texto y seteo de su id en el XML
-                XmlElement textNode = xmlDoc.CreateElement("text");
-                textNode.SetAttribute("id", i.ToString());
-
-                string langName;
-                //Si el indice del text[i] pertence al rango de idiomas disponibles lo ponemos dentro del
-                //XML como su hijo y con la etiqueta langName correspondiente
-                if(i < languagesOrder.Count)
-                    langName = languagesOrder[(int)langId];
-                else
-                    langName = "langNotDefined_" + i;
-                
-                //Creamos el nodo hijo del texto
+                //Creamos el nodo hijo del <text> -> <es> <en>....
                 XmlElement langNode = xmlDoc.CreateElement(langName);
+                langNode.InnerText = item.Value;
 
-                if(!pair.Value.ContainsKey(i))
-                    throw new ArgumentException("el idioma " + langName + " no contiene el texto " + i);
-
-                langNode.InnerText = pair.Value[i];
-                textNode.AppendChild(langNode);
+                //Almacenamos el nuevo idioma en la lista de nodos del ID
+                textnodes[textId].AppendChild(langNode);
             }
-            root.AppendChild(textNode);
-        }*/
+        }
         //Antes de acabar guardamos el archivo en la ruta
         xmlDoc.Save(path);
     }
