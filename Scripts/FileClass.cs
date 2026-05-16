@@ -48,7 +48,7 @@ public class FileClass
             textNode.SetAttribute("id", langId.ToString());
 
             //Recorremos el array de los textos traducidos a los distintos idiomas
-            for(int i = 0; i < texts.Length; i++)
+            for(int i = 0; i < pair.Value.Count; i++)
             {
                 string langName;
                 //Si el indice del text[i] pertence al rango de idiomas disponibles lo ponemos dentro del
@@ -60,7 +60,7 @@ public class FileClass
                 
                 //Creamos el nodo hijo del texto
                 XmlElement langNode = xmlDoc.CreateElement(langName);
-                
+
                 if(!pair.Value.ContainsKey(i))
                     throw new ArgumentException("el idioma " + langName + " no contiene el texto " + i);
 
