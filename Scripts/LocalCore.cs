@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using System.Xml;
 using System.Xml.Serialization;
 using TMPro;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class LocalCore
     private uint languages;
     //private Dictionary<uint, string[]> stringTable;
 
-    private Dictionary<uint, Dictionary<uint, string>> languageMap;
+    private Dictionary<uint, XmlNode> languageMap;
     private Dictionary<uint, Dictionary<uint, string>> stringMap;
     private Dictionary<uint, Pair<ScriptableObject, FieldInfo>> refScriptObj;
 
@@ -58,7 +59,7 @@ public class LocalCore
 
         //stringTable = new Dictionary<uint, string[]>();
         stringMap = new Dictionary<uint, Dictionary<uint, string>>();
-        languageMap = new Dictionary<uint, Dictionary<uint, string>>();
+        languageMap = new Dictionary<uint, XmlNode>();
 
         //stringMap.Add(0, new Dictionary<uint, string>());
         //stringMap.Add(1, new Dictionary<uint, string>());
@@ -69,7 +70,7 @@ public class LocalCore
 
         currentLang = 0;
     }
-    public Dictionary<uint, Dictionary<uint, string>> GetLanguageMap()
+    public Dictionary<uint, XmlNode> GetLanguageMap()
         { return languageMap; }
     public Dictionary<uint, Dictionary<uint, string>> GetStringMap()
         { return stringMap; }

@@ -79,7 +79,7 @@ public class LocalInterface
     public void StartInExecution(string path, uint lang)
     {
         List<string> langNames = new List<string>();
-        _files.ReadXML(path, _core.GetLanguageMap(),langNames);  
+        _files.ReadXML(path, _core.GetStringMap(),langNames);  
         _extract.setScriptableRefereces();
         ChangeLang(lang);
     }

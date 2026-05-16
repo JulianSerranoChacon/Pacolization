@@ -136,7 +136,7 @@ public class InternationalitationGUI : EditorWindow
             List<string> langNames = new List<string>();
             langNames.Add("Español");
             langNames.Add("English");
-            inter.ReadFromXML(selectedPath,LocalCore.Instance().GetLanguageMap(),langNames);
+            inter.ReadFromXML(selectedPath,LocalCore.Instance().GetStringMap(),langNames);
             Debug.Log("File load from: " + selectedPath);
         }
     }
