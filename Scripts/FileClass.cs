@@ -129,7 +129,8 @@ public class FileClass
                 //introduzco el texto en el idioma correspondiente con su id
                 //ret[transLang[lang.Name]].Add(id,lang.InnerText);
 
-                _core.SetLine(id, transLang[lang.Name], lang.InnerText);
+                //Compound text es el texto con las variables sustituidas
+                _core.SetLine(id, transLang[lang.Name], CompoundText(lang.InnerText));
             }
         }
 
@@ -268,11 +269,7 @@ public class FileClass
 
     private string CompoundText(string text)
     {
-        return Regex.Replace(
-        text,
-        @"!\{(.*?)\}",
-        match =>
-        {
+        return Regex.Replace(text,@"!\{(.*?)\}",match =>{
             // Cogemos unicamente el contenido entre !{}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string variableName = match.Groups[1].Value;
 
