@@ -233,36 +233,58 @@ public class FileClass
         xmlDoc.Save(path);
     }
 
-public void ReadVariablesToXML(string path)
-{
-    if (!File.Exists(path))
-        return;
-
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(path);
-
-    // Obtener el nodo raíz
-    XmlNode rootNode = xmlDoc.SelectSingleNode("Variables");
-
-    if (rootNode == null)
-        return;
-
-    foreach (XmlNode c in rootNode.ChildNodes)
+    public void ReadVariablesToXML(string path)
     {
-        // Evitar nodos raros (#comment, espacios, etc.)
-        if (c.NodeType != XmlNodeType.Element)
-            continue;
+        if (!File.Exists(path))
+            return;
 
-        // Evitar claves duplicadas
-        if (!variables.ContainsKey(c.Name))
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.Load(path);
+
+        // Obtener el nodo raíz
+        XmlNode rootNode = xmlDoc.SelectSingleNode("Variables");
+
+        if (rootNode == null)
+            return;
+
+        foreach (XmlNode c in rootNode.ChildNodes)
         {
-            variables.Add(c.Name, c.InnerText);
-        }
-        else
-        {
-            // Si ya existe, actualizar
-            variables[c.Name] = c.InnerText;
+            // Evitar nodos raros (#comment, espacios, etc.)
+            if (c.NodeType != XmlNodeType.Element)
+                continue;
+
+            // Evitar claves duplicadas
+            if (!variables.ContainsKey(c.Name))
+            {
+                variables.Add(c.Name, c.InnerText);
+            }
+            else
+            {
+                // Si ya existe, actualizar
+                variables[c.Name] = c.InnerText;
+            }
         }
     }
+
+    private string CompoundText(string text)
+    {
+        return Regex.Replace(
+        text,
+        @"!\{(.*?)\}",
+        match =>
+        {
+            // Cogemos unicamente el contenido entre !{}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
+            string variableName = match.Groups[1].Value;
+
+            if (variables.TryGetValue(variableName, out string value))
+            {
+                return value;
+            }
+
+            // Si no existe la variable, dejamos el texto original
+            return match.Value;
+        });
+    }
 }
-}
+
+
