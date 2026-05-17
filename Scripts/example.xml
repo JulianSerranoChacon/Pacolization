@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations>
   <text id="0">
-    <Español>WAADSOAIFJIAS</Español>
+    <Español>Hola !{Nombre} !{Apellido} eres una !{Sexo}</Español>
     <English>WAADSOAIFJIAS</English>
   </text>
   <text id="1">
-    <Español>AVE MARIA </Español>
-    <English>Waluigi</English>
+    <Español>SEMEN</Español>
+    <English>SEMEN</English>
   </text>
   <text id="2">
     <Español>Button</Español>
@@ -25,11 +25,15 @@
     <English>warrio</English>
   </text>
   <text id="6">
-    <Español>Guarras</Español>
-    <English>Guarras</English>
+    <Español>Button</Español>
+    <English>Button</English>
   </text>
   <text id="7">
-    <Español>Locas</Español>
-    <English>Locas</English>
+    <Español>6</Español>
+    <English>6</English>
+  </text>
+  <text id="8">
+    <Español>7</Español>
+    <English>7</English>
   </text>
 </translations>
