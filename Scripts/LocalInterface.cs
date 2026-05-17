@@ -39,9 +39,9 @@ public class LocalInterface
         _files = new FileClass();
     }
 
-    public LanguageDirection LangDir()
+    public bool IsRightToLeft()
     {
-        return _core.LangDir(); 
+        return _core.IsRightToLeft(); 
     }
 
     public void ChangeLang(uint newLang)

@@ -18,14 +18,9 @@ public class TextUpdate : MonoBehaviour
         localInterface = LocalInterface.Instance();
         setText();
     }
-
     void setText()
     {
-        TextElement textElement =new TextElement() { languageDirection = LanguageDirection.RTL };
-        textElement.text = localInterface.GetLine(ID);
-        tmpText.text = textElement.text;
+        tmpText.text = localInterface.GetLine(ID);
+        tmpText.isRightToLeftText = localInterface.IsRightToLeft();
     }
-
-    
-
 }

@@ -53,13 +53,13 @@ public class LocalCore
     //Inicia los atributos de la clase
     //Establece el maximo de idiomas a langAm
 
-    public LanguageDirection LangDir()
+    public bool IsRightToLeft()
     {
         string direccion = languageMap[currentLang]
         .SelectSingleNode("Texto")
         .SelectSingleNode("Direccion")
         .InnerText;
-        return direccion== "Iz_Der" ? LanguageDirection.LTR : LanguageDirection.RTL;
+        return direccion!= "Iz_Der";
     }
     public void Initiate(uint langAm)
     {
