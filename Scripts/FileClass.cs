@@ -232,4 +232,37 @@ public class FileClass
         // Guardar
         xmlDoc.Save(path);
     }
+
+public void ReadVariablesToXML(string path)
+{
+    if (!File.Exists(path))
+        return;
+
+    XmlDocument xmlDoc = new XmlDocument();
+    xmlDoc.Load(path);
+
+    // Obtener el nodo raíz
+    XmlNode rootNode = xmlDoc.SelectSingleNode("Variables");
+
+    if (rootNode == null)
+        return;
+
+    foreach (XmlNode c in rootNode.ChildNodes)
+    {
+        // Evitar nodos raros (#comment, espacios, etc.)
+        if (c.NodeType != XmlNodeType.Element)
+            continue;
+
+        // Evitar claves duplicadas
+        if (!variables.ContainsKey(c.Name))
+        {
+            variables.Add(c.Name, c.InnerText);
+        }
+        else
+        {
+            // Si ya existe, actualizar
+            variables[c.Name] = c.InnerText;
+        }
+    }
+}
 }
