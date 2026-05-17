@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 public class LocalInterface
 {
 
@@ -36,6 +37,11 @@ public class LocalInterface
         _core.Initiate(lang);
         _extract = new ExtractClass(scan, path);
         _files = new FileClass();
+    }
+
+    public LanguageDirection LangDir()
+    {
+        return _core.LangDir(); 
     }
 
     public void ChangeLang(uint newLang)

@@ -7,6 +7,8 @@ using System.Xml;
 using System.Xml.Serialization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class LocalCore
 {
@@ -51,6 +53,14 @@ public class LocalCore
     //Inicia los atributos de la clase
     //Establece el maximo de idiomas a langAm
 
+    public LanguageDirection LangDir()
+    {
+        string direccion = languageMap[currentLang]
+        .SelectSingleNode("Texto")
+        .SelectSingleNode("Direccion")
+        .InnerText;
+        return direccion== "Iz_Der" ? LanguageDirection.LTR : LanguageDirection.RTL;
+    }
     public void Initiate(uint langAm)
     {
         if(langAm <= 0)

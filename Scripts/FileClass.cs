@@ -132,7 +132,6 @@ public class FileClass
 
                 //Compound text es el texto con las variables sustituidas
                 string res = CompoundText(lang.InnerText);
-                Debug.Log(res);
                 _core.SetLine(id, transLang[lang.Name], res);
             }
         }
