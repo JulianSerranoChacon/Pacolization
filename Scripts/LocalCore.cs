@@ -75,7 +75,7 @@ public class LocalCore
     public Dictionary<uint, Dictionary<uint, string>> GetStringMap()
         { return stringMap; }
 
-    public SetLanguageConfig(Dictionary<uint, XmlNode> conf)
+    public void  SetLanguageConfig(Dictionary<uint, XmlNode> conf)
     {
         languageMap = conf;
     }
@@ -101,6 +101,7 @@ public class LocalCore
     //Si la ID es nueva, crea un array y lo almacena
     public void SetLine(uint ID, string value)
     {
+        Debug.Log(currentLang);
         if (!stringMap.ContainsKey(currentLang))
         {
             throw new ArgumentException("No value assigned to corresponding Lang.");

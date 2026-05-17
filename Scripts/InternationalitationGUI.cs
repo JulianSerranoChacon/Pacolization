@@ -46,10 +46,10 @@ public class InternationalitationGUI : EditorWindow
 
             EditorGUILayout.Space();
 
-            readLangNames = GUILayout.Toggle(scanScriptables, "Read Language settings from XML file?");
+            readLangNames = GUILayout.Toggle(readLangNames, "Read Language settings from XML file?");
             if (readLangNames)
-                GUILayout.Label("After selecting path in which to save the extracted strings," + 
-                "a second window will pop up to select the language settings file.")
+                GUILayout.Label("After selecting path in which to save the extracted strings," +
+                "a second window will pop up to select the language settings file.");
             
             if (GUILayout.Button("Setup"))
             {

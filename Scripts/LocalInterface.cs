@@ -58,9 +58,9 @@ public class LocalInterface
         _files.ReadXML(path, langNames);
     }
 
-    public Dictionary<uint, XmlNode> ReadListLanguage(string path, List<string> lagNames)
+    public void ReadListLanguage(string path, List<string> lagNames)
     {
-        return _files.ReadXMLLanguage(path,lagNames,sM);
+        _files.ReadXMLLanguage(path,lagNames);
     }
 
     public string GetLine(uint ID)
@@ -79,7 +79,7 @@ public class LocalInterface
     public void StartInExecution(string path, uint lang)
     {
         List<string> langNames = new List<string>();
-        _files.ReadXML(path, _core.GetStringMap(), langNames);  
+        _files.ReadXML(path, langNames);  
         _extract.setScriptableRefereces();
         ChangeLang(lang);
     }
