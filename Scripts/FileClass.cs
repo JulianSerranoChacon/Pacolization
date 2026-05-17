@@ -208,7 +208,13 @@ public class FileClass
         // Si existe, cargar
         if (File.Exists(path))
         {
+            ReadVariablesToXML(path);
+            
+            if(variables.ContainsKey(key))
+                variables[key] = value;
+
             xmlDoc.Load(path);
+
         }
         else
         {
