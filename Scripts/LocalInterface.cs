@@ -85,7 +85,6 @@ public class LocalInterface
 
     public void WriteVariableToXML(string key, string value)
     {
-            UnityEngine.Debug.Log("A");
         _files.WriteVariablesToXML(varPath,key,value);
     }
 

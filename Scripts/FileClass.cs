@@ -205,16 +205,13 @@ public class FileClass
     {
         XmlDocument xmlDoc = new XmlDocument();
 
-        // Si existe, cargar
+        // Cargar o crear documento
         if (File.Exists(path))
         {
-
             xmlDoc.Load(path);
-
         }
         else
         {
-            // Crear documento nuevo
             XmlDeclaration declaration =
                 xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
 
@@ -223,38 +220,35 @@ public class FileClass
             xmlDoc.AppendChild(declaration);
             xmlDoc.AppendChild(root);
         }
-        
-        if(variables.ContainsKey(key))
-            variables[key] = value;
-        else
-            variables.Add(key,value);
 
-        // Obtener el nodo raíz
-        XmlNode rootNode = xmlDoc.SelectSingleNode("Variables");
+        // Nodo raíz
+        XmlNode rootNode = xmlDoc.SelectSingleNode("/Variables");
 
-        // Crear nuevo elemento
-        XmlElement textElement = rootNode.SelectSingleNode(key);
+        // Buscar variable existente
+        XmlElement textElement = rootNode.SelectSingleNode(key) as XmlElement;
 
-        if(textElement == null)
+        // Crear si no existe
+        if (textElement == null)
+        {
             textElement = xmlDoc.CreateElement(key);
-        
+            rootNode.AppendChild(textElement);
+        }
+
+        // Actualizar valor
         textElement.InnerText = value;
 
-        // Añadir al root
-        if(textElement == null)
-            rootNode.AppendChild(textElement);
-
-         // Guardado inmediato al disco
+        // Escritura inmediata
         using (FileStream fs = new FileStream(
             path,
-            FileMode.Create,
+            FileMode.OpenOrCreate,
             FileAccess.Write,
             FileShare.None))
         {
+            fs.SetLength(0); // limpiar archivo anterior
+
             xmlDoc.Save(fs);
 
-            // Fuerza escritura física inmediata
-            fs.Flush(true);
+            fs.Flush(true); // forzar escritura física
         }
     }
 
