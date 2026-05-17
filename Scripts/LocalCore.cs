@@ -90,7 +90,10 @@ public class LocalCore
         }
         else
         {
-            stringMap[currentLang].Add(ID, value);
+            if(!stringMap[currentLang].Contains(id))
+                stringMap[currentLang].Add(ID, value);
+            else
+                stringMap[currentLang][ID] = value;
         }
     }
     public void SetLineLangs(uint ID,string value)
