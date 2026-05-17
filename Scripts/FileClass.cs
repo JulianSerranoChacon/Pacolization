@@ -127,21 +127,21 @@ public class FileClass
                 //introduzco el texto en el idioma correspondiente con su id
                 //ret[transLang[lang.Name]].Add(id,lang.InnerText);
 
-                _core.SetLine(id, transLang[lang.Name], lang.InnerText)
+                _core.SetLine(id, transLang[lang.Name], lang.InnerText);
             }
         }
 
-        foreach (var item in ret)
-        {
-            UnityEngine.Debug.Log("Idioma: " + item.Key);
+        //foreach (var item in ret)
+        //{
+        //    UnityEngine.Debug.Log("Idioma: " + item.Key);
 
-            foreach (var values in item.Value)
-            {
-                UnityEngine.Debug.Log(
-                    "ID: " + values.Key +
-                    " -> " + values.Value);
-            }
-        }
+        //    foreach (var values in item.Value)
+        //    {
+        //        UnityEngine.Debug.Log(
+        //            "ID: " + values.Key +
+        //            " -> " + values.Value);
+        //    }
+        //}
     }
 
 

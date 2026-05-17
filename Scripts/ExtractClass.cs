@@ -91,11 +91,10 @@ public class ExtractClass
                 {
                     LocalCore.Instance().SetLine(ID, text.text);
                     TextUpdate temp= text.GetComponent<TextUpdate>();
-                    if (temp!=null)
+                    if (temp==null)
                     {
-                        UnityEngine.Object.DestroyImmediate(temp);
+                        temp = text.AddComponent<TextUpdate>();
                     }
-                    temp = text.AddComponent<TextUpdate>();
                     temp.ID = ID;
                     ID++;
                 }

@@ -55,12 +55,12 @@ public class LocalInterface
 
     public void ReadFromXML(string path, List<string> langNames)
     {
-        _files.ReadXML(path, langNames);
+        _files.ReadXML(path);
     }
 
     public void ReadListLanguage(string path, List<string> lagNames)
     {
-        _files.ReadXMLLanguage(path,lagNames);
+        _files.ReadXMLLanguage(path);
     }
 
     public string GetLine(uint ID)
@@ -79,7 +79,7 @@ public class LocalInterface
 
     public void StartInExecution(string path, uint lang, string confpath)
     { 
-        _files.ReadListLanguage(confpath);
+        _files.ReadXMLLanguage(confpath);
         _files.ReadXML(path);  
         _extract.setScriptableRefereces();
         ChangeLang(lang);

@@ -185,6 +185,7 @@ public class LocalCore
 
     public void SetScriptableStrings()
     {
+        FlushScriptableReferences();
         foreach(var item in refScriptObj)
         {
             object val = item.Value.second.GetValue(item.Value.first);
