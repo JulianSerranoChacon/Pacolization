@@ -16,6 +16,7 @@ public class InternationalitationGUI : EditorWindow
     private bool scanScriptables = false;
     private string scriptablePath = "Assets";
     private bool readLangNames = false;
+    private bool readVariables = false;
     private bool clampUI = false;
 
     // Incluye una entrada en el menu superior de Unity
@@ -51,6 +52,13 @@ public class InternationalitationGUI : EditorWindow
             if (readLangNames)
                 GUILayout.Label("After selecting path in which to save the extracted strings," +
                 "a second window \nwill pop up to select the language settings file.");
+
+            EditorGUILayout.Space();
+
+            readVariables = GUILayout.Toggle(readVariables, "Read Variables settings from XML file?");
+            if(readVariables)
+                GUILayout.Label("After selecting path in which to save the extracted strings," +
+                "a window \nwill pop up to select the language settings file.");
 
             EditorGUILayout.Space();
 
@@ -95,10 +103,10 @@ public class InternationalitationGUI : EditorWindow
                 WriteToXML();
             }*/
             //Boton que ejecuta la lectura de las cadenas de strings de un XML concreto
-            /*if (GUILayout.Button("Read from XML"))
+            if (GUILayout.Button("Read from XML"))
             {
                 ReadFromXML();
-            }*/
+            }
 
             /*if (GUILayout.Button("Auto Setup All UI Clampers"))
             {
@@ -147,11 +155,7 @@ public class InternationalitationGUI : EditorWindow
 
         if (!string.IsNullOrEmpty(selectedPath))
         {
-            //file.ReadXML(selectedPath);
-            List<string> langNames = new List<string>();
-            langNames.Add("Español");
-            langNames.Add("English");
-            inter.ReadFromXML(selectedPath, langNames);
+            inter.ReadFromXML(selectedPath);
             Debug.Log("File load from: " + selectedPath);
         }
     }
@@ -162,7 +166,7 @@ public class InternationalitationGUI : EditorWindow
         string selectedPath = EditorUtility.SaveFilePanel(
             "Select directory to save XML extraction",
             Application.dataPath,
-            "example.xml", //Nombre por defecto
+            "extraction.xml", //Nombre por defecto
             "xml");
 
 
@@ -174,12 +178,32 @@ public class InternationalitationGUI : EditorWindow
             //Leemos primero el XML de los idiomas, antes de la extraccion
             if(readLangNames)
                 ReadListLanguage();
-            //Ahora si que hacenis la extracción
+
+            //Leemos las variables a sustituir en los textos si el usuario quiere
+            if(readVariables)
+                readXMLVariables();
+
+            //Ahora si que hacemos la extracción
             inter.FullExtract(selectedPath);
 
             if(clampUI)
                 inter.SetupUIClampers();
         }
+    }
+
+    void readXMLVariables()
+    {
+        //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
+        string selectedPath = EditorUtility.OpenFilePanel(
+          "Select XML File with variables",
+          Application.dataPath,
+          "xml");
+
+        if (!string.IsNullOrEmpty(selectedPath))
+        {
+            inter.ReadListVariables(selectedPath);
+        }
+
     }
 
     void ReadListLanguage()
@@ -193,10 +217,7 @@ public class InternationalitationGUI : EditorWindow
 
         if (!string.IsNullOrEmpty(selectedPath))
         {
-            List<string> list = new List<string>();
-            //file.ReadXML(selectedPath);
-            //Dictionary<uint, XmlNode> langList = 
-            inter.ReadListLanguage(selectedPath, list);
+            inter.ReadListLanguage(selectedPath);
         }
     }
 

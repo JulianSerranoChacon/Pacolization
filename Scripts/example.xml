@@ -1,35 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations>
   <text id="0">
-    <Español>WAADSOAIFJIAS</Español>
+    <Español>Hola soy !{Nombre} !{Apellido}, me identifico como !{Sexo}</Español>
     <English>WAADSOAIFJIAS</English>
-  </text>
-  <text id="1">
-    <Español>SEMEN</Español>
-    <English>SEMEN</English>
-  </text>
-  <text id="2">
-    <Español>Button</Español>
-    <English>Button</English>
-  </text>
-  <text id="3">
-    <Español>Button</Español>
-    <English>Button</English>
-  </text>
-  <text id="4">
-    <Español>SEXO</Español>
-    <English>SEXO</English>
-  </text>
-  <text id="5">
-    <Español>warrio</Español>
-    <English>warrio</English>
-  </text>
-  <text id="6">
-    <Español>Guarras</Español>
-    <English>Guarras</English>
-  </text>
-  <text id="7">
-    <Español>Locas</Español>
-    <English>Locas</English>
   </text>
 </translations>

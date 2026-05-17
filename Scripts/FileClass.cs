@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml;
 using TMPro;
 using UnityEditor;
@@ -118,19 +119,21 @@ public class FileClass
             {
                 //Nodo hijo
                 XmlNode lang = texts[i].ChildNodes[j];
-                //Cambiamos el idioma del localCore y anadimos traduccion al Diccionarioç
+                //Cambiamos el idioma del localCore y anadimos traduccion al Diccionario
 
                 //Si el idoma no existe en la configuracion lo creo en el mapa y la lista de nombres sin configuracion (default)
                 /*if (!ret.ContainsKey(transLang[lang.Name]))
                 {
                     throw new ArgumentException("Inavlid Language.");
                 }*/
-                    
+
                 //introduzco el texto en el idioma correspondiente con su id
                 //ret[transLang[lang.Name]].Add(id,lang.InnerText);
 
                 //Compound text es el texto con las variables sustituidas
-                _core.SetLine(id, transLang[lang.Name], CompoundText(lang.InnerText));
+                string res = CompoundText(lang.InnerText);
+                Debug.Log(res);
+                _core.SetLine(id, transLang[lang.Name], res);
             }
         }
 

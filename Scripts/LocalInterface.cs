@@ -53,15 +53,21 @@ public class LocalInterface
         _files.WriteXML(path,LocalCore.Instance().GetNumLangs());
     }
 
-    public void ReadFromXML(string path, List<string> langNames)
+    public void ReadFromXML(string path)
     {
         _files.ReadXML(path);
     }
 
-    public void ReadListLanguage(string path, List<string> lagNames)
+    public void ReadListLanguage(string path)
     {
         _files.ReadXMLLanguage(path);
     }
+    public void ReadListVariables(string path)
+    {
+        _files.ReadVariablesToXML(path);
+    }
+
+
 
     public string GetLine(uint ID)
     {
