@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Xml;
 using TMPro;
 using UnityEditor;
@@ -12,6 +13,7 @@ public class FileClass
     //Lista de los idiomas ordenados al leer el XML de lenguajes
     private List<string> languagesOrder = new List<string>();
     private Dictionary<string, uint> transLang = new Dictionary<string, uint>();
+    private Dictionary<string, string> variables = new Dictionary<string, string>();
     private LocalCore _core;
 
     public FileClass() 
@@ -195,4 +197,46 @@ public class FileClass
         _core.SetLanguageConfig(ret);
         //return ret;
     }
+
+
+
+
+    
+    public void WriteVariablesToXML(string path, string key, string value)
+    {
+        //Leemos el documento de la ruta correspondiente
+        XmlDocument xmlDoc = new XmlDocument();
+
+        if (File.Exists(path))
+        {
+            // El fichero ya existe → cargarlo
+            xmlDoc.Load(path);
+        }
+        else
+        {
+            // No existe → crear estructura nueva
+            XmlDeclaration declaration =
+                xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
+
+            XmlElement root = xmlDoc.CreateElement("Variables");
+
+            xmlDoc.AppendChild(declaration);
+
+            xmlDoc.AppendChild(root);
+
+
+
+
+
+
+
+
+
+            xmlDoc.Save(path);
+        }
+
+
+    }
+
+
 }
