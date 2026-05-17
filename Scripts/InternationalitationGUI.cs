@@ -16,6 +16,7 @@ public class InternationalitationGUI : EditorWindow
     private bool scanScriptables = false;
     private string scriptablePath = "Assets";
     private bool readLangNames = false;
+    private bool clampUI = false;
 
     // Incluye una entrada en el menu superior de Unity
     [MenuItem("Custom Plugins/Internationalitaion Plugin")]
@@ -50,6 +51,11 @@ public class InternationalitationGUI : EditorWindow
             if (readLangNames)
                 GUILayout.Label("After selecting path in which to save the extracted strings," +
                 "a second window \nwill pop up to select the language settings file.");
+
+            EditorGUILayout.Space();
+
+            clampUI = GUILayout.Toggle(clampUI, "Auto setup all UI Clampers?");
+
             EditorGUILayout.Space();
             
             if (GUILayout.Button("Setup"))
@@ -89,15 +95,15 @@ public class InternationalitationGUI : EditorWindow
                 WriteToXML();
             }*/
             //Boton que ejecuta la lectura de las cadenas de strings de un XML concreto
-            if (GUILayout.Button("Read from XML"))
+            /*if (GUILayout.Button("Read from XML"))
             {
                 ReadFromXML();
-            }
+            }*/
 
-            if (GUILayout.Button("Auto Setup All UI Clampers"))
+            /*if (GUILayout.Button("Auto Setup All UI Clampers"))
             {
                 inter.SetupUIClampers();
-            }
+            }*/
 
         }
     }
@@ -167,13 +173,16 @@ public class InternationalitationGUI : EditorWindow
 
             //Leemos primero el XML de los idiomas, antes de la extraccion
             if(readLangNames)
-                readListLanguage();
+                ReadListLanguage();
             //Ahora si que hacenis la extracción
             inter.FullExtract(selectedPath);
+
+            if(clampUI)
+                inter.SetupUIClampers();
         }
     }
 
-    void readListLanguage()
+    void ReadListLanguage()
     {
         //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
         string selectedPath = EditorUtility.OpenFilePanel(
