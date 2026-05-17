@@ -70,10 +70,10 @@ public class LocalCore
 
         currentLang = 0;
     }
-    public Dictionary<uint, XmlNode> GetLanguageMap()
+    /*public Dictionary<uint, XmlNode> GetLanguageMap()
         { return languageMap; }
     public Dictionary<uint, Dictionary<uint, string>> GetStringMap()
-        { return stringMap; }
+        { return stringMap; }*/
 
     public void  SetLanguageConfig(Dictionary<uint, XmlNode> conf)
     {
@@ -143,6 +143,12 @@ public class LocalCore
         //}
 
         //Debug.Log(currentLang);
+    }
+
+    public void AddNewLanguage(uint id)
+    {
+        if (!stringMap.ContainsKey(id))
+                stringMap.Add(id, new Dictionary<uint, string>());
     }
 
     public void AddRemainingLanguages()

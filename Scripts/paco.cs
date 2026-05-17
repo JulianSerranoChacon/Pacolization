@@ -13,6 +13,8 @@ public class paco : MonoBehaviour
     public string scriptablePath;
     [SerializeField]
     public string filePath;
+    [SerializeField]
+    public string confpath;
 
     private static paco _instance;
     public static paco Instance()
@@ -28,7 +30,7 @@ public class paco : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this);
             LocalInterface.Instance().Initiate(langs, scanScriptables, scriptablePath);
-            LocalInterface.Instance().StartInExecution(filePath, 0);
+            LocalInterface.Instance().StartInExecution(filePath, 0, confpath);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else

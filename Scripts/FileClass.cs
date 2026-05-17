@@ -9,11 +9,15 @@ using UnityEngine;
 
 public class FileClass
 {
-    public FileClass() {}
-
     //Lista de los idiomas ordenados al leer el XML de lenguajes
     private List<string> languagesOrder = new List<string>();
     private Dictionary<string, uint> transLang = new Dictionary<string, uint>();
+    private LocalCore _core;
+
+    public FileClass() 
+    {
+        _core = LocalCore.Instance();
+    }
 
     public void WriteXML(string path, uint lenguages)
     {
@@ -32,7 +36,7 @@ public class FileClass
         Dictionary<uint, XmlElement> textnodes = new Dictionary<uint, XmlElement>();
 
         //Recorremos todo el unorderedMap de textos del idioma ID
-        foreach (KeyValuePair<uint, Dictionary<uint, string>> pair in LocalCore.Instance().GetLines)
+        foreach (KeyValuePair<uint, Dictionary<uint, string>> pair in _core.GetLines)
         {
             //Es el ID del idioma en el unordermap que almacena todos los idiomas
             uint langId = pair.Key;
@@ -71,14 +75,14 @@ public class FileClass
         xmlDoc.Save(path);
     }
 
-    public void ReadXML(string filename, List<string> langNames) 
+    public void ReadXML(string filename) 
     {
         // Mapa que contiene los mapas de los textos de cada idioma usando el propio idioma como clave
         //Dictionary<uint, Dictionary<uint, string>> ret = new Dictionary<uint, Dictionary<uint, string>>();
-        Dictionary<uint, Dictionary<uint, string>> ret = LocalCore.Instance().GetStringMap();
+        //(Dictionary<uint, Dictionary<uint, string>> ret = _core.GetStringMap();
 
-        if(langNames == null)
-            langNames = new List<string>();
+        //if(langNames == null)
+        //    langNames = new List<string>();
 
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
@@ -88,13 +92,13 @@ public class FileClass
         XmlNodeList texts = xmlDoc.GetElementsByTagName("text");
 
         //creo los idiomas con sus tablas dentro del diccionario
-        for(int i = 0; i < langNames.Count ; i++)
+        /*for(int i = 0; i < langNames.Count ; i++)
         {
             if(!transLang.ContainsKey(langNames[i]))
                 throw new ArgumentException("Inavlid Language.");
 
             ret.Add(transLang[langNames[i]],new Dictionary<uint, string>());
-        }
+        }*/
 
         //Recorremos la lista de textos del XML
 
@@ -115,13 +119,15 @@ public class FileClass
                 //Cambiamos el idioma del localCore y anadimos traduccion al Diccionarioç
 
                 //Si el idoma no existe en la configuracion lo creo en el mapa y la lista de nombres sin configuracion (default)
-                if (!ret.ContainsKey(transLang[lang.Name]))
+                /*if (!ret.ContainsKey(transLang[lang.Name]))
                 {
                     throw new ArgumentException("Inavlid Language.");
-                }
+                }*/
                     
                 //introduzco el texto en el idioma correspondiente con su id
-                ret[transLang[lang.Name]].Add(id,lang.InnerText);
+                //ret[transLang[lang.Name]].Add(id,lang.InnerText);
+
+                _core.SetLine(id, transLang[lang.Name], lang.InnerText)
             }
         }
 
@@ -140,12 +146,12 @@ public class FileClass
 
 
     //public Dictionary<uint, XmlNode> ReadXMLLanguage(string filename, List<string> langNames)
-    public void ReadXMLLanguage(string filename, List<string> langNames)
+    public void ReadXMLLanguage(string filename)
     {
         Dictionary<uint, XmlNode> ret = new Dictionary<uint, XmlNode>();
 
-        if(langNames == null)
-            langNames = new List<string>();
+        //if(langNames == null)
+        //    langNames = new List<string>();
         
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
@@ -159,7 +165,7 @@ public class FileClass
         //Limpiamos primero el orden de los idiomas leidos en el XML
         languagesOrder.Clear();
 
-        Dictionary<uint, Dictionary<uint, string>> sM = LocalCore.Instance().GetStringMap();
+        //Dictionary<uint, Dictionary<uint, string>> sM = _core.GetStringMap();
 
         foreach (XmlNode node in texts)
         {
@@ -167,7 +173,8 @@ public class FileClass
             uint id = uint.Parse(node.Attributes["id"].Value);
 
             //añadimos a mapas como lenguajes haya
-            sM.Add(id, new Dictionary<uint, string>());
+            //sM.Add(id, new Dictionary<uint, string>());
+            _core.AddNewLanguage(id);
 
             //Nombre del Idioma (etiqueta Lenguaje)
             string langName = node.ChildNodes.Item(0).InnerText;
@@ -176,7 +183,7 @@ public class FileClass
             transLang.Add(langName,id);
 
             //Nombre del lenguaje
-            langNames.Add(langName);
+            //langNames.Add(langName);
             languagesOrder.Add(langName);
 
             //Metemos el lenguaje devuelto con los idiomas y sus parametros
@@ -185,7 +192,7 @@ public class FileClass
         }
         //devolvemos un mapa con los idiomas y sus parametros
 
-        LocalCore.Instance().SetLanguageConfig(ret);
+        _core.SetLanguageConfig(ret);
         //return ret;
     }
 }
