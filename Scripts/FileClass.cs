@@ -236,7 +236,7 @@ public class FileClass
         XmlElement textElement = xmlDoc.SelectSingleNode(key);
 
         if(textElement == null)
-            XmlElement textElement = xmlDoc.CreateElement(key);
+            textElement = xmlDoc.CreateElement(key);
         
         textElement.InnerText = value;
 
