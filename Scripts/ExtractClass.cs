@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.VersionControl;
 using UnityEngine;
-
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
-using Unity.VisualScripting;
 
 
 public class ExtractClass 
@@ -167,7 +167,7 @@ public class ExtractClass
         // Se guarda el SIZE del texto antes de meter componentes
         Vector2 originalTextSize = textRect != null ? textRect.sizeDelta : Vector2.zero;
 
-        // Se incluye el LayoutElement al HIJO (objeto con texto) si no lo tiene
+        // Se incluye el LayoutElement en el HIJO (objeto con texto) si no lo tiene
         LayoutElement layoutElement = textGo.GetComponent<LayoutElement>();
         if (layoutElement == null)
         {
@@ -198,7 +198,7 @@ public class ExtractClass
             Vector2 originalPivot = parentRect != null ? parentRect.pivot : Vector2.zero;
             Vector2 originalAnchoredPos = parentRect != null ? parentRect.anchoredPosition : Vector2.zero;
 
-            // Se incluye el Content Size Fitter al PADRE
+            // Se incluye el Content Size Fitter en el PADRE
             if (parentGo.GetComponent<ContentSizeFitter>() == null)
             {
                 ContentSizeFitter fitter = Undo.AddComponent<ContentSizeFitter>(parentGo);
@@ -206,7 +206,7 @@ public class ExtractClass
                 fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
 
-            // Se incluye el Vertical Layout Group al PADRE
+            // Se incluye el Vertical Layout Group en el PADRE
             if (parentGo.GetComponent<VerticalLayoutGroup>() == null)
             {
                 VerticalLayoutGroup layoutGroup = Undo.AddComponent<VerticalLayoutGroup>(parentGo);
@@ -239,6 +239,124 @@ public class ExtractClass
                 parentRect.sizeDelta = originalParentSize;
             }
         }
+    }
+
+
+    public void AutoOrientationSetup(CharacterFlow charFlow, LineProgression lineProg)
+    {
+        List<TMP_Text> tmp = new List<TMP_Text>();
+    
+        //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
+    
+        //cogemos primero la direccion de las escena en la que estamos
+        string activeScenePath = SceneManager.GetActiveScene().path;
+    
+        for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
+        {
+            // Control de seguridad por si la escena esta deshabilitada en el Build Settings
+            if (!EditorBuildSettings.scenes[i].enabled) continue;
+    
+            string scenePath = EditorBuildSettings.scenes[i].path;
+            //En caso de que ya estemos en la escena, no la cargamos
+            if (scenePath != activeScenePath)
+            {
+                EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+            }
+    
+            // Se obtiene la escena de forma segura mediante su ruta para el bucle en el Editor
+            Scene currentScene = EditorSceneManager.GetSceneByPath(scenePath);
+            if (!currentScene.IsValid() || !currentScene.isLoaded) continue;
+    
+            foreach (var root in currentScene.GetRootGameObjects())
+            {
+                tmp.AddRange(root.GetComponentsInChildren<TMP_Text>(true));
+                foreach (TMP_Text text in tmp)
+                {
+                        string rawText = text.text;
+                        if (string.IsNullOrEmpty(rawText)) continue;
+    
+                        Undo.RecordObject(text, "Apply Text Orientation");
+    
+                        if (charFlow == CharacterFlow.RightToLeft)
+                        {
+                            text.isRightToLeftText = true;
+                            text.alignment = TMPro.TextAlignmentOptions.Right;
+                        }
+                        else
+                        {
+                            text.isRightToLeftText = false;
+                            text.alignment = (charFlow == CharacterFlow.LeftToRight) ? TMPro.TextAlignmentOptions.Left : TMPro.TextAlignmentOptions.Center;
+                        }
+                        text.text = ProcessTextMatrix(rawText, charFlow, lineProg);
+    
+                        EditorUtility.SetDirty(text.gameObject);
+                    }
+                tmp.Clear();
+            }
+            EditorSceneManager.MarkSceneDirty(currentScene);
+            EditorSceneManager.SaveScene(currentScene);
+            //cerramos la escena antes de irnos a la siguiente escena
+            if (scenePath != activeScenePath)
+            {
+                EditorSceneManager.CloseScene(currentScene, true);
+            }
+        }
+    }
+
+    private string ProcessTextMatrix(string input, CharacterFlow charFlow, LineProgression lineProg)
+    {
+        string[] originalLines = input.Split(new[] { "\n", "\r\n" }, StringSplitOptions.None);
+
+        // Si es flujo de texto en horizontal (LeftToRight o RightToLeft)
+        if (charFlow == CharacterFlow.LeftToRight || charFlow == CharacterFlow.RightToLeft)
+        {
+            // Cambiamos el orden de las lineas si tienen que ir de abajo a arriba
+            if (lineProg == LineProgression.BottomToTop)
+            {
+                Array.Reverse(originalLines);
+                return string.Join("\n", originalLines);
+            }
+            return input;
+        }
+
+        // Si es flujo de texto en vertical (TopToBottom o BottomToTop)
+        int maxChars = 0;
+        foreach (var line in originalLines) if (line.Length > maxChars) maxChars = line.Length;
+
+        StringBuilder matrixBuilder = new StringBuilder();
+
+        // Controlamos los bucles comparando el Enum directamente
+        int startRow = (charFlow == CharacterFlow.TopToBottom) ? 0 : maxChars - 1;
+        int endRow = (charFlow == CharacterFlow.TopToBottom) ? maxChars : -1;
+        int rowStep = (charFlow == CharacterFlow.TopToBottom) ? 1 : -1;
+
+        // Creamos el texto vertical
+        for (int r = startRow; r != endRow; r += rowStep)
+        {
+            StringBuilder currentRow = new StringBuilder();
+
+            if (lineProg == LineProgression.RightToLeft)
+            {
+                for (int l = originalLines.Length - 1; l >= 0; l--)
+                {
+                    currentRow.Append(r < originalLines[l].Length ? originalLines[l][r] : ' ');
+                    if (l > 0) currentRow.Append("   ");
+                }
+            }
+            else
+            {
+                for (int l = 0; l < originalLines.Length; l++)
+                {
+                    currentRow.Append(r < originalLines[l].Length ? originalLines[l][r] : ' ');
+                    if (l < originalLines.Length - 1) currentRow.Append("   ");
+                }
+            }
+
+            matrixBuilder.Append(currentRow.ToString());
+            if (r != endRow - rowStep) matrixBuilder.Append("\n");
+        }
+
+        return matrixBuilder.ToString();
     }
 
     public void ReplaceStrings()

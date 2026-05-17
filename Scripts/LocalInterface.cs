@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using UnityEngine.SceneManagement;
-
 public class LocalInterface
 {
 
@@ -27,7 +26,9 @@ public class LocalInterface
     private ExtractClass _extract;
     private FileClass _files;
     //private loqueseaClass _loquesea
-#endregion
+    #endregion
+
+
 
     public void Initiate(uint lang, bool scan, string path)
     {
@@ -98,13 +99,12 @@ public class LocalInterface
     public void SetupUIClampers()
     {
         if (_extract != null)
-        {
             _extract.AutoUIClampSetup();
-        }
-        else
-        {
-            UnityEngine.Debug.LogError("�El sistema de localizaci�n no ha sido inicializado todav�a!");
-        }
+    }
+    public void SetupTextOrientation(CharacterFlow charFlow, LineProgression lineProg)
+    {
+        if (_extract != null)
+            _extract.AutoOrientationSetup(charFlow, lineProg);
     }
 
 

@@ -35,7 +35,7 @@ public class UIClamper : MonoBehaviour
 
     [Tooltip("Porcentaje de compresion del texto")]
     [SerializeField]
-    private float wdPercent = 0.0f;
+    private float widthPercent = 0.0f;
 
     [Tooltip("Espacio entre lineas del Auto Size, SOLO VALORES NEGATIVOS")]
     [SerializeField]
@@ -46,7 +46,7 @@ public class UIClamper : MonoBehaviour
     private TMP_Text textComp;
     private RectTransform canvasRect;
 
-    void OnEnable()
+    private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         layout = GetComponentInChildren<LayoutElement>();
@@ -63,19 +63,19 @@ public class UIClamper : MonoBehaviour
     {
         if (!rectTransform || !layout || !textComp || !canvasRect) return;
 
-        // Obtener los limites reales del canvas para no salirse
+        // Obtenemos los limites reales del canvas para no salirse de la pantalla
         float finalLimitX = Mathf.Min(maxX > 0 ? maxX : canvasRect.rect.width, canvasRect.rect.width);
         float finalLimitY = Mathf.Min(maxY > 0 ? maxY : canvasRect.rect.height, canvasRect.rect.height);
 
         // En funcion de la logica de escalado, el cuadro de texto tendra un SIZE diferente
-        if (mode == ScalingMode.Fixed) // Modo FIJO: SIZE maximo desde el principio
+        if (mode == ScalingMode.Fixed) // Modo FIJO: SIZE maximo en todo momento
         {
             layout.minWidth = finalLimitX;
             layout.minHeight = finalLimitY;
             layout.preferredWidth = finalLimitX;
             layout.preferredHeight = finalLimitY;
         }
-        else // Modo DINAMICO: Crecer con el texto
+        else // Modo DINAMICO: Crecer con el texto en todo momento
         {
 
             layout.minWidth = 0;
@@ -93,10 +93,10 @@ public class UIClamper : MonoBehaviour
             }
             else
             {
-                layout.preferredWidth = -1; // -1 permite que el Content Size Fitter mande, importante
+                layout.preferredWidth = -1; // -1 permite que el Content Size Fitter mande, importante esto
             }
 
-            // Si el texto pide mas de lo permitido en Y, ponemos el tope, como con la X antes
+            // Hacemos lo mismo, pero ahora con la Y
             if (textComp.preferredHeight > finalLimitY)
             {
                 layout.preferredHeight = finalLimitY;
@@ -107,26 +107,26 @@ public class UIClamper : MonoBehaviour
             }
         }
 
+        // Cambiamos las variables del Auto Size del Text Mesh Pro en todo momento
         textComp.fontSizeMin = minFontSize;
         textComp.fontSizeMax = maxFontSize;
-        textComp.characterWidthAdjustment = wdPercent;
+        textComp.characterWidthAdjustment = widthPercent;
         textComp.lineSpacingAdjustment = lineSpacing;
 
         // Se aplican los topes de LayoutElement
         LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
 
-        // Disminuimos el SIZE del texto si el cuadro ya no puede crecer mas en NINGUNA direccion
+        // Intentamos disminuir el SIZE del texto si el cuadro ya no puede crecer mas en NINGUNA direccion
         bool isAtMaxX = rectTransform.rect.width >= finalLimitX - 0.5f;
         bool isAtMaxY = rectTransform.rect.height >= finalLimitY - 0.5f;
 
         if (isAtMaxX && isAtMaxY)
         {
-            // Ambos ejes al limite de SIZE, el texto debe encogerse para caber
+            // El texto DEBE encogerse para caber en la pantalla
             textComp.enableAutoSizing = true;
         }
         else
         {
-            // AUn hay espacio para poner el texto en SIZE normal
             textComp.enableAutoSizing = activateAutoSize;
             textComp.fontSize = maxFontSize;
         }
@@ -135,6 +135,8 @@ public class UIClamper : MonoBehaviour
         ApplyCanvasClamp();
     }
 
+
+    // Metodo que se encarga de calgular una posicion donde el cuadro no se salga de pantalla en todo momento que se llame (en este caso en el Late Update)
     void ApplyCanvasClamp()
     {
         Vector3 pos = rectTransform.localPosition;
