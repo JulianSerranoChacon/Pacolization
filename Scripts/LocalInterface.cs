@@ -107,11 +107,5 @@ public class LocalInterface
         if (_extract != null)
             _extract.AutoUIClampSetup();
     }
-    public void SetupTextOrientation(CharacterFlow charFlow, LineProgression lineProg)
-    {
-        if (_extract != null)
-            _extract.AutoOrientationSetup(charFlow, lineProg);
-    }
-
 
 }
