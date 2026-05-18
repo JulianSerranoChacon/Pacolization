@@ -76,7 +76,7 @@ public class InternationalitationGUI : EditorWindow
                        "¡Advertencia!",
                        "¿Seguro de que deseas configurar automaticamente todos los UI Clampers? Esto modificara los componentes de la interfaz en las escenas.",
                        "Si",
-                       "No"
+                       "No, procede con el resto"
                     );
                 }
 
