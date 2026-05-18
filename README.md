@@ -26,4 +26,4 @@ El usuario tendrá que tener en cuenta lo siguiente:
 - El usuario tendrá que dar a sus idiomas una id lineal eempezando en 0 (por ejemplo, teniendo dos idiomas podría ser `Español 0 English 1`, no `Español 59 English 91`)
 - El usuario deberá llevar la cuenta de cuál id corresponde a cada idioma, ya que cambiar de idioma se hace con uint, no con string. 
 - Solo se extraerá strings del texto las escenas incluidas en la build del juego
-- Si el usuario selecciona extraer el texto de los ScriptableObjects, se extraerá el texto de todos los ScriptableObjects en ese directorio **y los directorios hijos**. Se recomienda cuidado al usuario para evitar tocar ScriptableObjects no propios (de otros paquetes o de Unity)
+- Si el usuario selecciona extraer el texto de los ScriptableObjects, se extraerá el texto de todos los ScriptableObjects en ese directorio **y los directorios hijos**. Se recomienda cuidado al usuario para evitar tocar ScriptableObjects no propios (de otros paquetes o de Unity), o ScriptableObjects que no necesiten ser traducidos (p.ej., ScriptableObjects de guardado o de configuración)
