@@ -37,11 +37,18 @@ El usuario tendrá que tener en cuenta lo siguiente:
 - En caso de usar la opción de automatizar la inclusión de componentes necesarios para el CLAMPLING de los textos de la UI, el usuario deberá de cambiar a mano los tamaños de los cuadros de textos para tener las dimensiones esperadas, además de adecuar el formato de los cuadros de texto (tipo de gameObjects de la UI a tener que usar) y adecuar el formato del Canvas, que se explican en el apartado 3.5 de la memoria.
 
 Example Manual CLAMPLING Implementation:
-Expected Hierarchy Scene:
-![alt text](<Expected Hierarchy Scene.png>)
-Canvas Scaler Settings:
-![alt text](<Canvas Scaler Settings.png>)
-Components in PARENT of the Text
-![alt text](<Components in PARENT of the Text.png>)
-Components in GameObject with Text
-![alt text](<Components in GameObject with Text.png>)
+<p align="center">
+  <img src="Example Manual CLAMPLING Implementation/Expected Hierarchy Scene.png" alt="Expected Hierarchy Scene" width="500"/>
+</p>
+
+<p align="center">
+  <img src="Example Manual CLAMPLING Implementation/Canvas Scaler Settings.png" alt="Canvas Scaler Settings" width="500"/>
+</p>
+
+<p align="center">
+  <img src="Example Manual CLAMPLING Implementation/Components in PARENT of the Text.png" alt="Components in PARENT of the Text" width="500"/>
+</p>
+
+<p align="center">
+  <img src="Example Manual CLAMPLING Implementation/Components in GameObject with Text.png" alt="Components in GameObject with Text" width="500"/>
+</p>
