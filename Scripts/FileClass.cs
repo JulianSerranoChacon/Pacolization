@@ -13,8 +13,11 @@ public class FileClass
 {
     //Lista de los idiomas ordenados al leer el XML de lenguajes
     private List<string> languagesOrder = new List<string>();
+    //Lista que sirve como conversor de nombre del idioma a ID del idioma
     private Dictionary<string, uint> transLang = new Dictionary<string, uint>();
+    //Lista en la que guardamos los datos de las variables
     private Dictionary<string, string> variables = new Dictionary<string, string>();
+    //Instancia del LocalCore
     private LocalCore _core;
 
     public FileClass() 
@@ -22,6 +25,8 @@ public class FileClass
         _core = LocalCore.Instance();
     }
 
+    //Metodo que crea y escribe todos los textos extraidos en un documentoXML
+    //Se le pasa como parametro el path en el que se escribirá
     public void WriteXML(string path, uint lenguages)
     {
         //Doc XML donde vamos a guardar los datos del localCore
@@ -35,10 +40,10 @@ public class FileClass
         XmlElement root = xmlDoc.CreateElement("translations");
         xmlDoc.AppendChild(root);
 
-        //
+        //Diccionario en el que se almacena el ID del texto y su XMLNode (se le setea al LocalCore mas adelante)
         Dictionary<uint, XmlElement> textnodes = new Dictionary<uint, XmlElement>();
 
-        //Recorremos todo el unorderedMap de textos del idioma ID
+        //Recorremos todo el unorderedMap del stringMap
         foreach (KeyValuePair<uint, Dictionary<uint, string>> pair in _core.GetLines)
         {
             //Es el ID del idioma en el unordermap que almacena todos los idiomas
@@ -51,6 +56,7 @@ public class FileClass
             else
                 langName = "langNotDefined_" + (int)langId;
 
+            //Recorremos el unorder map del idioma ID correspondiente
             foreach (KeyValuePair<uint, string> item in pair.Value) 
             {
                 //Id del texto en el unordered_map
@@ -78,6 +84,7 @@ public class FileClass
         xmlDoc.Save(path);
     }
 
+    //Metodo para leer un archivo XML a partir de un filename
     public void ReadXML(string filename) 
     {
         //Leemos el documento de la ruta correspondiente
@@ -109,36 +116,31 @@ public class FileClass
         }
     }
 
-
-    //public Dictionary<uint, XmlNode> ReadXMLLanguage(string filename, List<string> langNames)
+    //Metodo que lee el XML de la configuración de lenguajes
     public void ReadXMLLanguage(string filename)
     {
+        //Dictionary que se le seteara a la configuracion de lenguaje de LocalCore 
         Dictionary<uint, XmlNode> ret = new Dictionary<uint, XmlNode>();
-
-        //if(langNames == null)
-        //    langNames = new List<string>();
         
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
 
+        //cargamos el archivo
         xmlDoc.Load(filename);
 
         //Cogemos todos los textos etiquetados con lenguaje 
         XmlNodeList texts = xmlDoc.GetElementsByTagName("Lenguaje");
 
-        //Debug.Log(texts.Count);
         //Limpiamos primero el orden de los idiomas leidos en el XML
         languagesOrder.Clear();
 
-        //Dictionary<uint, Dictionary<uint, string>> sM = _core.GetStringMap();
-
+        //Recorremos los XMLNode 
         foreach (XmlNode node in texts)
         {
             //Id del lenguaje
             uint id = uint.Parse(node.Attributes["id"].Value);
 
             //añadimos a mapas como lenguajes haya
-            //sM.Add(id, new Dictionary<uint, string>());
             _core.AddNewLanguage(id);
 
             //Nombre del Idioma (etiqueta Lenguaje)
@@ -148,18 +150,15 @@ public class FileClass
             transLang.Add(langName,id);
 
             //Nombre del lenguaje
-            //langNames.Add(langName);
             languagesOrder.Add(langName);
 
             //Metemos el lenguaje devuelto con los idiomas y sus parametros
             ret[id] = node;
         }
-        //devolvemos un mapa con los idiomas y sus parametros
-
         _core.SetLanguageConfig(ret);
-        //return ret;
     }
 
+    //Metodo que permite añadir una variable a un archivo XML, pasandole como parametro el path, y su clave 
     public void WriteVariablesToXML(string path, string key, string value)
     {
         XmlDocument xmlDoc = new XmlDocument();
@@ -171,6 +170,7 @@ public class FileClass
         }
         else
         {
+            //creamos la cabecera con la declaracion y el nodo raiz
             XmlDeclaration declaration =
                 xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
 
@@ -211,12 +211,15 @@ public class FileClass
         }
     }
 
+    //Metodo que lee las variables de un archivo XML dado un path
     public void ReadVariablesToXML(string path)
     {
+        //Si el archivo no existe, no devuelve nada
         if (!File.Exists(path))
             return;
 
         XmlDocument xmlDoc = new XmlDocument();
+        //cargamos el documento XML
         xmlDoc.Load(path);
 
         // Obtener el nodo raíz
@@ -225,6 +228,7 @@ public class FileClass
         if (rootNode == null)
             return;
 
+        //Recorremos todos los nodos hijos del nodo raiz
         foreach (XmlNode c in rootNode.ChildNodes)
         {
             // Evitar nodos raros (#comment, espacios, etc.)
@@ -238,18 +242,20 @@ public class FileClass
             }
             else
             {
-                // Si ya existe, actualizar
+                // Si ya existe, la actualizamos
                 variables[c.Name] = c.InnerText;
             }
         }
     }
 
+    //Metodo auxiliar que nos permite buscar un patron !{variable} en un texto y sustituirlo por el valor correspondiente
     private string CompoundText(string text)
     {
         return Regex.Replace(text,@"!\{(.*?)\}",match =>{
             // Cogemos unicamente el contenido entre !{}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string variableName = match.Groups[1].Value;
 
+            //Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
             if (variables.TryGetValue(variableName, out string value))
             {
                 return value;
