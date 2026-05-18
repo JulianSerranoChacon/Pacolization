@@ -18,7 +18,6 @@ public class LocalCore
     //Cada key alberga un array de tamano languages. 
     //En cada posicion del array se encuentra el string en un idioma concreto.
     private uint languages;
-    //private Dictionary<uint, string[]> stringTable;
 
     private Dictionary<uint, XmlNode> languageMap;
     private Dictionary<uint, Dictionary<uint, string>> stringMap;
@@ -30,7 +29,6 @@ public class LocalCore
     //Funciona para lectura/escritura y ejecucion
     private uint currentLang;
 
-    //public IReadOnlyDictionary<uint, string[]> GetLines => stringTable;
     public IReadOnlyDictionary<uint, Dictionary<uint, string>> GetLines => stringMap;
     public IReadOnlyDictionary<uint, XmlNode> GetLanguageMap => languageMap;
     #endregion

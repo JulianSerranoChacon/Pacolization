@@ -43,6 +43,7 @@ public class InternationalitationGUI : EditorWindow
                 scriptablePath=GUILayout.TextField(scriptablePath, 200);
             
             EditorGUILayout.Space();
+
             GUILayout.Label("Amount of languages:");
             langNum = GUILayout.TextField(langNum, 25);
 
@@ -79,88 +80,8 @@ public class InternationalitationGUI : EditorWindow
         if (setup)
         {
             GUILayout.Label("Configuration Finished!", EditorStyles.boldLabel);
-   
-            EditorGUILayout.Space();
-
-            /*
-            // Boton que ejecuta el script de modificacion de los strings
-            if (GUILayout.Button("Modify All Strings"))
-            {
-                ModifyStrings();
-            }
-
-            // Boton que ejecuta el script de extraccion
-            if (GUILayout.Button("Extract All Strings"))
-            {
-                ExtractStrings();
-            }
-
-            EditorGUILayout.Space();
-
-            //Boton que ejecuta la escritura las cadenas de strings a un XML
-            if (GUILayout.Button("Write To XML"))
-            {
-                WriteToXML();
-            }*/
-            //Boton que ejecuta la lectura de las cadenas de strings de un XML concreto
-            /*if (GUILayout.Button("Read from XML"))
-            {
-                ReadFromXML();
-            }*/
-
-            if (GUILayout.Button("Auto Setup All UI Clampers"))
-            {
-                inter.SetupUIClampers();
-            }
-            EditorGUILayout.Space();
-
         }
     }
-
-    void ModifyStrings()
-    {
-        Debug.Log("Poner el script de modificacion aqui");
-    }
-
-    void ExtractStrings()
-    {
-        //extract.ExtractStrings();
-        inter.Extract();
-    }
-
-    void WriteToXML()
-    {
-        //Abre una ventana del explorador para qe
-        string selectedPath = EditorUtility.SaveFilePanel(
-            "Select directory to save XML",
-            Application.dataPath, 
-            "example.xml", //Nombre por defecto
-            "xml");
-
-        if (!string.IsNullOrEmpty(selectedPath))
-        {
-            //file.WriteXML(selectedPath);
-            //inter.WriteToXML(selectedPath);
-            inter.FullExtract(selectedPath);
-            Debug.Log("File saved in: " + selectedPath);
-        }
-    }
-
-    void ReadFromXML()
-    {
-        //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
-        string selectedPath = EditorUtility.OpenFilePanel(
-          "Select XML File to read",
-          Application.dataPath,
-          "xml");
-
-        if (!string.IsNullOrEmpty(selectedPath))
-        {
-            inter.ReadFromXML(selectedPath);
-            Debug.Log("File load from: " + selectedPath);
-        }
-    }
-
 
     void InitializeAll(uint langinit, bool scan, string scrpath)
     {
@@ -182,7 +103,7 @@ public class InternationalitationGUI : EditorWindow
 
             //Leemos las variables a sustituir en los textos si el usuario quiere
             if(readVariables)
-                readXMLVariables();
+                ReadXMLVariables();
 
             //Ahora si que hacemos la extracción
             inter.FullExtract(selectedPath);
@@ -192,7 +113,7 @@ public class InternationalitationGUI : EditorWindow
         }
     }
 
-    void readXMLVariables()
+    void ReadXMLVariables()
     {
         //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
         string selectedPath = EditorUtility.OpenFilePanel(

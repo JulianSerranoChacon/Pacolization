@@ -92,7 +92,6 @@ public class LocalInterface
 
     public string GetLine(uint ID)
     {
-        //loqueseaClass
        return _core.GetLine(ID);
     }
 

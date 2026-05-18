@@ -3,7 +3,7 @@ using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class paco : MonoBehaviour
+public class Pacolization : MonoBehaviour
 {
     [SerializeField]
     public uint langs;
@@ -18,8 +18,8 @@ public class paco : MonoBehaviour
     [SerializeField]
     public string variablePath;
 
-    private static paco _instance;
-    public static paco Instance()
+    private static Pacolization _instance;
+    public static Pacolization Instance()
     { return _instance; }
         
     // Start is called once before the first execution of Update after the MonoBehaviour is created
