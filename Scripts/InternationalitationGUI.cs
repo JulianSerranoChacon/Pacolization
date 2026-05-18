@@ -70,12 +70,15 @@ public class InternationalitationGUI : EditorWindow
 
             if (GUILayout.Button("Setup"))
             {
-                procederClampUI = EditorUtility.DisplayDialog(
-                   "¡Advertencia!",
-                   "¿Seguro de que deseas configurar automaticamente todos los UI Clampers? Esto modificara los componentes de la interfaz en las escenas.",
-                   "Si",
-                   "No"
-                );
+                if (clampUI)
+                {
+                    procederClampUI = EditorUtility.DisplayDialog(
+                       "¡Advertencia!",
+                       "¿Seguro de que deseas configurar automaticamente todos los UI Clampers? Esto modificara los componentes de la interfaz en las escenas.",
+                       "Si",
+                       "No"
+                    );
+                }
 
                 if (langNum == null)
                     InitializeAll(1,scanScriptables,scriptablePath);
