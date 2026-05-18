@@ -2,11 +2,11 @@
 
 ## Autores
 - [Julián Serrano Chacón](https://github.com/JulianSerranoChacon)
-- Jiale He
-- Jose Antonio Carmona Alfonsel
-- Pablo Marcos Serrano
-- Javier Alonso Ruiz
-- Luis Javier Navarrete Pulupa
+- [Jiale He (Chao)](https://github.com/ChaoIsBalling)
+- [Jose Antonio Carmona Alfonsel](https://github.com/JoseAntonioCA)
+- [Pablo Marcos Serrano](https://github.com/PablooMS)
+- [Javier Alonso Ruiz](https://github.com/Javalonso1)
+- [Luis Javier Navarrete Pulupa](https://github.com/luisja30)
 
 ## Memoria Proyecto Final
 https://docs.google.com/document/d/1kHHou4vyVC1tj4d0ZCHDrUKxQv18-MJdiZN4q4rC5qE/edit?usp=sharing
