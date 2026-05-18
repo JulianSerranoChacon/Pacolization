@@ -35,3 +35,13 @@ El usuario tendrá que tener en cuenta lo siguiente:
 - Solo se extraerá strings del texto las escenas incluidas en la build del juego
 - Si el usuario selecciona extraer el texto de los ScriptableObjects, se extraerá el texto de todos los ScriptableObjects en ese directorio **y los directorios hijos**. Se recomienda cuidado al usuario para evitar tocar ScriptableObjects no propios (de otros paquetes o de Unity), o ScriptableObjects que no necesiten ser traducidos (p.ej., ScriptableObjects de guardado o de configuración)
 - En caso de usar la opción de automatizar la inclusión de componentes necesarios para el CLAMPLING de los textos de la UI, el usuario deberá de cambiar a mano los tamaños de los cuadros de textos para tener las dimensiones esperadas, además de adecuar el formato de los cuadros de texto (tipo de gameObjects de la UI a tener que usar) y adecuar el formato del Canvas, que se explican en el apartado 3.5 de la memoria.
+
+Example Manual CLAMPLING Implementation:
+Expected Hierarchy Scene:
+![alt text](<Expected Hierarchy Scene.png>)
+Canvas Scaler Settings:
+![alt text](<Canvas Scaler Settings.png>)
+Components in PARENT of the Text
+![alt text](<Components in PARENT of the Text.png>)
+Components in GameObject with Text
+![alt text](<Components in GameObject with Text.png>)
