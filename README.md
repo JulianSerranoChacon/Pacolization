@@ -13,6 +13,8 @@ https://docs.google.com/document/d/1kHHou4vyVC1tj4d0ZCHDrUKxQv18-MJdiZN4q4rC5qE/
 
 ## Guia de usuario
 
+El plugin se ha realizado en la versión de Unity 6000.0.66f2 y 2021.3.6f1 no se asegura el correcto funcionamiento en versiones anteriores.
+
 [Hablar sobre como meter el paquete, no estoy segura]
 
 El usuario deberá de tener un archivo de configuracion de idiomas o usar el de ejemplo que proporcionamos [blah blah blah].
