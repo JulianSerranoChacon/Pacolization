@@ -18,6 +18,7 @@ public class InternationalitationGUI : EditorWindow
     private bool readLangNames = false;
     private bool readVariables = false;
     private bool clampUI = false;
+    private bool procederClampUI = false;
 
     // Incluye una entrada en el menu superior de Unity
     [MenuItem("Custom Plugins/Internationalitaion Plugin")]
@@ -69,6 +70,13 @@ public class InternationalitationGUI : EditorWindow
 
             if (GUILayout.Button("Setup"))
             {
+                procederClampUI = EditorUtility.DisplayDialog(
+                   "¡Advertencia!",
+                   "¿Seguro de que deseas configurar automaticamente todos los UI Clampers? Esto modificara los componentes de la interfaz en las escenas.",
+                   "Si",
+                   "No"
+                );
+
                 if (langNum == null)
                     InitializeAll(1,scanScriptables,scriptablePath);
                 else
@@ -80,6 +88,22 @@ public class InternationalitationGUI : EditorWindow
         if (setup)
         {
             GUILayout.Label("Configuration Finished!", EditorStyles.boldLabel);
+
+            if (GUILayout.Button("Auto Setup All UI Clampers"))
+            {
+                procederClampUI = EditorUtility.DisplayDialog(
+                   "¡Advertencia!",
+                   "¿Seguro de que deseas configurar automaticamente todos los UI Clampers? Esto modificara los componentes de la interfaz en las escenas.",
+                   "Si",
+                   "No"
+                );
+
+                if (procederClampUI)
+                {
+                    inter.SetupUIClampers();
+                }
+            }
+            EditorGUILayout.Space();
         }
     }
 
@@ -108,7 +132,7 @@ public class InternationalitationGUI : EditorWindow
             //Ahora si que hacemos la extracción
             inter.FullExtract(selectedPath);
 
-            if(clampUI)
+            if(clampUI && procederClampUI)
                 inter.SetupUIClampers();
         }
     }
