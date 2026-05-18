@@ -38,19 +38,26 @@ El usuario tendrá que tener en cuenta lo siguiente:
 
 Example Manual CLAMPLING Implementation:  
   
-Expected Hierarchy Scene:  
+Expected Hierarchy Scene:
+  
 <p align="center">
   <img src="Example Manual CLAMPLING Implementation/Expected Hierarchy Scene.png" alt="Expected Hierarchy Scene" width="500"/>
 </p>
-Canvas Scaler Settings:  
+  
+Canvas Scaler Settings:
+  
 <p align="center">
   <img src="Example Manual CLAMPLING Implementation/Canvas Scaler Settings.png" alt="Canvas Scaler Settings" width="500"/>
 </p>
-Components in PARENT of the Text:  
+  
+Components in PARENT of the Text:
+  
 <p align="center">
   <img src="Example Manual CLAMPLING Implementation/Components in PARENT of the Text.png" alt="Components in PARENT of the Text" width="500"/>
 </p>
-Components in GameObject with Text:  
+  
+Components in GameObject with Text:
+  
 <p align="center">
   <img src="Example Manual CLAMPLING Implementation/Components in GameObject with Text.png" alt="Components in GameObject with Text" width="500"/>
 </p>
