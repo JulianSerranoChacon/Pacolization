@@ -69,7 +69,6 @@ public class LocalInterface
     {
         _core.FlushScriptableReferences();  
     }
-    #endregion
 
     //Registra un componente de TextUpdate al sistema
     public void RegisterTextUpdate(TextUpdate textUp)
