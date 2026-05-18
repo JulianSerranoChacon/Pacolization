@@ -50,17 +50,7 @@ public class LocalCore
 #endregion
 
 #region Metodos
-    //Inicia los atributos de la clase
-    //Establece el maximo de idiomas a langAm
 
-    public bool IsRightToLeft()
-    {
-        string direccion = languageMap[currentLang]
-        .SelectSingleNode("Texto")
-        .SelectSingleNode("Direccion")
-        .InnerText;
-        return direccion!= "Iz_Der";
-    }
     public void Initiate(uint langAm)
     {
         if(langAm <= 0)
@@ -76,12 +66,9 @@ public class LocalCore
 
         currentLang = 0;
     }
-    public void  SetLanguageConfig(Dictionary<uint, XmlNode> conf)
-    {
-        languageMap = conf;
-    }
 
-    public void RegisterTextUpdate(TextUpdate textUp)
+    #region Registers
+        public void RegisterTextUpdate(TextUpdate textUp)
     {
         textUpdateRefs.Add(textUp);
     }
@@ -93,6 +80,15 @@ public class LocalCore
     { 
         textUpdateRefs.Clear(); 
     }
+        
+    #endregion
+
+    #region  Getters and Setters
+    public void  SetLanguageConfig(Dictionary<uint, XmlNode> conf)
+    {
+        languageMap = conf;
+    }
+
     //Devuelve el string de la ID correspondiente del idioma que esta activo.
     public string GetLine(uint ID)
     {
@@ -118,17 +114,6 @@ public class LocalCore
                 stringMap[currentLang][ID] = value;
         }
     }
-    public void SetLineLangs(uint ID,string value)
-    {
-        for(uint i=0; i<languages; i++)
-        {
-            stringMap[i].Add(ID, value);
-        }
-    }
-    public uint GetNumLangs()
-    {
-        return languages;
-    }
 
     public void SetLine(uint ID, uint lang, string value)
     {
@@ -143,6 +128,31 @@ public class LocalCore
             else
                 stringMap[lang][ID] = value;
         }
+    }
+    
+    public void SetLineLangs(uint ID,string value)
+    {
+        for(uint i=0; i<languages; i++)
+        {
+            stringMap[i].Add(ID, value);
+        }
+    }
+    #endregion
+    
+    public bool IsRightToLeft()
+    {
+        string direccion = languageMap[currentLang]
+        .SelectSingleNode("Texto")
+        .SelectSingleNode("Direccion")
+        .InnerText;
+        return direccion!= "Iz_Der";
+    }
+
+    #region Language Configuration
+    
+    public uint GetNumLangs()
+    {
+        return languages;
     }
 
     public void AddNewLanguage(uint id)
@@ -173,10 +183,9 @@ public class LocalCore
             refs.SetText();
         }
     }
+    #endregion
 
-    #region Reference gaming
-
-
+    #region Scriptable References
     public void SetScriptableObjectReference(uint ID, ScriptableObject obj, FieldInfo info)
     {
         refScriptObj[ID] = new Pair<ScriptableObject, FieldInfo>(obj, info);
