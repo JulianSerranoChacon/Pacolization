@@ -65,7 +65,8 @@ public class ExtractClass
             }
         }    
     }
-
+    //Este metodo es el que se encarga de extraer todos los strings de los objetos TMP_Text del proyecto y les 
+    //anade un componente TextUpdate para que estas puedan actualizarse al idioma necesario en runtime
     public void ExtractStrings()
     {
         List<TMP_Text> tmp = new List<TMP_Text>();
@@ -241,6 +242,7 @@ public class ExtractClass
         }
     }
 
+    //Este metodo cambia todos strings publicos de los scriptable por su ID
     public void ReplaceStrings()
     {
         foreach(var item in scriptObjRef)
@@ -248,7 +250,7 @@ public class ExtractClass
            item.Value.second.SetValue(item.Value.first, item.Key.ToString());
         }
     }
-
+    //Este metodo extrae todas las referencias a los scriptable objects del proyecto  para mandarlo al local core
     public void ExtractRefs(ScriptableObject obj)
     {
         Type objectType = obj.GetType();
@@ -265,6 +267,7 @@ public class ExtractClass
         }
     }
 
+    //Este metodo recorre el proyecto entero en runtime para obtener las referencias a los scriptabes
     public void setScriptableRefereces()
     {
         scriptObjRef.Clear();
