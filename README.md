@@ -1,7 +1,7 @@
 # UAJ-FinalProject - Pacolization
 
 ## Autores
-- Julián Serrano Chacón
+- [Julián Serrano Chacón](https://github.com/JulianSerranoChacon)
 - Jiale He
 - Jose Antonio Carmona Alfonsel
 - Pablo Marcos Serrano
