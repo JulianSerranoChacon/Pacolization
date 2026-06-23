@@ -25,7 +25,7 @@ public class FileClass
         _core = LocalCore.Instance();
     }
 
-    //Metodo que crea y escribe todos los textos extraidos en un documentoXML
+ /*   //Metodo que crea y escribe todos los textos extraidos en un documentoXML
     //Se le pasa como parametro el path en el que se escribirá
     public void WriteXML(string path, uint lenguages)
     {
@@ -82,7 +82,54 @@ public class FileClass
         }
         //Antes de acabar guardamos el archivo en la ruta
         xmlDoc.Save(path);
+    }*/
+
+        //Metodo que crea y escribe todos los textos extraidos en un documentoXML
+    //Se le pasa como parametro el path en el que se escribirá
+    public void WriteXML(string path, uint lenguages)
+    {
+        //Doc XML donde vamos a guardar los datos del localCore
+        XmlDocument xmlDoc = new XmlDocument();
+
+        //Escribimos primero la cabecera del XML
+        XmlDeclaration declaration = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
+        xmlDoc.AppendChild(declaration);
+
+        //Elemento raiz del que colgaran todos los textos
+        XmlElement root = xmlDoc.CreateElement("translations");
+        root.SetAttribute("lang","es");
+        xmlDoc.AppendChild(root);
+
+        //Diccionario en el que se almacena el ID del texto y su XMLNode (se le setea al LocalCore mas adelante)
+        Dictionary<uint, XmlElement> textnodes = new Dictionary<uint, XmlElement>();
+
+        //Recorremos todo el unorderedMap del stringMap
+        foreach (KeyValuePair<uint, Dictionary<uint, string>> pair in _core.GetLines)
+        {
+            //Recorremos el unorder map del idioma ID correspondiente
+            foreach (KeyValuePair<uint, string> item in pair.Value) 
+            {
+                //Id del texto en el unordered_map
+                uint textId = item.Key;
+                //Si no esta en la tabla auxiliar de nodos xml creamos el nodo <text>
+                if (!textnodes.ContainsKey(textId)) 
+                {
+                    XmlElement textElement = xmlDoc.CreateElement("text");
+                    textElement.SetAttribute("id", textId.ToString());
+
+                    textElement.InnerText = item.Value;
+                    //Añadimos al root el elemento <text>
+                    root.AppendChild(textElement);
+
+                    textnodes.Add(textId, textElement);
+
+                }
+            }
+        }
+        //Antes de acabar guardamos el archivo en la ruta
+        xmlDoc.Save(path);
     }
+
     //Metodo para leer un archivo XML a partir de un filename
  /*   public void ReadXML(string filename) 
     {
@@ -126,7 +173,7 @@ public class FileClass
         //Cogemos todos los textos etiquetados con text  
         XmlNodeList texts = xmlDoc.GetElementsByTagName("text");
         
-        string langName = xmlDoc.GetElementsByTagName("translations")[0].Attributes["lang"];
+        string langName = xmlDoc.GetElementsByTagName("translations")[0].Attributes["lang"].Value;
 
         //Recorremos la lista de textos del XML
 
