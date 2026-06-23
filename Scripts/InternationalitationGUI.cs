@@ -21,7 +21,7 @@ public class InternationalitationGUI : EditorWindow
     private bool procederClampUI = false;
 
     // Incluye una entrada en el menu superior de Unity
-    [MenuItem("Custom Plugins/Internationalitaion Plugin")]
+    [MenuItem("Custom Plugins/Internationalitation Plugin")]
     
     
     public static void ShowWindow()
