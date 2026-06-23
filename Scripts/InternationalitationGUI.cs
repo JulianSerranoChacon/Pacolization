@@ -162,6 +162,7 @@ public class InternationalitationGUI : EditorWindow
           "Select XML File Lenguage Configuration",
           Application.dataPath,
           "xml");
+
         //Debug.Log(selectedPath);
 
         if (!string.IsNullOrEmpty(selectedPath))

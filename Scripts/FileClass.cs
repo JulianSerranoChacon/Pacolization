@@ -83,9 +83,8 @@ public class FileClass
         //Antes de acabar guardamos el archivo en la ruta
         xmlDoc.Save(path);
     }
-
     //Metodo para leer un archivo XML a partir de un filename
-    public void ReadXML(string filename) 
+ /*   public void ReadXML(string filename) 
     {
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
@@ -113,6 +112,33 @@ public class FileClass
                 string res = CompoundText(lang.InnerText);
                 _core.SetLine(id, transLang[lang.Name], res);
             }
+        }
+    }*/
+
+    //Metodo para leer un archivo XML a partir de un filename
+        public void ReadXML(string filename) 
+    {
+
+        //Leemos el documento de la ruta correspondiente
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.Load(filename);
+
+        //Cogemos todos los textos etiquetados con text  
+        XmlNodeList texts = xmlDoc.GetElementsByTagName("text");
+        
+        string langName = xmlDoc.GetElementsByTagName("translations")[0].Attributes["lang"];
+
+        //Recorremos la lista de textos del XML
+
+        for (int i = 0; i < texts.Count; i++) 
+        {
+            //Id del texto (sera la clave del Diccionario de LocalCore)
+            uint id = uint.Parse(texts[i].Attributes["id"].Value);
+
+            
+            //Compound text es el texto con las variables sustituidas
+            string res = CompoundText(texts[i].InnerText);
+            _core.SetLine(id, transLang[langName], res);
         }
     }
 
