@@ -18,6 +18,8 @@ public class FileClass
     private Dictionary<string, uint> transLang = new Dictionary<string, uint>();
     //Lista en la que guardamos los datos de las variables
     private Dictionary<string, string> variables = new Dictionary<string, string>();
+    //Lista en la que guardamos los datos de los modificadores de genero
+    private Dictionary<string, int> generos = new Dictionary<string, int>();
     //Instancia del LocalCore
     private LocalCore _core;
 
@@ -329,7 +331,7 @@ public class FileClass
             // Cogemos unicamente el contenido entre !{}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string variableName = match.Groups[1].Value;
 
-            //Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
+            // Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
             if (variables.TryGetValue(variableName, out string value))
             {
                 return value;
@@ -337,6 +339,117 @@ public class FileClass
 
             // Si no existe la variable, dejamos el texto original
             return match.Value;
+        });
+    }
+
+
+//Metodo que permite añadir una modificación de genero a un archivo XML, pasandole como parametro el path, y su clave 
+    public void WriteGenderConfToXML(string path, string key, int value)
+    {
+        XmlDocument xmlDoc = new XmlDocument();
+
+        // Cargar o crear documento
+        if (File.Exists(path))
+        {
+            xmlDoc.Load(path);
+        }
+        else
+        {
+            //creamos la cabecera con la declaracion y el nodo raiz
+            XmlDeclaration declaration =
+                xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
+
+            XmlElement root = xmlDoc.CreateElement("ConfiguracionGenero");
+
+            xmlDoc.AppendChild(declaration);
+            xmlDoc.AppendChild(root);
+        }
+
+        // Nodo raíz
+        XmlNode rootNode = xmlDoc.SelectSingleNode("/ConfiguracionGenero");
+
+        // Buscar variable existente
+        XmlElement textElement = rootNode.SelectSingleNode(key) as XmlElement;
+
+        // Crear si no existe
+        if (textElement == null)
+        {
+            textElement = xmlDoc.CreateElement(key);
+            rootNode.AppendChild(textElement);
+        }
+
+        // Actualizar valor
+        textElement.InnerText = value;
+
+        // Escritura inmediata
+        using (FileStream fs = new FileStream(
+            path,
+            FileMode.OpenOrCreate,
+            FileAccess.Write,
+            FileShare.None))
+        {
+            fs.SetLength(0); // limpiar archivo anterior
+
+            xmlDoc.Save(fs);
+
+            fs.Flush(true); // forzar escritura física
+        }
+    }
+
+    //Metodo que lee las variables de un archivo XML dado un path
+    public void ReadGenderConfToXML(string path)
+    {
+        //Si el archivo no existe, no devuelve nada
+        if (!File.Exists(path))
+            return;
+
+        XmlDocument xmlDoc = new XmlDocument();
+        //cargamos el documento XML
+        xmlDoc.Load(path);
+
+        // Obtener el nodo raíz
+        XmlNode rootNode = xmlDoc.SelectSingleNode("ConfiguracionGenero");
+
+        if (rootNode == null)
+            return;
+
+        //Recorremos todos los nodos hijos del nodo raiz
+        foreach (XmlNode c in rootNode.ChildNodes)
+        {
+            // Evitar nodos raros (#comment, espacios, etc.)
+            if (c.NodeType != XmlNodeType.Element)
+                continue;
+
+            // Evitar claves duplicadas
+            if (!generos.ContainsKey(c.Name))
+            {
+                generos.Add(c.Name, (int)c.InnerText);
+            }
+            else
+            {
+                // Si ya existe, la actualizamos
+                generos[c.Name] = (int)c.InnerText;
+            }
+        }
+    }
+
+    //Metodo auxiliar que nos permite buscar un patron {"nombre"parteMasculina|parteFemenina} en un texto y sustituirlo por el valor correspondiente de segun el genero guardado con ese nombre
+    private string ModifyGenderText(string text)
+    {
+        return Regex.Replace(text,@"\{""([^""]+)""\:([^}]+)\}",match =>{
+            // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
+            string characterName = match.Groups[1].Value;
+
+            // Se divide las opciones entre los | en un array
+            string[] options = match.Groups[2].Value.Split('|');
+
+            // Trata de pillar cual el genero que se debe usar entre las opciones. Si no lo encuentra elige el valor 0 por defecto
+            int gender;
+            if (!characterGenders.TryGetValue(characterName, out int gender)) gender = 0;
+                
+            // Elige la opcion que haya sido indicada. Si hay cualquier fallo no previsto se escoge la primera opcion por defecto
+            if (gender >= 0 && gender < options.Length) return options[gender];
+            else return options[0];
         });
     }
 }
