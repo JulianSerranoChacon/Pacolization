@@ -117,7 +117,7 @@ public class LocalInterface
         _files.WriteVariablesToXML(varPath,key,value);
     }
     //Metodo usado para crear variables para la configuracion de genero
-    public void WriteVariableToXML(string key, int value)
+    public void WriteGenderConfToXML(string key, int value)
     {
         _files.WriteGenderConfToXML(genConfPath,key,value);
     }
