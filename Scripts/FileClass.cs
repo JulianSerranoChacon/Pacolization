@@ -112,7 +112,6 @@ public class FileClass
         _core.SetLanguageConfig(language[0]);
     }
 
-/*
     //Metodo que permite añadir una variable a un archivo XML, pasandole como parametro el path, y su clave 
     public void WriteVariablesToXML(string path, string key, string value)
     {
@@ -221,7 +220,6 @@ public class FileClass
         });
     }
 
-*/
 //Metodo que permite añadir una modificación de genero a un archivo XML, pasandole como parametro el path, y su clave 
     public void WriteGenderConfToXML(string path, string key, int value)
     {

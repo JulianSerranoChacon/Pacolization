@@ -11,7 +11,6 @@ public class InternationalitationGUI : EditorWindow
 
     LocalInterface inter;
     
-    private string langNum = "1";
     private bool setup = false;
     private bool scanScriptables = false;
     private string scriptablePath = "Assets";
@@ -45,9 +44,6 @@ public class InternationalitationGUI : EditorWindow
             
             EditorGUILayout.Space();
 
-            GUILayout.Label("Amount of languages:");
-            langNum = GUILayout.TextField(langNum, 25);
-
             EditorGUILayout.Space();
 
             readLangNames = GUILayout.Toggle(readLangNames, "Read Language settings from XML file?");
@@ -80,10 +76,7 @@ public class InternationalitationGUI : EditorWindow
                     );
                 }
 
-                if (langNum == null)
-                    InitializeAll(1,scanScriptables,scriptablePath);
-                else
-                    InitializeAll(uint.Parse(langNum),scanScriptables,scriptablePath);
+                InitializeAll(scanScriptables,scriptablePath);
                 setup = true;
             }
         }
@@ -110,7 +103,7 @@ public class InternationalitationGUI : EditorWindow
         }
     }
 
-    void InitializeAll(uint langinit, bool scan, string scrpath)
+    void InitializeAll(bool scan, string scrpath)
     {
         string selectedPath = EditorUtility.SaveFilePanel(
             "Select directory to save XML extraction",
