@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,15 +7,17 @@ using UnityEngine.SceneManagement;
 public class Pacolization : MonoBehaviour
 {
     [SerializeField]
-    private uint langs;
+    private uint langs = 0;
     [SerializeField]
     private bool scanScriptables;
     [SerializeField]
     private string scriptablePath;
     [SerializeField]
-    private string filePath;
+    private string[] filePath;
     [SerializeField]
     private string confPath;
+    [SerializeField]
+    private uint initialLang = 0;
     /*
     [SerializeField]
     public string variablePath;*/
@@ -34,7 +37,7 @@ public class Pacolization : MonoBehaviour
             DontDestroyOnLoad(this);
 
             LocalInterface.Instance().Initiate(langs, scanScriptables, scriptablePath);
-            LocalInterface.Instance().StartInExecution(filePath, 0, confPath, /*variablePath,*/ genderConfigurationPath);
+            LocalInterface.Instance().StartInExecution(filePath[initialLang], 0, confPath, /*variablePath,*/ genderConfigurationPath);
         }
         else
         {
