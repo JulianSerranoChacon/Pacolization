@@ -52,6 +52,10 @@ public class Pacolization : MonoBehaviour
         Li.changeLang(filePath[id], (uint)id, confPath[currentLang], /*variablePath,*/ genderConfigurationPath);
     }
 
+    public void WriteGenderConf(string key, int value)
+    {
+        Li.WriteGenderConfToXML(key,value,filePath[currentLang]);
+    }
      void OnApplicationQuit()
     {
       LocalInterface.Instance().OnQuit();    
