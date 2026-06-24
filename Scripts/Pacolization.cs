@@ -30,7 +30,6 @@ public class Pacolization : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this);
 
-            LocalInterface.Instance().ChangeLang(1);
             LocalInterface.Instance().Initiate(langs, scanScriptables, scriptablePath);
             LocalInterface.Instance().StartInExecution(filePath, 0, confPath, variablePath);
         }
