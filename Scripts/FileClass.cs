@@ -265,6 +265,26 @@ public class FileClass
             return match.Value;
         });
     }
+
+    //Metodo auxiliar que nos permite buscar un patron !{variable} en un texto y sustituirlo por el valor correspondiente de segun el genero de la palabra
+    private string ModifyGenderText(string text, int gen)
+    {
+        return Regex.Replace(text,@"!\{(.*?)\}",match =>{
+            // Cogemos unicamente el contenido entre !{}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
+            string variableName = match.Groups[1].Value;
+
+            //Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
+            if (variables.TryGetValue(variableName, out string[] values))
+            {
+                //Pilla las distintas opciones de generos para esa variable y elige la seleccionada
+                //0 -> Masculino    1 -> Femenino   2 -> Neutro
+                if (gen >= 0 && gen < values.Length) return values[gen];                                    
+            }
+
+            // Si no existe la variable, dejamos el texto original
+            return match.Value;
+        });
+    }
 }
 
 
