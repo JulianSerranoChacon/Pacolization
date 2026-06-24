@@ -15,7 +15,7 @@ public class Pacolization : MonoBehaviour
     [SerializeField]
     private string confPath;
     [SerializeField]
-    private uint initialLang = 0;
+    private uint currentLang = 0;
     /*
     [SerializeField]
     public string variablePath;*/
@@ -38,7 +38,7 @@ public class Pacolization : MonoBehaviour
 
             Li = LocalInterface.Instance();
             Li.Initiate(scanScriptables, scriptablePath);
-            Li.StartInExecution(filePath[initialLang], initialLang, confPath, /*variablePath,*/ genderConfigurationPath);
+            Li.StartInExecution(filePath[currentLang], currentLang, confPath, /*variablePath,*/ genderConfigurationPath);
         }
         else
         {
@@ -48,6 +48,7 @@ public class Pacolization : MonoBehaviour
 
     public void changeLang(int id)
     {
+        currentLang =(uint) id;
         Li.changeLang(filePath[id], (uint)id, confPath, /*variablePath,*/ genderConfigurationPath);
     }
 
