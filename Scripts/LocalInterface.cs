@@ -61,7 +61,24 @@ public class LocalInterface
         _files.ReadGenderConfToXML(genConfPath);
         _files.ReadXML(path);
         _extract.setScriptableRefereces();
-        ChangeLang(lang);
+        changeLang(lang);
+    }
+
+
+    //Configura el sistema de localizacion para ejecucion
+    //Requiere la ruta al archivo XML, el idioma inicial, la ruta a la configuracion y a las variables
+    //Llamado por la clase Pacolization
+    public void changeLang(string path, uint lang, string confpath, /*string vP, */string gCP)
+    {
+        //varPath = vP;
+        _core.clearMap();
+        genConfPath = gCP;
+        //_files.ReadXMLLanguage(confpath);
+        //_files.ReadVariablesToXML(varPath);
+        _files.ReadGenderConfToXML(genConfPath);
+        _files.ReadXML(path);
+        _extract.setScriptableRefereces();
+        changeLang(lang);
     }
 
     //IMPORTANTE:
@@ -91,7 +108,7 @@ public class LocalInterface
     }
 
     //Cambia el idioma actual
-    public void ChangeLang(uint newLang)
+    public void changeLang(uint newLang)
     {
         _core.ChangeLang(newLang);
         _core.SetScriptableStrings();

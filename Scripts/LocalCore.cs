@@ -165,6 +165,11 @@ public class LocalCore
 
         }
     }
+
+    public void clearMap()
+    {
+        stringMap.Clear();
+    }
   
     public void FlushScriptableReferences()
     {
