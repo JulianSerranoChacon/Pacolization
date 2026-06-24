@@ -27,7 +27,7 @@ public class LocalCore
 
     //Marcador que lleva la cuenta del lenguaje actual
     //Funciona para lectura/escritura y ejecucion
-    private uint currentLang;
+    private uint currentLang =1;
 
     public IReadOnlyDictionary<uint, Dictionary<uint, string>> GetLines => stringMap;
     public IReadOnlyDictionary<uint, XmlNode> GetLanguageMap => languageMap;

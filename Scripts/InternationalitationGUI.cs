@@ -6,7 +6,7 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
-public class InternationalizationGUI : EditorWindow
+public class InternationalitationGUI : EditorWindow
 {
 
     LocalInterface inter;
@@ -21,13 +21,13 @@ public class InternationalizationGUI : EditorWindow
     private bool procederClampUI = false;
 
     // Incluye una entrada en el menu superior de Unity
-    [MenuItem("Custom Plugins/Internationalization Plugin")]
+    [MenuItem("Custom Plugins/Internationalitaion Plugin")]
     
     
     public static void ShowWindow()
     {
         // Nombre del "Tab" en la ventna del editor
-        GetWindow<InternationalizationGUI>("Internationalitaion Plugin");
+        GetWindow<InternationalitationGUI>("Internationalitaion Plugin");
     }
 
     // Dibuja la interfaz en la ventana del editor
@@ -162,7 +162,6 @@ public class InternationalizationGUI : EditorWindow
           "Select XML File Lenguage Configuration",
           Application.dataPath,
           "xml");
-
         //Debug.Log(selectedPath);
 
         if (!string.IsNullOrEmpty(selectedPath))
