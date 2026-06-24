@@ -32,10 +32,10 @@ public class LocalInterface
 
     //Inicia todo el sistema de localizacion
     //Llamado por la clase Pacolization
-    public void Initiate(uint lang, bool scan, string path)
+    public void Initiate(bool scan, string path)
     {
         _core = LocalCore.Instance();
-        _core.Initiate(lang);
+        _core.Initiate();
         _extract = new ExtractClass(scan, path);
         _files = new FileClass();
     }
@@ -45,7 +45,7 @@ public class LocalInterface
     public void FullExtract(string path)
     {
         _extract.ExtractStrings();
-        _files.WriteXML(path,_core.GetNumLangs());
+        _files.WriteXML(path);
         _extract.ReplaceStrings();  
     }
 
@@ -142,7 +142,7 @@ public class LocalInterface
     //[DEBUG - No Usar]
     public void WriteToXML(string path) 
     {
-        _files.WriteXML(path,LocalCore.Instance().GetNumLangs());
+        _files.WriteXML(path);
     }
 
     //[DEBUG - No Usar]

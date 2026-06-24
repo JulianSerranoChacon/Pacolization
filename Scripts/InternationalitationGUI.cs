@@ -122,7 +122,7 @@ public class InternationalitationGUI : EditorWindow
         if (!string.IsNullOrEmpty(selectedPath))
         {
             inter = LocalInterface.Instance();
-            inter.Initiate(langinit, scan, scrpath);
+            inter.Initiate(scan, scrpath);
 
             //Leemos primero el XML de los idiomas, antes de la extraccion
             if(readLangNames)

@@ -30,7 +30,7 @@ public class FileClass
 
         //Metodo que crea y escribe todos los textos extraidos en un documentoXML
     //Se le pasa como parametro el path en el que se escribirá
-    public void WriteXML(string path, uint lenguages)
+    public void WriteXML(string path)
     {
         //Doc XML donde vamos a guardar los datos del localCore
         XmlDocument xmlDoc = new XmlDocument();

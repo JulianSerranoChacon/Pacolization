@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 public class Pacolization : MonoBehaviour
 {
     [SerializeField]
-    private uint langs = 0;
-    [SerializeField]
     private bool scanScriptables;
     [SerializeField]
     private string scriptablePath;
@@ -39,7 +37,7 @@ public class Pacolization : MonoBehaviour
             DontDestroyOnLoad(this);
 
             Li = LocalInterface.Instance();
-            Li.Initiate(langs, scanScriptables, scriptablePath);
+            Li.Initiate(scanScriptables, scriptablePath);
             Li.StartInExecution(filePath[initialLang], initialLang, confPath, /*variablePath,*/ genderConfigurationPath);
         }
         else

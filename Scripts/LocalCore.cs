@@ -17,7 +17,7 @@ public class LocalCore
     //stringTable es un diccionario (en C# se implementan mediante unordered maps). 
     //Cada key alberga un array de tamano languages. 
     //En cada posicion del array se encuentra el string en un idioma concreto.
-    private uint languages;
+    //private uint languages;
 
     private Dictionary<uint, XmlNode> languageMap;
     private Dictionary<uint, string> stringMap;
@@ -51,12 +51,12 @@ public class LocalCore
 
 #region Metodos
 
-    public void Initiate(uint langAm)
+    public void Initiate()
     {
-        if(langAm <= 0)
-            throw new ArgumentException("Ammount of languages cannot be negative or 0.");
+        //if(langAm <= 0)
+            //throw new ArgumentException("Ammount of languages cannot be negative or 0.");
 
-        languages = langAm;
+        //languages = langAm;
 
         stringMap = new Dictionary<uint, string>();
         languageMap = new Dictionary<uint, XmlNode>();
@@ -121,17 +121,17 @@ public class LocalCore
 
     #region Language Configuration
     
-    public uint GetNumLangs()
+    /*blic uint GetNumLangs()
     {
         return languages;
-    }
+    }*/
 
     //Cambia el idioma que esta usando la clase
     //Falla si es un idioma fuera del alcance especificado.
     public void ChangeLang(uint newLang)
     {
-        if(newLang >= languages)
-            throw new ArgumentException("New language value exceeding range of languages.");
+       //f(newLang >= languages)
+            //row new ArgumentException("New language value exceeding range of languages.");
 
         currentLang = newLang; 
         foreach(TextUpdate refs in textUpdateRefs)
