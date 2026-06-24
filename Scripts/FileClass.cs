@@ -112,7 +112,7 @@ public class FileClass
                 XmlNode lang = texts[i].ChildNodes[j];
 
                 //Compound text es el texto con las variables sustituidas
-                string res = CompoundText(lang.InnerText);
+                string res = ModifyGenderText(lang.InnerText);                
                 _core.SetLine(id, transLang[lang.Name], res);
             }
         }
@@ -160,6 +160,7 @@ public class FileClass
         _core.SetLanguageConfig(ret);
     }
 
+/*
     //Metodo que permite añadir una variable a un archivo XML, pasandole como parametro el path, y su clave 
     public void WriteVariablesToXML(string path, string key, string value)
     {
@@ -268,7 +269,7 @@ public class FileClass
         });
     }
 
-
+*/
 //Metodo que permite añadir una modificación de genero a un archivo XML, pasandole como parametro el path, y su clave 
     public void WriteGenderConfToXML(string path, string key, int value)
     {
@@ -349,12 +350,12 @@ public class FileClass
             // Evitar claves duplicadas
             if (!generos.ContainsKey(c.Name))
             {
-                generos.Add(c.Name, int.Parse(c.InnerText));
+                generos.Add(c.Name, Int32.Parse(c.InnerText));
             }
             else
             {
                 // Si ya existe, la actualizamos
-                generos[c.Name] = int.Parse(c.InnerText);
+                generos[c.Name] = Int32.Parse(c.InnerText);
             }
         }
     }
