@@ -137,6 +137,10 @@ public class LocalInterface
     {
         _files.WriteGenderConfToXML(genConfPath,key,value);
     }
+    public void ReReaReadXML(string path)
+    {
+        _files.ReadXML(path);
+    }
 
 #region DebugMethods
     //[DEBUG - No Usar]

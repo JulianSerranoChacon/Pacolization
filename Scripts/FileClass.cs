@@ -273,6 +273,8 @@ public class FileClass
 
             fs.Flush(true); // forzar escritura física
         }
+        // Recarga de los textos, ahora con la nueva configuracion de genero
+        Pacolization.Instance().ReReadXML();
     }
 
     //Metodo que lee las variables de un archivo XML dado un path

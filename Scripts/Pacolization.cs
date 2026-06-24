@@ -52,6 +52,10 @@ public class Pacolization : MonoBehaviour
         Li.changeLang(filePath[id], (uint)id, confPath[currentLang], /*variablePath,*/ genderConfigurationPath);
     }
 
+    public void ReReadXML()
+    {
+        Li.ReReaReadXML(filePath[currentLang]);
+    }
      void OnApplicationQuit()
     {
       LocalInterface.Instance().OnQuit();    
