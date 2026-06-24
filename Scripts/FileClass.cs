@@ -107,26 +107,23 @@ public class FileClass
         Dictionary<uint, XmlElement> textnodes = new Dictionary<uint, XmlElement>();
 
         //Recorremos todo el unorderedMap del stringMap
-        foreach (KeyValuePair<uint, Dictionary<uint, string>> pair in _core.GetLines)
-        {
             //Recorremos el unorder map del idioma ID correspondiente
-            foreach (KeyValuePair<uint, string> item in pair.Value) 
+        foreach (KeyValuePair<uint, string> item in _core.GetLines) 
+        {
+            //Id del texto en el unordered_map
+            uint textId = item.Key;
+            //Si no esta en la tabla auxiliar de nodos xml creamos el nodo <text>
+            if (!textnodes.ContainsKey(textId)) 
             {
-                //Id del texto en el unordered_map
-                uint textId = item.Key;
-                //Si no esta en la tabla auxiliar de nodos xml creamos el nodo <text>
-                if (!textnodes.ContainsKey(textId)) 
-                {
-                    XmlElement textElement = xmlDoc.CreateElement("text");
-                    textElement.SetAttribute("id", textId.ToString());
+                XmlElement textElement = xmlDoc.CreateElement("text");
+                textElement.SetAttribute("id", textId.ToString());
 
-                    textElement.InnerText = item.Value;
-                    //Añadimos al root el elemento <text>
-                    root.AppendChild(textElement);
+                textElement.InnerText = item.Value;
+                //Añadimos al root el elemento <text>
+                root.AppendChild(textElement);
 
-                    textnodes.Add(textId, textElement);
+                textnodes.Add(textId, textElement);
 
-                }
             }
         }
         //Antes de acabar guardamos el archivo en la ruta
@@ -187,8 +184,8 @@ public class FileClass
 
             
             //Compound text es el texto con las variables sustituidas
-            string res = CompoundText(texts[i].InnerText);
-            _core.SetLine(id, transLang[langName], res);
+            string res = ModifyGenderText(texts[i].InnerText);
+            _core.SetLine(id,  res);
         }
     }
 
@@ -215,9 +212,6 @@ public class FileClass
         {
             //Id del lenguaje
             uint id = uint.Parse(node.Attributes["id"].Value);
-
-            //añadimos a mapas como lenguajes haya
-            _core.AddNewLanguage(id);
 
             //Nombre del Idioma (etiqueta Lenguaje)
             string langName = node.ChildNodes.Item(0).InnerText;

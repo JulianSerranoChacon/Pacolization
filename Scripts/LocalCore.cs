@@ -20,7 +20,7 @@ public class LocalCore
     private uint languages;
 
     private Dictionary<uint, XmlNode> languageMap;
-    private Dictionary<uint, Dictionary<uint, string>> stringMap;
+    private Dictionary<uint, string> stringMap;
     private Dictionary<uint, Pair<ScriptableObject, FieldInfo>> refScriptObj;
 
     private List<TextUpdate> textUpdateRefs;
@@ -29,7 +29,7 @@ public class LocalCore
     //Funciona para lectura/escritura y ejecucion
     private uint currentLang;
 
-    public IReadOnlyDictionary<uint, Dictionary<uint, string>> GetLines => stringMap;
+    public IReadOnlyDictionary<uint, string> GetLines => stringMap;
     public IReadOnlyDictionary<uint, XmlNode> GetLanguageMap => languageMap;
     #endregion
 
@@ -58,7 +58,7 @@ public class LocalCore
 
         languages = langAm;
 
-        stringMap = new Dictionary<uint, Dictionary<uint, string>>();
+        stringMap = new Dictionary<uint, string>();
         languageMap = new Dictionary<uint, XmlNode>();
 
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();
@@ -92,50 +92,21 @@ public class LocalCore
     //Devuelve el string de la ID correspondiente del idioma que esta activo.
     public string GetLine(uint ID)
     {
-        if(!stringMap.ContainsKey(currentLang) || !stringMap[currentLang].ContainsKey(ID))
+        if(!stringMap.ContainsKey(ID))
             throw new ArgumentException("No value assigned to corresponding key.");
 
-        return stringMap[currentLang][ID];
+        return stringMap[ID];
     }
 
     //Escribe la linea de la ID correspondiente al idioma que esta activo. 
     //Si la ID es nueva, crea un array y lo almacena
     public void SetLine(uint ID, string value)
     {
-        if (!stringMap.ContainsKey(currentLang))
-        {
-            throw new ArgumentException("No value assigned to corresponding Lang.");
-        }
+        
+        if(!stringMap.ContainsKey(ID))
+                stringMap.Add(ID, value);
         else
-        {
-            if(!stringMap[currentLang].ContainsKey(ID))
-                stringMap[currentLang].Add(ID, value);
-            else
-                stringMap[currentLang][ID] = value;
-        }
-    }
-
-    public void SetLine(uint ID, uint lang, string value)
-    {
-         if (!stringMap.ContainsKey(lang))
-        {
-            throw new ArgumentException("No value assigned to corresponding Lang.");
-        }
-        else
-        {
-            if(!stringMap[lang].ContainsKey(ID))
-                stringMap[lang].Add(ID, value);
-            else
-                stringMap[lang][ID] = value;
-        }
-    }
-    
-    public void SetLineLangs(uint ID,string value)
-    {
-        for(uint i=0; i<languages; i++)
-        {
-            stringMap[i].Add(ID, value);
-        }
+            stringMap[ID] = value;
     }
     #endregion
     
@@ -153,21 +124,6 @@ public class LocalCore
     public uint GetNumLangs()
     {
         return languages;
-    }
-
-    public void AddNewLanguage(uint id)
-    {
-        if (!stringMap.ContainsKey(id))
-                stringMap.Add(id, new Dictionary<uint, string>());
-    }
-
-    public void AddRemainingLanguages()
-    {
-        for(uint i = 0; i < languages; i++)
-        {
-            if (!stringMap.ContainsKey(i))
-                stringMap.Add(i, new Dictionary<uint, string>());
-        }
     }
 
     //Cambia el idioma que esta usando la clase
@@ -198,13 +154,13 @@ public class LocalCore
         {
             object val = item.Value.second.GetValue(item.Value.first);
 
-            if (!stringMap.ContainsKey(currentLang) || !stringMap[currentLang].ContainsKey(uint.Parse(val.ToString())))
+            if (!stringMap.ContainsKey(uint.Parse(val.ToString())))
             {
                 throw new ArgumentException("No value found for ScriptableObject.");
             }
             else
             {
-                item.Value.second.SetValue(item.Value.first, stringMap[currentLang][uint.Parse(val.ToString())]);
+                item.Value.second.SetValue(item.Value.first, stringMap[uint.Parse(val.ToString())]);
             }
 
         }

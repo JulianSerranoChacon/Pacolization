@@ -44,7 +44,6 @@ public class LocalInterface
     //Lanza el sistema de extraccion 
     public void FullExtract(string path)
     {
-        _core.AddRemainingLanguages();
         _extract.ExtractStrings();
         _files.WriteXML(path,_core.GetNumLangs());
         _extract.ReplaceStrings();  

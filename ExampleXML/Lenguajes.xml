@@ -2,7 +2,7 @@
 
   <Lenguaje id="0">
 
-    <Nombre>Español</Nombre>
+    <Nombre>es</Nombre>
 
     <Texto>
       <Direccion>Iz_Der</Direccion>
@@ -163,7 +163,7 @@
 
   <Lenguaje id="1">
 
-    <Nombre>English</Nombre>
+    <Nombre>en</Nombre>
 
     <Texto>
       <Direccion>Iz_Der</Direccion>

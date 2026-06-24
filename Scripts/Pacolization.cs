@@ -6,15 +6,15 @@ using UnityEngine.SceneManagement;
 public class Pacolization : MonoBehaviour
 {
     [SerializeField]
-    public uint langs;
+    private uint langs;
     [SerializeField]
-    public bool scanScriptables;
+    private bool scanScriptables;
     [SerializeField]
-    public string scriptablePath;
+    private string scriptablePath;
     [SerializeField]
-    public string filePath;
+    private string filePath;
     [SerializeField]
-    public string confPath;
+    private string confPath;
     /*
     [SerializeField]
     public string variablePath;*/
