@@ -52,9 +52,9 @@ public class Pacolization : MonoBehaviour
         Li.changeLang(filePath[id], (uint)id, confPath[currentLang], /*variablePath,*/ genderConfigurationPath);
     }
 
-    public void ReReadXML()
+    public void WriteGenderConf(string key, int value)
     {
-        Li.ReReaReadXML(filePath[currentLang]);
+        Li.WriteGenderConfToXML(key,value,filePath[currentLang]);
     }
      void OnApplicationQuit()
     {

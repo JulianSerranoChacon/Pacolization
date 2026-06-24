@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Xml;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -133,12 +134,9 @@ public class LocalInterface
         _files.WriteVariablesToXML(varPath,key,value);
     }*/
     //Metodo usado para crear variables para la configuracion de genero
-    public void WriteGenderConfToXML(string key, int value)
+    public void WriteGenderConfToXML(string key, int value, string path)
     {
         _files.WriteGenderConfToXML(genConfPath,key,value);
-    }
-    public void ReReaReadXML(string path)
-    {
         _files.ReadXML(path);
     }
 
