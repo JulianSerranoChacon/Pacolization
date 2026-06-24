@@ -73,7 +73,7 @@ public class LocalInterface
         //varPath = vP;
         _core.clearMap();
         genConfPath = gCP;
-        //_files.ReadXMLLanguage(confpath);
+        _files.ReadXMLLanguage(confpath);
         //_files.ReadVariablesToXML(varPath);
         _files.ReadGenderConfToXML(genConfPath);
         _files.ReadXML(path);

@@ -19,7 +19,7 @@ public class LocalCore
     //En cada posicion del array se encuentra el string en un idioma concreto.
     //private uint languages;
 
-    private Dictionary<uint, XmlNode> languageMap;
+    private XmlNode languageNode;
     private Dictionary<uint, string> stringMap;
     private Dictionary<uint, Pair<ScriptableObject, FieldInfo>> refScriptObj;
 
@@ -30,7 +30,11 @@ public class LocalCore
     private uint currentLang;
 
     public IReadOnlyDictionary<uint, string> GetLines => stringMap;
-    public IReadOnlyDictionary<uint, XmlNode> GetLanguageMap => languageMap;
+
+    public XmlNode getLanguageNode()
+    {
+        return languageNode;
+    }
     #endregion
 
     #region Singleton
@@ -59,7 +63,6 @@ public class LocalCore
         //languages = langAm;
 
         stringMap = new Dictionary<uint, string>();
-        languageMap = new Dictionary<uint, XmlNode>();
 
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();
         textUpdateRefs = new List<TextUpdate>();    
@@ -84,9 +87,9 @@ public class LocalCore
     #endregion
 
     #region  Getters and Setters
-    public void  SetLanguageConfig(Dictionary<uint, XmlNode> conf)
+    public void  SetLanguageConfig(XmlNode conf)
     {
-        languageMap = conf;
+        languageNode = conf;
     }
 
     //Devuelve el string de la ID correspondiente del idioma que esta activo.
@@ -112,7 +115,7 @@ public class LocalCore
     
     public bool IsRightToLeft()
     {
-        string direccion = languageMap[currentLang]
+        string direccion = languageNode
         .SelectSingleNode("Texto")
         .SelectSingleNode("Direccion")
         .InnerText;
@@ -120,18 +123,11 @@ public class LocalCore
     }
 
     #region Language Configuration
-    
-    /*blic uint GetNumLangs()
-    {
-        return languages;
-    }*/
 
     //Cambia el idioma que esta usando la clase
     //Falla si es un idioma fuera del alcance especificado.
     public void ChangeLang(uint newLang)
     {
-       //f(newLang >= languages)
-            //row new ArgumentException("New language value exceeding range of languages.");
 
         currentLang = newLang; 
         foreach(TextUpdate refs in textUpdateRefs)

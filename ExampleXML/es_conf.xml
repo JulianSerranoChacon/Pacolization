@@ -1,0 +1,14 @@
+<Lenguaje>
+
+    <Nombre>es</Nombre>
+
+    <Texto>
+      <Direccion>Iz_Der</Direccion>
+    </Texto>
+
+    <Numeros>
+      <Decimal>,</Decimal>
+      <SeparadorMil>.</SeparadorMil>
+      <Dinero>€</Dinero>
+    </Numeros>
+</Lenguaje>

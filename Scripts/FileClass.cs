@@ -8,14 +8,11 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class FileClass
 {
-    //Lista de los idiomas ordenados al leer el XML de lenguajes
-    private List<string> languagesOrder = new List<string>();
-    //Lista que sirve como conversor de nombre del idioma a ID del idioma
-    private Dictionary<string, uint> transLang = new Dictionary<string, uint>();
     //Lista en la que guardamos los datos de las variables
     private Dictionary<string, string> variables = new Dictionary<string, string>();
     //Lista en la que guardamos los datos de los modificadores de genero
@@ -111,30 +108,8 @@ public class FileClass
         xmlDoc.Load(filename);
 
         //Cogemos todos los textos etiquetados con lenguaje 
-        XmlNodeList texts = xmlDoc.GetElementsByTagName("Lenguaje");
-
-        //Limpiamos primero el orden de los idiomas leidos en el XML
-        languagesOrder.Clear();
-
-        //Recorremos los XMLNode 
-        foreach (XmlNode node in texts)
-        {
-            //Id del lenguaje
-            uint id = uint.Parse(node.Attributes["id"].Value);
-
-            //Nombre del Idioma (etiqueta Lenguaje)
-            string langName = node.ChildNodes.Item(0).InnerText;
-
-            //Map con clave el nombre del idioma y el id correspondiente
-            transLang.Add(langName,id);
-
-            //Nombre del lenguaje
-            languagesOrder.Add(langName);
-
-            //Metemos el lenguaje devuelto con los idiomas y sus parametros
-            ret[id] = node;
-        }
-        _core.SetLanguageConfig(ret);
+        XmlNodeList language = xmlDoc.GetElementsByTagName("Lenguaje");
+        _core.SetLanguageConfig(language[0]);
     }
 
 /*
