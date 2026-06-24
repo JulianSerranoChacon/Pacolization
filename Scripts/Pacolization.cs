@@ -17,6 +17,8 @@ public class Pacolization : MonoBehaviour
     public string confPath;
     [SerializeField]
     public string variablePath;
+    [SerializeField]
+    public string genderConfigurationPath;
 
     private static Pacolization _instance;
     public static Pacolization Instance()
@@ -30,7 +32,7 @@ public class Pacolization : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this);
             LocalInterface.Instance().Initiate(langs, scanScriptables, scriptablePath);
-            LocalInterface.Instance().StartInExecution(filePath, 0, confPath, variablePath);
+            LocalInterface.Instance().StartInExecution(filePath, 0, confPath, variablePath, genderConfigurationPath);
         }
         else
         {
