@@ -6,7 +6,7 @@ using TMPro;
 [RequireComponent(typeof(RectTransform))]
 public class UIClamper : MonoBehaviour
 {
-    public enum ScalingMode { Dynamic, Fixed } //Dynamic es si se quiere que el cuadro de texto se escale de manera dinamica hasta el maximo,
+    public enum ScalingMode { Dynamic, Fixed } //Dynamic es si se quiere que el cuadro de texto se escale de manera dinamica hasta el maximo tamano,
                                                //y Fixed es si queremos que el cuadro de texto este fijo en su tamano maximo
 
     [Header("Configuracion del Escalado")]
@@ -33,12 +33,12 @@ public class UIClamper : MonoBehaviour
     private bool activateAutoSize = false;
 
 
-    // Modifican el SIZE (tamano) y espaciado del texto
-    [Tooltip("SIZE minimo del texto")]
+    // Modifican el tamano y espaciado del texto
+    [Tooltip("Tamano minimo del texto")]
     [SerializeField]
     private float minFontSize = 5.0f; // Cuanto mas bajo sea el valor de "Min Font Size", mejor se asegura de que el texto no se desborde.
 
-    [Tooltip("SIZE maximo del texto")]
+    [Tooltip("Tamano maximo del texto")]
     [SerializeField]
     private float maxFontSize = 15.0f;
 
@@ -76,8 +76,8 @@ public class UIClamper : MonoBehaviour
         float finalLimitX = Mathf.Min(maxX > 0 ? maxX : canvasRect.rect.width, canvasRect.rect.width);
         float finalLimitY = Mathf.Min(maxY > 0 ? maxY : canvasRect.rect.height, canvasRect.rect.height);
 
-        // En funcion de la logica de escalado, el cuadro de texto tendra un SIZE diferente
-        if (mode == ScalingMode.Fixed) // Modo FIJO: SIZE maximo en todo momento
+        // En funcion de la logica de escalado, el cuadro de texto tendra un tamano diferente
+        if (mode == ScalingMode.Fixed) // Modo FIJO: Tamano maximo en todo momento
         {
             layout.minWidth = finalLimitX;
             layout.minHeight = finalLimitY;
