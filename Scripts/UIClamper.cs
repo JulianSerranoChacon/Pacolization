@@ -7,27 +7,36 @@ using TMPro;
 public class UIClamper : MonoBehaviour
 {
     public enum ScalingMode { Dynamic, Fixed } //Dynamic es si se quiere que el cuadro de texto se escale de manera dinamica hasta el maximo,
-                                               //y Fixed es si queremos que el cuadro de texto este fijo
+                                               //y Fixed es si queremos que el cuadro de texto este fijo en su tamano maximo
 
     [Header("Configuracion del Escalado")]
     [SerializeField]
     private ScalingMode mode = ScalingMode.Dynamic;
 
+    // Son el ancho y alto maximo de resolucion que puede tener el cuadro de texto EN RELACION con la RESOLUCION DEL CANVAS
     [Tooltip("Limites maximos en unidades del Canvas.")]
     [SerializeField]
     private float maxX = 700f;
     [Tooltip("Limites minimos en unidades del Canvas.")]
     [SerializeField]
     private float maxY = 400f;
+    
+
+    // Estas opciones se encargan de ir escalando progresivamente el texto alos tamanos deseados,
+    // para que quepa dentro del cuadro si este no puede expandirse mas alla de los limites de "Max X" y "Max Y".
 
     [Header("Configuracion del autosize")]
+
+    // Fuerza al componente "TextMeshPro - Text (UI)" del gameobject HIJO a activar el "Auto Size" en todo momento si esta en true
     [Tooltip("Activa o no el Auto Size del texto")]
     [SerializeField]
     private bool activateAutoSize = false;
 
+
+    // Modifican el SIZE (tamano) y espaciado del texto
     [Tooltip("SIZE minimo del texto")]
     [SerializeField]
-    private float minFontSize = 5.0f;
+    private float minFontSize = 5.0f; // Cuanto mas bajo sea el valor de "Min Font Size", mejor se asegura de que el texto no se desborde.
 
     [Tooltip("SIZE maximo del texto")]
     [SerializeField]
