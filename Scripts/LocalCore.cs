@@ -37,15 +37,15 @@ public class LocalCore
     }
     #endregion
 
-    #region Singleton
-    //La clase necesitara ser un singleton ya que solo queremos que exista una
+#region Singleton
+//La clase necesitara ser un singleton ya que solo queremos que exista una
     public LocalCore() {}
 
     private static LocalCore _instance;
 
     public static LocalCore Instance()
     {
-         if (_instance == null)
+            if (_instance == null)
         {
             _instance = new LocalCore();
         }
