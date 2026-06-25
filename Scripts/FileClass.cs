@@ -18,6 +18,8 @@ public class FileClass
     //Lista en la que guardamos los datos de los modificadores de genero
     private Dictionary<string, int> generos = new Dictionary<string, int>();
 
+    private Dictionary<string, int> cantidades = new Dictionary<string, int>();
+
     NumberFormatInfo numberFormatInfo;
     //Instancia del LocalCore
     private LocalCore _core;    
@@ -96,6 +98,8 @@ public class FileClass
             string res = ModifyGenderText(CompoundText(texts[i].InnerText));
             //Debug.Log(res);
             res = CompoundText(res);
+            res = escribeNumerosConfigurados(res);
+            res = ModifyPluralsText(res);
             _core.SetLine(id,  res);
         }
     }
@@ -119,6 +123,8 @@ public class FileClass
         string dec = xmlDoc.SelectSingleNode("//Decimal").InnerText;
         string mil = xmlDoc.SelectSingleNode("//SeparadorMil").InnerText;
         string dinero = xmlDoc.SelectSingleNode("//Dinero").InnerText;
+        string posicionStr = xmlDoc.SelectSingleNode("//PosicionMoneda").InnerText;
+        int posicionMoneda = int.TryParse(posicionStr, out int pos) ? pos : 3;
 
         numberFormatInfo = new NumberFormatInfo
         {
@@ -126,8 +132,54 @@ public class FileClass
             NumberGroupSeparator = mil,
             CurrencyDecimalSeparator = dec,
             CurrencyGroupSeparator = mil,
-            CurrencySymbol = dinero
+            CurrencySymbol = dinero,
+            CurrencyPositivePattern = posicionMoneda
         };
+    }
+
+    public string escribeNumerosConfigurados(string textoOriginal)
+    {
+        if (string.IsNullOrEmpty(textoOriginal)) return string.Empty;
+
+        // Busca la etiqueta [C:numero] (grupo 'moneda') O un número normal (grupo 'numero')
+        string patronRegex = @"\[C:(?<moneda>\d+(?:\.\d+)?)\]|(?<numero>\d+(?:\.\d+)?)";
+
+        string textoProcesado = Regex.Replace(textoOriginal, patronRegex, match =>
+        {
+            // Determinamos si el patrón coincidió con la etiqueta de moneda
+            bool esMoneda = match.Groups["moneda"].Success;
+
+            // Obtenemos el texto numérico en base al grupo que tuvo éxito
+            string numeroEncontrado = esMoneda ? match.Groups["moneda"].Value : match.Groups["numero"].Value;
+
+            // Lógica para números con decimales
+            if (numeroEncontrado.Contains("."))
+            {
+                if (float.TryParse(numeroEncontrado, NumberStyles.Any, CultureInfo.InvariantCulture, out float valorFloat))
+                {
+                    if (esMoneda)
+                        return valorFloat.ToString("C2", numberFormatInfo);
+                    else
+                        return valorFloat.ToString("N2", numberFormatInfo);
+                }
+            }
+            // Lógica para números enteros
+            else
+            {
+                if (int.TryParse(numeroEncontrado, out int valorInt))
+                {
+                    if (esMoneda)
+                        return valorInt.ToString("C0", numberFormatInfo);
+                    else
+                        return valorInt.ToString("N0", numberFormatInfo);
+                }
+            }
+
+            // Si el TryParse falla por algún motivo, devolvemos el texto original para no romper nada
+            return match.Value;
+        });
+
+        return textoProcesado;
     }
 
     public void WriteVariables(string key, string value)
@@ -180,6 +232,41 @@ public class FileClass
             // Elige la opcion que haya sido indicada. Si hay cualquier fallo no previsto se escoge la primera opcion por defecto
             if (gender >= 0 && gender < options.Length) return options[gender];
             else return options[0];
+        });
+    }
+
+    public void WriteCantidades(string key, int value)
+    {
+        if (cantidades.ContainsKey(key))
+            cantidades[key] = value;
+        else
+            cantidades.Add(key, value);
+    }
+
+    private string ModifyPluralsText(string text)
+    {
+        // CORREGIDO: Ahora busca el patrón [P:"variable":singular|plural] para evitar colisiones
+        return Regex.Replace(text, @"\[P\:""([^""]+)""\:([^]]+)\]", match => {
+            string variableName = match.Groups[1].Value;
+            string[] options = match.Groups[2].Value.Split('|');
+
+            if (!cantidades.TryGetValue(variableName, out int cantidad)) cantidad = 0;
+
+            int indiceElegido = 0;
+
+            if (options.Length == 2)
+            {
+                indiceElegido = (cantidad == 1) ? 0 : 1;
+            }
+            else if (options.Length >= 3)
+            {
+                if (cantidad == 0) indiceElegido = 0;
+                else if (cantidad == 1) indiceElegido = 1;
+                else indiceElegido = 2;
+            }
+
+            if (indiceElegido >= 0 && indiceElegido < options.Length) return options[indiceElegido];
+            return options[0];
         });
     }
 }

@@ -139,6 +139,13 @@ public class LocalInterface
         _core.refreshTexts();
     }
 
+    public void WriteCantidades(string key, int value, string path)
+    {
+        _files.WriteCantidades(key, value);
+        _files.ReadXML(path);
+        _core.refreshTexts();
+    }
+
 #region DebugMethods
     //[DEBUG - No Usar]
     public void WriteToXML(string path) 
