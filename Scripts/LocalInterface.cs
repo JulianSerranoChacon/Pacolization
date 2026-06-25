@@ -69,7 +69,7 @@ public class LocalInterface
     //Configura el sistema de localizacion para ejecucion
     //Requiere la ruta al archivo XML, el idioma inicial, la ruta a la configuracion y a las variables
     //Llamado por la clase Pacolization
-    public void changeLang(string path, uint lang, string confpath, /*string vP, */string gCP)
+    public void changeLang(string path, uint lang, string confpath/*, string vP, string gCP*/)
     {
         //varPath = vP;
         _core.clearMap();
