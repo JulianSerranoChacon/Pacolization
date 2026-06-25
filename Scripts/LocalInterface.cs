@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
@@ -136,8 +137,16 @@ public class LocalInterface
     //Metodo usado para crear variables para la configuracion de genero
     public void WriteGenderConfToXML(string key, int value, string path)
     {
-        _files.WriteGenderConfToXML(/*genConfPath,*/key,value);
+        _files.WriteGenderConfToXML(key,value);
         _files.ReadXML(path);
+        _core.refreshTexts();
+    }
+
+    public void WriteVariables(string key, string value, string path)
+    {
+        _files.WriteVariables(key,value);
+        _files.ReadXML(path);
+        _core.refreshTexts();
     }
 
 #region DebugMethods

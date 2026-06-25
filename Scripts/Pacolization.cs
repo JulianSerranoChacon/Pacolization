@@ -34,6 +34,11 @@ public class Pacolization : MonoBehaviour
             Li = LocalInterface.Instance();
             Li.Initiate(scanScriptables, scriptablePath);
             Li.StartInExecution(filePath[currentLang], currentLang, confPath[currentLang]);
+           
+            WriteVariables("item", "camisa");
+            WriteGenderConf("camisa", 1);
+            WriteVariables("objeto", "{\"!{item}\": El|La} !{item}");
+
         }
         else
         {
@@ -47,10 +52,23 @@ public class Pacolization : MonoBehaviour
         Li.changeLang(filePath[id], (uint)id, confPath[currentLang]);
     }
 
+    public void test()
+    {
+        WriteVariables("item", "boligrafo");
+        WriteGenderConf("boligrafo", 0);
+    }
+
     public void WriteGenderConf(string key, int value)
     {
         Li.WriteGenderConfToXML(key,value,filePath[currentLang]);
     }
+
+    public void WriteVariables(string key, string value)
+    {
+        Li.WriteVariables(key,value,filePath[currentLang]);
+    }
+
+
      void OnApplicationQuit()
     {
       LocalInterface.Instance().OnQuit();    

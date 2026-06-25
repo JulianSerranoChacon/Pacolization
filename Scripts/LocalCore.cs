@@ -130,7 +130,12 @@ public class LocalCore
     {
 
         currentLang = newLang; 
-        foreach(TextUpdate refs in textUpdateRefs)
+        refreshTexts();
+    }
+
+    public void refreshTexts()
+    {
+        foreach (TextUpdate refs in textUpdateRefs)
         {
             refs.SetText();
         }

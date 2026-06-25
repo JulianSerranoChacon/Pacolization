@@ -90,7 +90,10 @@ public class FileClass
 
             
             //Compound text es el texto con las variables sustituidas
-            string res = ModifyGenderText(texts[i].InnerText);
+            //Debug.Log(texts[i].InnerText);
+            string res = ModifyGenderText(CompoundText(texts[i].InnerText));
+            //Debug.Log(res);
+            res = CompoundText(res);
             _core.SetLine(id,  res);
         }
     }
@@ -112,6 +115,7 @@ public class FileClass
         _core.SetLanguageConfig(language[0]);
     }
 
+    /*
     //Metodo que permite añadir una variable a un archivo XML, pasandole como parametro el path, y su clave 
     public void WriteVariablesToXML(string path, string key, string value)
     {
@@ -163,10 +167,10 @@ public class FileClass
 
             fs.Flush(true); // forzar escritura física
         }
-    }
+    }*/
 
     //Metodo que lee las variables de un archivo XML dado un path
-    public void ReadVariablesToXML(string path)
+    /*public void ReadVariablesToXML(string path)
     {
         //Si el archivo no existe, no devuelve nada
         if (!File.Exists(path))
@@ -200,13 +204,21 @@ public class FileClass
                 variables[c.Name] = c.InnerText;
             }
         }
+    }*/
+
+    public void WriteVariables(string key, string value)
+    { 
+        if(variables.ContainsKey(key))
+            variables[key] = value;
+        else 
+            variables.Add(key, value);
     }
 
     //Metodo auxiliar que nos permite buscar un patron !{variable} en un texto y sustituirlo por el valor correspondiente
     private string CompoundText(string text)
     {
         return Regex.Replace(text,@"!\{(.*?)\}",match =>{
-            // Cogemos unicamente el contenido entre !{}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
+            // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string variableName = match.Groups[1].Value;
 
             // Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
@@ -215,13 +227,13 @@ public class FileClass
                 return value;
             }
 
-            // Si no existe la variable, dejamos el texto original
-            return match.Value;
+            // Si no existe la variable, devolvemos vacio
+            return "";
         });
     }
-
+/*
 //Metodo que permite añadir una modificación de genero al diccionario de modificaciones de genero, pasandole como parametro el nombre key, y su valor value
-    public void WriteGenderConfToXML(/*string path,*/ string key, int value)
+    public void WriteGenderConfToXML(/*string path, string key, int value)
     {
         if (generos.ContainsKey(key)) generos[key] = value;   // Si ya existe, la actualizamos
         else generos.Add(key, value);   // Si no existe, la creamos           
@@ -273,8 +285,8 @@ public class FileClass
             xmlDoc.Save(fs);
 
             fs.Flush(true); // forzar escritura física
-        }*/
-    }
+        }
+    }*/
 
 /*
     //Metodo que lee las variables de un archivo XML dado un path
@@ -314,10 +326,19 @@ public class FileClass
         }
     }
 */
+
+        //Metodo que permite añadir una modificación de genero al diccionario de modificaciones de genero, pasandole como parametro el nombre key, y su valor value
+    public void WriteGenderConfToXML(string key, int value)
+    {
+        if (generos.ContainsKey(key)) generos[key] = value;   // Si ya existe, la actualizamos
+        else generos.Add(key, value);   // Si no existe, la creamos
+    }
+
+
     //Metodo auxiliar que nos permite buscar un patron {"nombre"parteMasculina|parteFemenina} en un texto y sustituirlo por el valor correspondiente de segun el genero guardado con ese nombre
     private string ModifyGenderText(string text)
     {
-        return Regex.Replace(text,@"\{""([^""]+)""\:([^}]+)\}",match =>{
+        return Regex.Replace(CompoundText(text), @"\{""([^""]+)""\:([^}]+)\}",match =>{
             // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string characterName = match.Groups[1].Value;
 
