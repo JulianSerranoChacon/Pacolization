@@ -57,11 +57,6 @@ public class LocalCore
 
     public void Initiate()
     {
-        //if(langAm <= 0)
-            //throw new ArgumentException("Ammount of languages cannot be negative or 0.");
-
-        //languages = langAm;
-
         stringMap = new Dictionary<uint, string>();
 
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();

@@ -121,31 +121,12 @@ public class InternationalitationGUI : EditorWindow
             if(readLangNames)
                 ReadListLanguage();
 
-            //Leemos las variables a sustituir en los textos si el usuario quiere
-            if(readVariables)
-                ReadXMLVariables();
-
             //Ahora si que hacemos la extracción
             inter.FullExtract(selectedPath);
 
             if(clampUI && procederClampUI)
                 inter.SetupUIClampers();
         }
-    }
-
-    void ReadXMLVariables()
-    {
-        //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
-        string selectedPath = EditorUtility.OpenFilePanel(
-          "Select XML File with variables",
-          Application.dataPath,
-          "xml");
-
-        if (!string.IsNullOrEmpty(selectedPath))
-        {
-            inter.ReadListVariables(selectedPath);
-        }
-
     }
 
     void ReadListLanguage()
