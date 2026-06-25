@@ -127,21 +127,21 @@ public class LocalInterface
     //Metodo usado para crear variables para la configuracion de genero
     public void WriteGenderConfToXML(string key, int value, string path)
     {
-        _files.WriteGenderConfToXML(key,value);
+        _core.WriteGenderConfToXML(key,value);
         _files.ReadXML(path);
         _core.refreshTexts();
     }
 
     public void WriteVariables(string key, string value, string path)
     {
-        _files.WriteVariables(key,value);
+        _core.WriteVariables(key,value);
         _files.ReadXML(path);
         _core.refreshTexts();
     }
 
     public void WriteCantidades(string key, int value, string path)
     {
-        _files.WriteCantidades(key, value);
+        _core.WriteCantidades(key, value);
         _files.ReadXML(path);
         _core.refreshTexts();
     }
