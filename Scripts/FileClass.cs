@@ -338,7 +338,7 @@ public class FileClass
     //Metodo auxiliar que nos permite buscar un patron {"nombre"parteMasculina|parteFemenina} en un texto y sustituirlo por el valor correspondiente de segun el genero guardado con ese nombre
     private string ModifyGenderText(string text)
     {
-        return Regex.Replace(CompoundText(text), @"\{""([^""]+)""\:([^}]+)\}",match =>{
+        return Regex.Replace(CompoundText(text), @"\[""([^""]+)""\:([^]]+)\]",match =>{
             // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string characterName = match.Groups[1].Value;
 

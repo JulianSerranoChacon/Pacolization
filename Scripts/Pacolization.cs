@@ -37,7 +37,7 @@ public class Pacolization : MonoBehaviour
            
             WriteVariables("item", "camisa");
             WriteGenderConf("camisa", 1);
-            WriteVariables("objeto", "{\"!{item}\": El|La} !{item}");
+            WriteVariables("objeto", "[\"!{item}\": El|La] !{item}");
 
         }
         else
