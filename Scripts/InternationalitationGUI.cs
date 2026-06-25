@@ -42,23 +42,7 @@ public class InternationalitationGUI : EditorWindow
             if (scanScriptables)
                 scriptablePath=GUILayout.TextField(scriptablePath, 200);
             
-            EditorGUILayout.Space();
-
-            EditorGUILayout.Space();
-
-            readLangNames = GUILayout.Toggle(readLangNames, "Read Language settings from XML file?");
-            if (readLangNames)
-                GUILayout.Label("After selecting path in which to save the extracted strings," +
-                "a second window \nwill pop up to select the language settings file.");
-
-            EditorGUILayout.Space();
-
-            readVariables = GUILayout.Toggle(readVariables, "Read Variables settings from XML file?");
-            if(readVariables)
-                GUILayout.Label("After selecting path in which to save the extracted strings," +
-                "a window \nwill pop up to select the language settings file.");
-
-            EditorGUILayout.Space();
+            EditorGUILayout.Space();            
 
             clampUI = GUILayout.Toggle(clampUI, "Auto setup all UI Clampers?");
 
