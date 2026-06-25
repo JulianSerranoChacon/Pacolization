@@ -13,9 +13,7 @@ public class InternationalitationGUI : EditorWindow
     
     private bool setup = false;
     private bool scanScriptables = false;
-    private string scriptablePath = "Assets";
-    private bool readLangNames = false;
-    private bool readVariables = false;
+    private string scriptablePath = "Assets";    
     private bool clampUI = false;
     private bool procederClampUI = false;
 
@@ -101,10 +99,6 @@ public class InternationalitationGUI : EditorWindow
             inter = LocalInterface.Instance();
             inter.Initiate(scan, scrpath);
 
-            //Leemos primero el XML de los idiomas, antes de la extraccion
-            if(readLangNames)
-                ReadListLanguage();
-
             //Ahora si que hacemos la extracción
             inter.FullExtract(selectedPath);
 
@@ -112,20 +106,4 @@ public class InternationalitationGUI : EditorWindow
                 inter.SetupUIClampers();
         }
     }
-
-    void ReadListLanguage()
-    {
-        //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
-        string selectedPath = EditorUtility.OpenFilePanel(
-          "Select XML File Lenguage Configuration",
-          Application.dataPath,
-          "xml");
-        //Debug.Log(selectedPath);
-
-        if (!string.IsNullOrEmpty(selectedPath))
-        {
-            inter.ReadListLanguage(selectedPath);
-        }
-    }
-
 }
