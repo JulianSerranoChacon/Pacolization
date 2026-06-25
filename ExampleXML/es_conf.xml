@@ -10,5 +10,6 @@
       <Decimal>,</Decimal>
       <SeparadorMil>.</SeparadorMil>
       <Dinero>€</Dinero>
+	<PosicionMoneda>3</PosicionMoneda>
     </Numeros>
 </Lenguaje>

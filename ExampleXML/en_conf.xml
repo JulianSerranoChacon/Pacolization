@@ -9,7 +9,8 @@
     <Numeros>
       <Decimal>.</Decimal>
       <SeparadorMil>,</SeparadorMil>
-      <Dinero>$</Dinero>
+      <Dinero>£</Dinero>
+	<PosicionMoneda>0</PosicionMoneda>
     </Numeros>
 
 </Lenguaje>
