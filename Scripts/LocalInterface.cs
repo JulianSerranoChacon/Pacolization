@@ -71,13 +71,9 @@ public class LocalInterface
     //Requiere la ruta al archivo XML, el idioma inicial, la ruta a la configuracion y a las variables
     //Llamado por la clase Pacolization
     public void changeLang(string path, uint lang, string confpath/*, string vP, string gCP*/)
-    {
-        //varPath = vP;
-        _core.clearMap();
-        //genConfPath = gCP;
+    {        
+        _core.clearMap();        
         _files.ReadXMLLanguage(confpath);
-        //_files.ReadVariablesToXML(varPath);
-        //_files.ReadGenderConfToXML(genConfPath);
         _files.ReadXML(path);
         _extract.setScriptableRefereces();
         changeLang(lang);
@@ -128,12 +124,6 @@ public class LocalInterface
         if (_extract != null)
             _extract.AutoUIClampSetup();
     }  
-    /*
-    //Metodo usado para crear variables (sexo, nombre, etc)
-    public void WriteVariableToXML(string key, string value)
-    {
-        _files.WriteVariablesToXML(varPath,key,value);
-    }*/
     //Metodo usado para crear variables para la configuracion de genero
     public void WriteGenderConfToXML(string key, int value, string path)
     {
