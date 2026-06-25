@@ -17,8 +17,10 @@ public class FileClass
     private Dictionary<string, string> variables = new Dictionary<string, string>();
     //Lista en la que guardamos los datos de los modificadores de genero
     private Dictionary<string, int> generos = new Dictionary<string, int>();
+
+    NumberFormatInfo numberFormatInfo;
     //Instancia del LocalCore
-    private LocalCore _core;
+    private LocalCore _core;    
 
     public FileClass() 
     {
@@ -113,6 +115,19 @@ public class FileClass
         //Cogemos todos los textos etiquetados con lenguaje 
         XmlNodeList language = xmlDoc.GetElementsByTagName("Lenguaje");
         _core.SetLanguageConfig(language[0]);
+
+        string dec = xmlDoc.SelectSingleNode("//Decimal").InnerText;
+        string mil = xmlDoc.SelectSingleNode("//SeparadorMil").InnerText;
+        string dinero = xmlDoc.SelectSingleNode("//Dinero").InnerText;
+
+        numberFormatInfo = new NumberFormatInfo
+        {
+            NumberDecimalSeparator = dec,
+            NumberGroupSeparator = mil,
+            CurrencyDecimalSeparator = dec,
+            CurrencyGroupSeparator = mil,
+            CurrencySymbol = dinero
+        };
     }
 
     public void WriteVariables(string key, string value)
