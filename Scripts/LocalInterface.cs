@@ -27,9 +27,7 @@ public class LocalInterface
 #region References
     private LocalCore _core;
     private ExtractClass _extract;
-    private FileClass _files;
-    //private string varPath;
-    //private string genConfPath;
+    private FileClass _files;    
 #endregion
 
     //Inicia todo el sistema de localizacion
@@ -55,12 +53,8 @@ public class LocalInterface
     //Requiere la ruta al archivo XML, el idioma inicial, la ruta a la configuracion y a las variables
     //Llamado por la clase Pacolization
     public void StartInExecution(string path, uint lang, string confpath/*, string vP, string gCP*/)
-    {
-        //varPath = vP;
-        //genConfPath = gCP;
-        _files.ReadXMLLanguage(confpath);
-        //_files.ReadVariablesToXML(varPath);
-        //_files.ReadGenderConfToXML(genConfPath);
+    {        
+        _files.ReadXMLLanguage(confpath);        
         _files.ReadXML(path);
         _extract.setScriptableRefereces();
         changeLang(lang);
