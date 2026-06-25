@@ -157,12 +157,6 @@ public class LocalInterface
     {
         _files.ReadXMLLanguage(path);
     }
-
-    //[DEBUG - No Usar]
-    public void ReadListVariables(string path)
-    {
-        //_files.ReadVariablesToXML(path);
-    }    
 #endregion
 
 }
