@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -23,6 +24,16 @@ public class LocalCore
     private Dictionary<uint, string> stringMap;
     private Dictionary<uint, Pair<ScriptableObject, FieldInfo>> refScriptObj;
 
+
+    //Diccionario en la que guardamos los datos de las variables
+    private Dictionary<string, string> variables = new Dictionary<string, string>();
+    //Diccionario en la que guardamos los datos de los modificadores de genero
+    private Dictionary<string, int> generos = new Dictionary<string, int>();
+    //Diccionario en el que guardamos las cantidades de los plurales
+    private Dictionary<string, int> cantidades = new Dictionary<string, int>();
+    //informacion del formato actual para escribir los números y la moneda
+    NumberFormatInfo numberFormatInfo;
+
     private List<TextUpdate> textUpdateRefs;
 
     //Marcador que lleva la cuenta del lenguaje actual
@@ -30,6 +41,9 @@ public class LocalCore
     private uint currentLang;
 
     public IReadOnlyDictionary<uint, string> GetLines => stringMap;
+    public IReadOnlyDictionary<string, string> GetVariables => variables;
+    public IReadOnlyDictionary<string, int> GetGeneros => generos;
+    public IReadOnlyDictionary<string, int> Getcantidades => cantidades;
 
     public XmlNode getLanguageNode()
     {
@@ -106,16 +120,47 @@ public class LocalCore
         else
             stringMap[ID] = value;
     }
-    #endregion
-    
     public bool IsRightToLeft()
     {
         string direccion = languageNode
         .SelectSingleNode("Texto")
         .SelectSingleNode("Direccion")
         .InnerText;
-        return direccion!= "Iz_Der";
+        return direccion != "Iz_Der";
     }
+
+    public void WriteCantidades(string key, int value)
+    {
+        if (cantidades.ContainsKey(key))
+            cantidades[key] = value;
+        else
+            cantidades.Add(key, value);
+    }
+
+    //Metodo que permite añadir una modificación de genero al diccionario de modificaciones de genero, pasandole como parametro el nombre key, y su valor value
+    public void WriteGenderConfToXML(string key, int value)
+    {
+        if (generos.ContainsKey(key)) generos[key] = value;   // Si ya existe, la actualizamos
+        else generos.Add(key, value);   // Si no existe, la creamos
+    }
+    public void WriteVariables(string key, string value)
+    {
+        if (variables.ContainsKey(key))
+            variables[key] = value;
+        else
+            variables.Add(key, value);
+    }
+
+    public NumberFormatInfo getNumberFormatInfo()
+    {
+        return numberFormatInfo;
+    }
+    public void setNumberFormatInfo(NumberFormatInfo nI)
+    {
+        numberFormatInfo = nI;
+    }
+
+    #endregion
 
     #region Language Configuration
 

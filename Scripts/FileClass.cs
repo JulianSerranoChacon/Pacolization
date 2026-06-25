@@ -13,14 +13,6 @@ using UnityEngine;
 
 public class FileClass
 {
-    //Lista en la que guardamos los datos de las variables
-    private Dictionary<string, string> variables = new Dictionary<string, string>();
-    //Lista en la que guardamos los datos de los modificadores de genero
-    private Dictionary<string, int> generos = new Dictionary<string, int>();
-
-    private Dictionary<string, int> cantidades = new Dictionary<string, int>();
-
-    NumberFormatInfo numberFormatInfo;
     //Instancia del LocalCore
     private LocalCore _core;    
 
@@ -126,7 +118,7 @@ public class FileClass
         string posicionStr = xmlDoc.SelectSingleNode("//PosicionMoneda").InnerText;
         int posicionMoneda = int.TryParse(posicionStr, out int pos) ? pos : 3;
 
-        numberFormatInfo = new NumberFormatInfo
+        NumberFormatInfo nI = new NumberFormatInfo
         {
             NumberDecimalSeparator = dec,
             NumberGroupSeparator = mil,
@@ -135,6 +127,8 @@ public class FileClass
             CurrencySymbol = dinero,
             CurrencyPositivePattern = posicionMoneda
         };
+
+        _core.setNumberFormatInfo(nI);
     }
 
     public string escribeNumerosConfigurados(string textoOriginal)
@@ -158,9 +152,9 @@ public class FileClass
                 if (float.TryParse(numeroEncontrado, NumberStyles.Any, CultureInfo.InvariantCulture, out float valorFloat))
                 {
                     if (esMoneda)
-                        return valorFloat.ToString("C2", numberFormatInfo);
+                        return valorFloat.ToString("C2", _core.getNumberFormatInfo());
                     else
-                        return valorFloat.ToString("N2", numberFormatInfo);
+                        return valorFloat.ToString("N2", _core.getNumberFormatInfo());
                 }
             }
             // Lógica para números enteros
@@ -169,9 +163,9 @@ public class FileClass
                 if (int.TryParse(numeroEncontrado, out int valorInt))
                 {
                     if (esMoneda)
-                        return valorInt.ToString("C0", numberFormatInfo);
+                        return valorInt.ToString("C0", _core.getNumberFormatInfo());
                     else
-                        return valorInt.ToString("N0", numberFormatInfo);
+                        return valorInt.ToString("N0", _core.getNumberFormatInfo());
                 }
             }
 
@@ -182,14 +176,6 @@ public class FileClass
         return textoProcesado;
     }
 
-    public void WriteVariables(string key, string value)
-    { 
-        if(variables.ContainsKey(key))
-            variables[key] = value;
-        else 
-            variables.Add(key, value);
-    }
-
     //Metodo auxiliar que nos permite buscar un patron !{variable} en un texto y sustituirlo por el valor correspondiente
     private string CompoundText(string text)
     {
@@ -198,7 +184,7 @@ public class FileClass
             string variableName = match.Groups[1].Value;
 
             // Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
-            if (variables.TryGetValue(variableName, out string value))
+            if (_core.GetVariables.TryGetValue(variableName, out string value))
             {
                 return value;
             }
@@ -206,12 +192,6 @@ public class FileClass
             // Si no existe la variable, devolvemos vacio
             return "";
         });
-    }
-        //Metodo que permite añadir una modificación de genero al diccionario de modificaciones de genero, pasandole como parametro el nombre key, y su valor value
-    public void WriteGenderConfToXML(string key, int value)
-    {
-        if (generos.ContainsKey(key)) generos[key] = value;   // Si ya existe, la actualizamos
-        else generos.Add(key, value);   // Si no existe, la creamos
     }
 
 
@@ -227,7 +207,7 @@ public class FileClass
 
             // Trata de pillar cual el genero que se debe usar entre las opciones. Si no lo encuentra elige el valor 0 por defecto
             int gender;
-            if (!generos.TryGetValue(characterName, out gender)) gender = 0;
+            if (!_core.GetGeneros.TryGetValue(characterName, out gender)) gender = 0;
                 
             // Elige la opcion que haya sido indicada. Si hay cualquier fallo no previsto se escoge la primera opcion por defecto
             if (gender >= 0 && gender < options.Length) return options[gender];
@@ -235,22 +215,13 @@ public class FileClass
         });
     }
 
-    public void WriteCantidades(string key, int value)
-    {
-        if (cantidades.ContainsKey(key))
-            cantidades[key] = value;
-        else
-            cantidades.Add(key, value);
-    }
-
     private string ModifyPluralsText(string text)
     {
-        // CORREGIDO: Ahora busca el patrón [P:"variable":singular|plural] para evitar colisiones
         return Regex.Replace(text, @"\[P\:""([^""]+)""\:([^]]+)\]", match => {
             string variableName = match.Groups[1].Value;
             string[] options = match.Groups[2].Value.Split('|');
 
-            if (!cantidades.TryGetValue(variableName, out int cantidad)) cantidad = 0;
+            if (!_core.Getcantidades.TryGetValue(variableName, out int cantidad)) cantidad = 0;
 
             int indiceElegido = 0;
 
