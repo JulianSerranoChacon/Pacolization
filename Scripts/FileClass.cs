@@ -90,7 +90,10 @@ public class FileClass
 
             
             //Compound text es el texto con las variables sustituidas
-            string res = ModifyGenderText(texts[i].InnerText);
+            //Debug.Log(texts[i].InnerText);
+            string res = ModifyGenderText(CompoundText(texts[i].InnerText));
+            //Debug.Log(res);
+            res = CompoundText(res);
             _core.SetLine(id,  res);
         }
     }
@@ -112,101 +115,19 @@ public class FileClass
         _core.SetLanguageConfig(language[0]);
     }
 
-    //Metodo que permite añadir una variable a un archivo XML, pasandole como parametro el path, y su clave 
-    public void WriteVariablesToXML(string path, string key, string value)
-    {
-        XmlDocument xmlDoc = new XmlDocument();
-
-        // Cargar o crear documento
-        if (File.Exists(path))
-        {
-            xmlDoc.Load(path);
-        }
-        else
-        {
-            //creamos la cabecera con la declaracion y el nodo raiz
-            XmlDeclaration declaration =
-                xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
-
-            XmlElement root = xmlDoc.CreateElement("Variables");
-
-            xmlDoc.AppendChild(declaration);
-            xmlDoc.AppendChild(root);
-        }
-
-        // Nodo raíz
-        XmlNode rootNode = xmlDoc.SelectSingleNode("/Variables");
-
-        // Buscar variable existente
-        XmlElement textElement = rootNode.SelectSingleNode(key) as XmlElement;
-
-        // Crear si no existe
-        if (textElement == null)
-        {
-            textElement = xmlDoc.CreateElement(key);
-            rootNode.AppendChild(textElement);
-        }
-
-        // Actualizar valor
-        textElement.InnerText = value;
-
-        // Escritura inmediata
-        using (FileStream fs = new FileStream(
-            path,
-            FileMode.OpenOrCreate,
-            FileAccess.Write,
-            FileShare.None))
-        {
-            fs.SetLength(0); // limpiar archivo anterior
-
-            xmlDoc.Save(fs);
-
-            fs.Flush(true); // forzar escritura física
-        }
-    }
-
-    //Metodo que lee las variables de un archivo XML dado un path
-    public void ReadVariablesToXML(string path)
-    {
-        //Si el archivo no existe, no devuelve nada
-        if (!File.Exists(path))
-            return;
-
-        XmlDocument xmlDoc = new XmlDocument();
-        //cargamos el documento XML
-        xmlDoc.Load(path);
-
-        // Obtener el nodo raíz
-        XmlNode rootNode = xmlDoc.SelectSingleNode("Variables");
-
-        if (rootNode == null)
-            return;
-
-        //Recorremos todos los nodos hijos del nodo raiz
-        foreach (XmlNode c in rootNode.ChildNodes)
-        {
-            // Evitar nodos raros (#comment, espacios, etc.)
-            if (c.NodeType != XmlNodeType.Element)
-                continue;
-
-            // Evitar claves duplicadas
-            if (!variables.ContainsKey(c.Name))
-            {
-                variables.Add(c.Name, c.InnerText);
-            }
-            else
-            {
-                // Si ya existe, la actualizamos
-                variables[c.Name] = c.InnerText;
-            }
-        }
+    public void WriteVariables(string key, string value)
+    { 
+        if(variables.ContainsKey(key))
+            variables[key] = value;
+        else 
+            variables.Add(key, value);
     }
 
     //Metodo auxiliar que nos permite buscar un patron !{variable} en un texto y sustituirlo por el valor correspondiente
     private string CompoundText(string text)
     {
         return Regex.Replace(text,@"!\{(.*?)\}",match =>{
-            // Cogemos unicamente el contenido entre !{}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
+            // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string variableName = match.Groups[1].Value;
 
             // Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
@@ -215,105 +136,22 @@ public class FileClass
                 return value;
             }
 
-            // Si no existe la variable, dejamos el texto original
-            return match.Value;
+            // Si no existe la variable, devolvemos vacio
+            return "";
         });
     }
-
-//Metodo que permite añadir una modificación de genero a un archivo XML, pasandole como parametro el path, y su clave 
-    public void WriteGenderConfToXML(string path, string key, int value)
+        //Metodo que permite añadir una modificación de genero al diccionario de modificaciones de genero, pasandole como parametro el nombre key, y su valor value
+    public void WriteGenderConfToXML(string key, int value)
     {
-        XmlDocument xmlDoc = new XmlDocument();
-
-        // Cargar o crear documento
-        if (File.Exists(path))
-        {
-            xmlDoc.Load(path);
-        }
-        else
-        {
-            //creamos la cabecera con la declaracion y el nodo raiz
-            XmlDeclaration declaration =
-                xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
-
-            XmlElement root = xmlDoc.CreateElement("ConfiguracionGenero");
-
-            xmlDoc.AppendChild(declaration);
-            xmlDoc.AppendChild(root);
-        }
-
-        // Nodo raíz
-        XmlNode rootNode = xmlDoc.SelectSingleNode("/ConfiguracionGenero");
-
-        // Buscar variable existente
-        XmlElement textElement = rootNode.SelectSingleNode(key) as XmlElement;
-
-        // Crear si no existe
-        if (textElement == null)
-        {
-            textElement = xmlDoc.CreateElement(key);
-            rootNode.AppendChild(textElement);
-        }
-
-        // Actualizar valor
-        textElement.InnerText = value.ToString();
-
-        // Escritura inmediata
-        using (FileStream fs = new FileStream(
-            path,
-            FileMode.OpenOrCreate,
-            FileAccess.Write,
-            FileShare.None))
-        {
-            fs.SetLength(0); // limpiar archivo anterior
-
-            xmlDoc.Save(fs);
-
-            fs.Flush(true); // forzar escritura física
-        }
+        if (generos.ContainsKey(key)) generos[key] = value;   // Si ya existe, la actualizamos
+        else generos.Add(key, value);   // Si no existe, la creamos
     }
 
-    //Metodo que lee las variables de un archivo XML dado un path
-    public void ReadGenderConfToXML(string path)
-    {
-        //Si el archivo no existe, no devuelve nada
-        if (!File.Exists(path))
-            return;
-
-        XmlDocument xmlDoc = new XmlDocument();
-        //cargamos el documento XML
-        xmlDoc.Load(path);
-
-        // Obtener el nodo raíz
-        XmlNode rootNode = xmlDoc.SelectSingleNode("ConfiguracionGenero");
-
-        if (rootNode == null)
-            return;
-
-        //Recorremos todos los nodos hijos del nodo raiz
-        foreach (XmlNode c in rootNode.ChildNodes)
-        {
-            // Evitar nodos raros (#comment, espacios, etc.)
-            if (c.NodeType != XmlNodeType.Element)
-                continue;
-
-            // Evitar claves duplicadas
-            if (!generos.ContainsKey(c.Name))
-            {
-                generos.Add(c.Name, Int32.Parse(c.InnerText));
-            }
-            else
-            {
-                // Si ya existe, la actualizamos
-                generos[c.Name] = Int32.Parse(c.InnerText);
-            }
-        }
-    }
 
     //Metodo auxiliar que nos permite buscar un patron {"nombre"parteMasculina|parteFemenina} en un texto y sustituirlo por el valor correspondiente de segun el genero guardado con ese nombre
     private string ModifyGenderText(string text)
     {
-        return Regex.Replace(text,@"\{""([^""]+)""\:([^}]+)\}",match =>{
+        return Regex.Replace(CompoundText(text), @"\[""([^""]+)""\:([^]]+)\]",match =>{
             // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string characterName = match.Groups[1].Value;
 

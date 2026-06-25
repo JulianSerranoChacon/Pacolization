@@ -37,15 +37,15 @@ public class LocalCore
     }
     #endregion
 
-    #region Singleton
-    //La clase necesitara ser un singleton ya que solo queremos que exista una
+#region Singleton
+//La clase necesitara ser un singleton ya que solo queremos que exista una
     public LocalCore() {}
 
     private static LocalCore _instance;
 
     public static LocalCore Instance()
     {
-         if (_instance == null)
+            if (_instance == null)
         {
             _instance = new LocalCore();
         }
@@ -57,11 +57,6 @@ public class LocalCore
 
     public void Initiate()
     {
-        //if(langAm <= 0)
-            //throw new ArgumentException("Ammount of languages cannot be negative or 0.");
-
-        //languages = langAm;
-
         stringMap = new Dictionary<uint, string>();
 
         refScriptObj = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();
@@ -130,7 +125,12 @@ public class LocalCore
     {
 
         currentLang = newLang; 
-        foreach(TextUpdate refs in textUpdateRefs)
+        refreshTexts();
+    }
+
+    public void refreshTexts()
+    {
+        foreach (TextUpdate refs in textUpdateRefs)
         {
             refs.SetText();
         }

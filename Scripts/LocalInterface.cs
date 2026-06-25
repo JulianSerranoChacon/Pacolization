@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
@@ -28,7 +29,7 @@ public class LocalInterface
     private ExtractClass _extract;
     private FileClass _files;
     //private string varPath;
-    private string genConfPath;
+    //private string genConfPath;
 #endregion
 
     //Inicia todo el sistema de localizacion
@@ -53,13 +54,13 @@ public class LocalInterface
     //Configura el sistema de localizacion para ejecucion
     //Requiere la ruta al archivo XML, el idioma inicial, la ruta a la configuracion y a las variables
     //Llamado por la clase Pacolization
-    public void StartInExecution(string path, uint lang, string confpath, /*string vP, */string gCP)
+    public void StartInExecution(string path, uint lang, string confpath/*, string vP, string gCP*/)
     {
         //varPath = vP;
-        genConfPath = gCP;
+        //genConfPath = gCP;
         _files.ReadXMLLanguage(confpath);
         //_files.ReadVariablesToXML(varPath);
-        _files.ReadGenderConfToXML(genConfPath);
+        //_files.ReadGenderConfToXML(genConfPath);
         _files.ReadXML(path);
         _extract.setScriptableRefereces();
         changeLang(lang);
@@ -69,14 +70,10 @@ public class LocalInterface
     //Configura el sistema de localizacion para ejecucion
     //Requiere la ruta al archivo XML, el idioma inicial, la ruta a la configuracion y a las variables
     //Llamado por la clase Pacolization
-    public void changeLang(string path, uint lang, string confpath, /*string vP, */string gCP)
-    {
-        //varPath = vP;
-        _core.clearMap();
-        genConfPath = gCP;
+    public void changeLang(string path, uint lang, string confpath/*, string vP, string gCP*/)
+    {        
+        _core.clearMap();        
         _files.ReadXMLLanguage(confpath);
-        //_files.ReadVariablesToXML(varPath);
-        _files.ReadGenderConfToXML(genConfPath);
         _files.ReadXML(path);
         _extract.setScriptableRefereces();
         changeLang(lang);
@@ -127,17 +124,19 @@ public class LocalInterface
         if (_extract != null)
             _extract.AutoUIClampSetup();
     }  
-    /*
-    //Metodo usado para crear variables (sexo, nombre, etc)
-    public void WriteVariableToXML(string key, string value)
-    {
-        _files.WriteVariablesToXML(varPath,key,value);
-    }*/
     //Metodo usado para crear variables para la configuracion de genero
     public void WriteGenderConfToXML(string key, int value, string path)
     {
-        _files.WriteGenderConfToXML(genConfPath,key,value);
+        _files.WriteGenderConfToXML(key,value);
         _files.ReadXML(path);
+        _core.refreshTexts();
+    }
+
+    public void WriteVariables(string key, string value, string path)
+    {
+        _files.WriteVariables(key,value);
+        _files.ReadXML(path);
+        _core.refreshTexts();
     }
 
 #region DebugMethods
@@ -158,12 +157,6 @@ public class LocalInterface
     {
         _files.ReadXMLLanguage(path);
     }
-
-    //[DEBUG - No Usar]
-    public void ReadListVariables(string path)
-    {
-        //_files.ReadVariablesToXML(path);
-    }    
 #endregion
 
 }

@@ -20,13 +20,13 @@ public class InternationalitationGUI : EditorWindow
     private bool procederClampUI = false;
 
     // Incluye una entrada en el menu superior de Unity
-    [MenuItem("Custom Plugins/Internationalitaion Plugin")]
+    [MenuItem("Custom Plugins/Internationalization Plugin")]
     
     
     public static void ShowWindow()
     {
         // Nombre del "Tab" en la ventna del editor
-        GetWindow<InternationalitationGUI>("Internationalitaion Plugin");
+        GetWindow<InternationalitationGUI>("Internationalization Plugin");
     }
 
     // Dibuja la interfaz en la ventana del editor
@@ -121,31 +121,12 @@ public class InternationalitationGUI : EditorWindow
             if(readLangNames)
                 ReadListLanguage();
 
-            //Leemos las variables a sustituir en los textos si el usuario quiere
-            if(readVariables)
-                ReadXMLVariables();
-
             //Ahora si que hacemos la extracción
             inter.FullExtract(selectedPath);
 
             if(clampUI && procederClampUI)
                 inter.SetupUIClampers();
         }
-    }
-
-    void ReadXMLVariables()
-    {
-        //Abre una ventana en la que el juador a�ada la ruta en la que quiera 
-        string selectedPath = EditorUtility.OpenFilePanel(
-          "Select XML File with variables",
-          Application.dataPath,
-          "xml");
-
-        if (!string.IsNullOrEmpty(selectedPath))
-        {
-            inter.ReadListVariables(selectedPath);
-        }
-
     }
 
     void ReadListLanguage()
