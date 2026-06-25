@@ -220,9 +220,12 @@ public class FileClass
         });
     }
 
-//Metodo que permite añadir una modificación de genero a un archivo XML, pasandole como parametro el path, y su clave 
-    public void WriteGenderConfToXML(string path, string key, int value)
+//Metodo que permite añadir una modificación de genero al diccionario de modificaciones de genero, pasandole como parametro el nombre key, y su valor value
+    public void WriteGenderConfToXML(/*string path,*/ string key, int value)
     {
+        if (generos.ContainsKey(key)) generos[key] = value;   // Si ya existe, la actualizamos
+        else generos.Add(key, value);   // Si no existe, la creamos           
+        /*
         XmlDocument xmlDoc = new XmlDocument();
 
         // Cargar o crear documento
@@ -270,9 +273,10 @@ public class FileClass
             xmlDoc.Save(fs);
 
             fs.Flush(true); // forzar escritura física
-        }
+        }*/
     }
 
+/*
     //Metodo que lee las variables de un archivo XML dado un path
     public void ReadGenderConfToXML(string path)
     {
@@ -309,7 +313,7 @@ public class FileClass
             }
         }
     }
-
+*/
     //Metodo auxiliar que nos permite buscar un patron {"nombre"parteMasculina|parteFemenina} en un texto y sustituirlo por el valor correspondiente de segun el genero guardado con ese nombre
     private string ModifyGenderText(string text)
     {

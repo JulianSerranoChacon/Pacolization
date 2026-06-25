@@ -28,7 +28,7 @@ public class LocalInterface
     private ExtractClass _extract;
     private FileClass _files;
     //private string varPath;
-    private string genConfPath;
+    //private string genConfPath;
 #endregion
 
     //Inicia todo el sistema de localizacion
@@ -53,13 +53,13 @@ public class LocalInterface
     //Configura el sistema de localizacion para ejecucion
     //Requiere la ruta al archivo XML, el idioma inicial, la ruta a la configuracion y a las variables
     //Llamado por la clase Pacolization
-    public void StartInExecution(string path, uint lang, string confpath, /*string vP, */string gCP)
+    public void StartInExecution(string path, uint lang, string confpath/*, string vP, string gCP*/)
     {
         //varPath = vP;
-        genConfPath = gCP;
+        //genConfPath = gCP;
         _files.ReadXMLLanguage(confpath);
         //_files.ReadVariablesToXML(varPath);
-        _files.ReadGenderConfToXML(genConfPath);
+        //_files.ReadGenderConfToXML(genConfPath);
         _files.ReadXML(path);
         _extract.setScriptableRefereces();
         changeLang(lang);
@@ -73,10 +73,10 @@ public class LocalInterface
     {
         //varPath = vP;
         _core.clearMap();
-        genConfPath = gCP;
+        //genConfPath = gCP;
         _files.ReadXMLLanguage(confpath);
         //_files.ReadVariablesToXML(varPath);
-        _files.ReadGenderConfToXML(genConfPath);
+        //_files.ReadGenderConfToXML(genConfPath);
         _files.ReadXML(path);
         _extract.setScriptableRefereces();
         changeLang(lang);
@@ -136,7 +136,7 @@ public class LocalInterface
     //Metodo usado para crear variables para la configuracion de genero
     public void WriteGenderConfToXML(string key, int value, string path)
     {
-        _files.WriteGenderConfToXML(genConfPath,key,value);
+        _files.WriteGenderConfToXML(/*genConfPath,*/key,value);
         _files.ReadXML(path);
     }
 

@@ -38,7 +38,7 @@ public class Pacolization : MonoBehaviour
 
             Li = LocalInterface.Instance();
             Li.Initiate(scanScriptables, scriptablePath);
-            Li.StartInExecution(filePath[currentLang], currentLang, confPath[currentLang], /*variablePath,*/ genderConfigurationPath);
+            Li.StartInExecution(filePath[currentLang], currentLang, confPath[currentLang]/*,variablePath, genderConfigurationPath*/);
         }
         else
         {
