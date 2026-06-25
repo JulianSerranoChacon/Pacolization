@@ -20,13 +20,13 @@ public class InternationalitationGUI : EditorWindow
     private bool procederClampUI = false;
 
     // Incluye una entrada en el menu superior de Unity
-    [MenuItem("Custom Plugins/Internationalitaion Plugin")]
+    [MenuItem("Custom Plugins/Internationalization Plugin")]
     
     
     public static void ShowWindow()
     {
         // Nombre del "Tab" en la ventna del editor
-        GetWindow<InternationalitationGUI>("Internationalitaion Plugin");
+        GetWindow<InternationalitationGUI>("Internationalization Plugin");
     }
 
     // Dibuja la interfaz en la ventana del editor
