@@ -13,7 +13,7 @@ public class UIClamper : MonoBehaviour
     [SerializeField]
     private ScalingMode mode = ScalingMode.Dynamic;
 
-    // Son el ancho y alto maximo de resolucion que puede tener el cuadro de texto EN RELACION con la RESOLUCION DEL CANVAS
+    //Son el ancho y alto maximo de resolucion que puede tener el cuadro de texto EN RELACION con la RESOLUCION DEL CANVAS
     [Tooltip("Limites maximos en unidades del Canvas.")]
     [SerializeField]
     private float maxX = 700f;
@@ -22,21 +22,21 @@ public class UIClamper : MonoBehaviour
     private float maxY = 400f;
     
 
-    // Estas opciones se encargan de ir escalando progresivamente el texto alos tamanos deseados,
-    // para que quepa dentro del cuadro si este no puede expandirse mas alla de los limites de "Max X" y "Max Y".
+    //Estas opciones se encargan de ir escalando progresivamente el texto alos tamanos deseados,
+    //para que quepa dentro del cuadro si este no puede expandirse mas alla de los limites de "Max X" y "Max Y".
 
     [Header("Configuracion del autosize")]
 
-    // Fuerza al componente "TextMeshPro - Text (UI)" del gameobject HIJO a activar el "Auto Size" en todo momento si esta en true
+    //Fuerza al componente "TextMeshPro - Text (UI)" del gameobject HIJO a activar el "Auto Size" en todo momento si esta en true
     [Tooltip("Activa o no el Auto Size del texto")]
     [SerializeField]
     private bool activateAutoSize = false;
 
 
-    // Modifican el tamano y espaciado del texto
+    //Modifican el tamano y espaciado del texto
     [Tooltip("Tamano minimo del texto")]
     [SerializeField]
-    private float minFontSize = 5.0f; // Cuanto mas bajo sea el valor de "Min Font Size", mejor se asegura de que el texto no se desborde.
+    private float minFontSize = 5.0f; //Cuanto mas bajo sea el valor de "Min Font Size", mejor se asegura de que el texto no se desborde.
 
     [Tooltip("Tamano maximo del texto")]
     [SerializeField]
@@ -72,19 +72,19 @@ public class UIClamper : MonoBehaviour
     {
         if (!rectTransform || !layout || !textComp || !canvasRect) return;
 
-        // Obtenemos los limites reales del canvas para no salirse de la pantalla
+        //Obtenemos los limites reales del canvas para no salirse de la pantalla
         float finalLimitX = Mathf.Min(maxX > 0 ? maxX : canvasRect.rect.width, canvasRect.rect.width);
         float finalLimitY = Mathf.Min(maxY > 0 ? maxY : canvasRect.rect.height, canvasRect.rect.height);
 
-        // En funcion de la logica de escalado, el cuadro de texto tendra un tamano diferente
-        if (mode == ScalingMode.Fixed) // Modo FIJO: Tamano maximo en todo momento
+        //En funcion de la logica de escalado, el cuadro de texto tendra un tamano diferente
+        if (mode == ScalingMode.Fixed) //Modo FIJO: Tamano maximo en todo momento
         {
             layout.minWidth = finalLimitX;
             layout.minHeight = finalLimitY;
             layout.preferredWidth = finalLimitX;
             layout.preferredHeight = finalLimitY;
         }
-        else // Modo DINAMICO: Crecer con el texto en todo momento
+        else //Modo DINAMICO: Crecer con el texto en todo momento
         {
 
             layout.minWidth = 0;
@@ -95,17 +95,17 @@ public class UIClamper : MonoBehaviour
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
 
-            // Si el texto pide mas de lo permitido en X, ponemos el tope establecido para que no se salga de la pantalla
+            //Si el texto pide mas de lo permitido en X, ponemos el tope establecido para que no se salga de la pantalla
             if (textComp.preferredWidth > finalLimitX)
             {
                 layout.preferredWidth = finalLimitX;
             }
             else
             {
-                layout.preferredWidth = -1; // -1 permite que el Content Size Fitter mande, importante esto
+                layout.preferredWidth = -1; //-1 permite que el Content Size Fitter mande, importante esto
             }
 
-            // Hacemos lo mismo, pero ahora con la Y
+            //Hacemos lo mismo, pero ahora con la Y
             if (textComp.preferredHeight > finalLimitY)
             {
                 layout.preferredHeight = finalLimitY;
@@ -116,22 +116,22 @@ public class UIClamper : MonoBehaviour
             }
         }
 
-        // Cambiamos las variables del Auto Size del Text Mesh Pro en todo momento
+        //Cambiamos las variables del Auto Size del Text Mesh Pro en todo momento
         textComp.fontSizeMin = minFontSize;
         textComp.fontSizeMax = maxFontSize;
         textComp.characterWidthAdjustment = widthPercent;
         textComp.lineSpacingAdjustment = lineSpacing;
 
-        // Se aplican los topes de LayoutElement
+        //Se aplican los topes de LayoutElement
         LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
 
-        // Intentamos disminuir el SIZE del texto si el cuadro ya no puede crecer mas en NINGUNA direccion
+        //Intentamos disminuir el SIZE del texto si el cuadro ya no puede crecer mas en NINGUNA direccion
         bool isAtMaxX = rectTransform.rect.width >= finalLimitX - 0.5f;
         bool isAtMaxY = rectTransform.rect.height >= finalLimitY - 0.5f;
 
         if (isAtMaxX && isAtMaxY)
         {
-            // El texto DEBE encogerse para caber en la pantalla
+            //El texto DEBE encogerse para caber en la pantalla
             textComp.enableAutoSizing = true;
         }
         else
@@ -140,19 +140,19 @@ public class UIClamper : MonoBehaviour
             textComp.fontSize = maxFontSize;
         }
 
-        // Hacemos CLAMP para que el texto NO se salga de la pantalla
+        //Hacemos CLAMP para que el texto NO se salga de la pantalla
         ApplyCanvasClamp();
     }
 
 
-    // Metodo que se encarga de calgular una posicion donde el cuadro no se salga de pantalla en todo momento que se llame (en este caso en el Late Update)
+    //Metodo que se encarga de calgular una posicion donde el cuadro no se salga de pantalla en todo momento que se llame (en este caso en el Late Update)
     void ApplyCanvasClamp()
     {
         Vector3 pos = rectTransform.localPosition;
         Vector2 s = rectTransform.rect.size;
         Vector2 p = rectTransform.pivot;
 
-        // Los limites locales dentro del Rect del Canvas
+        //Los limites locales dentro del Rect del Canvas
         float cMinX = canvasRect.rect.xMin + (s.x * p.x);
         float cMaxX = canvasRect.rect.xMax - (s.x * (1 - p.x));
         float cMinY = canvasRect.rect.yMin + (s.y * p.y);

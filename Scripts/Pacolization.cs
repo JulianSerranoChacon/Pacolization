@@ -23,7 +23,7 @@ public class Pacolization : MonoBehaviour
     public static Pacolization Instance()
     { return _instance; }
         
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         if (_instance == null)

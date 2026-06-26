@@ -31,7 +31,7 @@ public class ExtractClass
         scriptObjRef = new Dictionary<uint, Pair<ScriptableObject, FieldInfo>>();
     }
 
-    //metodo que se usa para encontrar objetos de ciertos tipos en unity
+    //Metodo que se usa para encontrar objetos de ciertos tipos en unity
     public void ScanScriptables()
     {
         string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(ScriptableObject)),new String[]{ scriptablePath});
@@ -69,10 +69,10 @@ public class ExtractClass
     //anade un componente TextUpdate para que estas puedan actualizarse al idioma necesario en runtime
     public void ExtractStrings()
     {
+        //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
         List<TMP_Text> tmp = new List<TMP_Text>();
 
-        //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
-        //cogemos primero la direccion de las escena en la que estamos
+        //Cogemos primero la direccion de las escena en la que estamos
         string activeScenePath = SceneManager.GetActiveScene().path;
 
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
@@ -103,7 +103,7 @@ public class ExtractClass
             }
             EditorSceneManager.MarkSceneDirty(currentScene);
             EditorSceneManager.SaveScene(currentScene);
-            //cerramos la escena antes de irnos a la siguiente escena
+            //Cerramos la escena antes de irnos a la siguiente escena
             if (scenePath != activeScenePath)
             {
                 EditorSceneManager.CloseScene(currentScene, true);
@@ -118,16 +118,15 @@ public class ExtractClass
 
     public void AutoUIClampSetup()
     {
+        //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
         List<TMP_Text> tmp = new List<TMP_Text>();
 
-        //Se crea una nueva lista al principio para evitar que se llene con infomacion repetida
-
-        //cogemos primero la direccion de las escena en la que estamos
+        //Cogemos primero la direccion de las escena en la que estamos
         string activeScenePath = SceneManager.GetActiveScene().path;
 
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
-            // Control de seguridad por si la escena esta deshabilitada en el Build Settings
+            //Control de seguridad por si la escena esta deshabilitada en el Build Settings
             if (!EditorBuildSettings.scenes[i].enabled) continue;
 
             string scenePath = EditorBuildSettings.scenes[i].path;
@@ -137,7 +136,7 @@ public class ExtractClass
                 EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
             }
 
-            // Se obtiene la escena de forma segura mediante su ruta para el bucle en el Editor
+            //Se obtiene la escena de forma segura mediante su ruta para el bucle en el Editor
             Scene currentScene = EditorSceneManager.GetSceneByPath(scenePath);
             if (!currentScene.IsValid() || !currentScene.isLoaded) continue;
 
@@ -152,7 +151,7 @@ public class ExtractClass
             }
             EditorSceneManager.MarkSceneDirty(currentScene);
             EditorSceneManager.SaveScene(currentScene);
-            //cerramos la escena antes de irnos a la siguiente escena
+            //Cerramos la escena antes de irnos a la siguiente escena
             if (scenePath != activeScenePath)
             {
                 EditorSceneManager.CloseScene(currentScene, true);
@@ -165,41 +164,41 @@ public class ExtractClass
         GameObject textGo = text.gameObject;
         RectTransform textRect = textGo.GetComponent<RectTransform>();
 
-        // Se guarda el SIZE del texto antes de meter componentes
+        //Se guarda el SIZE del texto antes de meter componentes
         Vector2 originalTextSize = textRect != null ? textRect.sizeDelta : Vector2.zero;
 
-        // Se incluye el LayoutElement en el HIJO (objeto con texto) si no lo tiene
+        //Se incluye el LayoutElement en el HIJO (objeto con texto) si no lo tiene
         LayoutElement layoutElement = textGo.GetComponent<LayoutElement>();
         if (layoutElement == null)
         {
             layoutElement = Undo.AddComponent<LayoutElement>(textGo);
         }
 
-        // Se le asigna el SIZE original como el SIZE preferido 
-        // para que el VerticalLayoutGroup sepa cuanto mide y no colapse el texto en vertical.
+        //Se le asigna el SIZE original como el SIZE preferido 
+        //para que el VerticalLayoutGroup sepa cuanto mide y no colapse el texto en vertical.
         if (textRect != null && originalTextSize != Vector2.zero)
         {
             layoutElement.preferredWidth = originalTextSize.x;
             layoutElement.preferredHeight = originalTextSize.y;
         }
 
-        // Se buca el contenedor PADRE
+        //Se buca el contenedor PADRE
         Transform parentTransform = textGo.transform.parent;
         if (parentTransform != null)
         {
             GameObject parentGo = parentTransform.gameObject;
             RectTransform parentRect = parentGo.GetComponent<RectTransform>();
 
-            // Guardamos el SIZE original del PADRE para congelar su posicion
+            //Guardamos el SIZE original del PADRE para congelar su posicion
             Vector2 originalParentSize = parentRect != null ? parentRect.sizeDelta : Vector2.zero;
 
-            // Guardamos los datos de posicionamiento espacial del PADRE para evitar que salte de posicion
+            //Guardamos los datos de posicionamiento espacial del PADRE para evitar que salte de posicion
             Vector2 originalAnchorMin = parentRect != null ? parentRect.anchorMin : Vector2.zero;
             Vector2 originalAnchorMax = parentRect != null ? parentRect.anchorMax : Vector2.zero;
             Vector2 originalPivot = parentRect != null ? parentRect.pivot : Vector2.zero;
             Vector2 originalAnchoredPos = parentRect != null ? parentRect.anchoredPosition : Vector2.zero;
 
-            // Se incluye el Content Size Fitter en el PADRE
+            //Se incluye el Content Size Fitter en el PADRE
             if (parentGo.GetComponent<ContentSizeFitter>() == null)
             {
                 ContentSizeFitter fitter = Undo.AddComponent<ContentSizeFitter>(parentGo);
@@ -207,30 +206,30 @@ public class ExtractClass
                 fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
 
-            // Se incluye el Vertical Layout Group en el PADRE
+            //Se incluye el Vertical Layout Group en el PADRE
             if (parentGo.GetComponent<VerticalLayoutGroup>() == null)
             {
                 VerticalLayoutGroup layoutGroup = Undo.AddComponent<VerticalLayoutGroup>(parentGo);
                 layoutGroup.padding = new RectOffset(5, 5, 5, 5); // Valores por defecto que se pueden cambiar
                 layoutGroup.childAlignment = TextAnchor.MiddleCenter;
 
-                // Ahora si se activa el control para que el PADRE use los SIZE preferidos que se le dan al LayoutElement
+                //Ahora si se activa el control para que el PADRE use los SIZE preferidos que se le dan al LayoutElement
                 layoutGroup.childControlWidth = true;
                 layoutGroup.childControlHeight = true;
                 layoutGroup.childForceExpandWidth = false;
                 layoutGroup.childForceExpandHeight = false;
             }
 
-            // Se incluye el script UIClamper en el PADRE
+            //Se incluye el script UIClamper en el PADRE
             if (parentGo.GetComponent<UIClamper>() == null)
             {
                 Undo.AddComponent<UIClamper>(parentGo);
             }
 
-            // Se fuerza un refresco inmediato del layout en el editor para asentar las posiciones
+            //Se fuerza un refresco inmediato del layout en el editor para asentar las posiciones
             LayoutRebuilder.ForceRebuildLayoutImmediate(parentRect);
 
-            // Se restauran las dimensiones exactas que el PADRE tenia en la interfaz original
+            //Se restauran las dimensiones exactas que el PADRE tenia en la interfaz original
             if (parentRect != null && originalParentSize != Vector2.zero)
             {
                 parentRect.anchorMin = originalAnchorMin;
@@ -250,6 +249,7 @@ public class ExtractClass
            item.Value.second.SetValue(item.Value.first, item.Key.ToString());
         }
     }
+    
     //Este metodo extrae todas las referencias a los scriptable objects del proyecto  para mandarlo al local core
     public void ExtractRefs(ScriptableObject obj)
     {

@@ -15,11 +15,7 @@ public class LocalCore
 {
 
 #region Atributos
-    //stringTable es un diccionario (en C# se implementan mediante unordered maps). 
-    //Cada key alberga un array de tamano languages. 
-    //En cada posicion del array se encuentra el string en un idioma concreto.
-    //private uint languages;
-
+    //stringMap es un diccionario (en C# se implementan mediante unordered maps). 
     private XmlNode languageNode;
     private Dictionary<uint, string> stringMap;
     private Dictionary<uint, Pair<ScriptableObject, FieldInfo>> refScriptObj;
@@ -31,7 +27,7 @@ public class LocalCore
     private Dictionary<string, int> generos = new Dictionary<string, int>();
     //Diccionario en el que guardamos las cantidades de los plurales
     private Dictionary<string, int> cantidades = new Dictionary<string, int>();
-    //informacion del formato actual para escribir los números y la moneda
+    //Informacion del formato actual para escribir los números y la moneda
     NumberFormatInfo numberFormatInfo;
 
     private List<TextUpdate> textUpdateRefs;
@@ -140,8 +136,8 @@ public class LocalCore
     //Metodo que permite añadir una modificación de genero al diccionario de modificaciones de genero, pasandole como parametro el nombre key, y su valor value
     public void WriteGenderConfToXML(string key, int value)
     {
-        if (generos.ContainsKey(key)) generos[key] = value;   // Si ya existe, la actualizamos
-        else generos.Add(key, value);   // Si no existe, la creamos
+        if (generos.ContainsKey(key)) generos[key] = value;   //Si ya existe, la actualizamos
+        else generos.Add(key, value);   //Si no existe, la creamos
     }
     public void WriteVariables(string key, string value)
     {

@@ -21,7 +21,7 @@ public class FileClass
         _core = LocalCore.Instance();
     }
 
-        //Metodo que crea y escribe todos los textos extraidos en un documentoXML
+    //Metodo que crea y escribe todos los textos extraidos en un documentoXML
     //Se le pasa como parametro el path en el que se escribirá
     public void WriteXML(string path)
     {
@@ -41,7 +41,7 @@ public class FileClass
         Dictionary<uint, XmlElement> textnodes = new Dictionary<uint, XmlElement>();
 
         //Recorremos todo el unorderedMap del stringMap
-            //Recorremos el unorder map del idioma ID correspondiente
+        //Recorremos el unorder map del idioma ID correspondiente
         foreach (KeyValuePair<uint, string> item in _core.GetLines) 
         {
             //Id del texto en el unordered_map
@@ -65,7 +65,7 @@ public class FileClass
     }
 
     //Metodo para leer un archivo XML a partir de un filename
-        public void ReadXML(string filename) 
+    public void ReadXML(string filename) 
     {
 
         //Leemos el documento de la ruta correspondiente
@@ -105,7 +105,7 @@ public class FileClass
         //Leemos el documento de la ruta correspondiente
         XmlDocument xmlDoc = new XmlDocument();
 
-        //cargamos el archivo
+        //Cargamos el archivo
         xmlDoc.Load(filename);
 
         //Cogemos todos los textos etiquetados con lenguaje 
@@ -135,18 +135,18 @@ public class FileClass
     {
         if (string.IsNullOrEmpty(textoOriginal)) return string.Empty;
 
-        // Busca la etiqueta [C:numero] (grupo 'moneda') O un número normal (grupo 'numero')
+        //Busca la etiqueta [C:numero] (grupo 'moneda') O un número normal (grupo 'numero')
         string patronRegex = @"\[C:(?<moneda>\d+(?:\.\d+)?)\]|(?<numero>\d+(?:\.\d+)?)";
 
         string textoProcesado = Regex.Replace(textoOriginal, patronRegex, match =>
         {
-            // Determinamos si el patrón coincidió con la etiqueta de moneda
+            //Determinamos si el patrón coincidió con la etiqueta de moneda
             bool esMoneda = match.Groups["moneda"].Success;
 
-            // Obtenemos el texto numérico en base al grupo que tuvo éxito
+            //Obtenemos el texto numérico en base al grupo que tuvo éxito
             string numeroEncontrado = esMoneda ? match.Groups["moneda"].Value : match.Groups["numero"].Value;
 
-            // Lógica para números con decimales
+            //Lógica para números con decimales
             if (numeroEncontrado.Contains("."))
             {
                 if (float.TryParse(numeroEncontrado, NumberStyles.Any, CultureInfo.InvariantCulture, out float valorFloat))
@@ -157,7 +157,7 @@ public class FileClass
                         return valorFloat.ToString("N2", _core.getNumberFormatInfo());
                 }
             }
-            // Lógica para números enteros
+            //Lógica para números enteros
             else
             {
                 if (int.TryParse(numeroEncontrado, out int valorInt))
@@ -169,7 +169,7 @@ public class FileClass
                 }
             }
 
-            // Si el TryParse falla por algún motivo, devolvemos el texto original para no romper nada
+            //Si el TryParse falla por algún motivo, devolvemos el texto original para no romper nada
             return match.Value;
         });
 
@@ -180,16 +180,16 @@ public class FileClass
     private string CompoundText(string text)
     {
         return Regex.Replace(text,@"!\{(.*?)\}",match =>{
-            // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
+            //Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string variableName = match.Groups[1].Value;
 
-            // Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
+            //Comprobamos que existe el nombre de la variable y su valor en el dicionario de variables
             if (_core.GetVariables.TryGetValue(variableName, out string value))
             {
                 return value;
             }
 
-            // Si no existe la variable, devolvemos vacio
+            //Si no existe la variable, devolvemos vacio
             return "";
         });
     }
@@ -199,17 +199,17 @@ public class FileClass
     private string ModifyGenderText(string text)
     {
         return Regex.Replace(CompoundText(text), @"\[""([^""]+)""\:([^]]+)\]",match =>{
-            // Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
+            //Cogemos unicamente el contenido entre {}, es decir, el nombre de la variable Groups[0] seria toda la coincidencia
             string characterName = match.Groups[1].Value;
 
-            // Se divide las opciones entre los | en un array
+            //Se divide las opciones entre los | en un array
             string[] options = match.Groups[2].Value.Split('|');
 
-            // Trata de pillar cual el genero que se debe usar entre las opciones. Si no lo encuentra elige el valor 0 por defecto
+            //Trata de pillar cual el genero que se debe usar entre las opciones. Si no lo encuentra elige el valor 0 por defecto
             int gender;
             if (!_core.GetGeneros.TryGetValue(characterName, out gender)) gender = 0;
                 
-            // Elige la opcion que haya sido indicada. Si hay cualquier fallo no previsto se escoge la primera opcion por defecto
+            //Elige la opcion que haya sido indicada. Si hay cualquier fallo no previsto se escoge la primera opcion por defecto
             if (gender >= 0 && gender < options.Length) return options[gender];
             else return options[0];
         });
