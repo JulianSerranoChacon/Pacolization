@@ -37,7 +37,7 @@ public class Pacolization : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
