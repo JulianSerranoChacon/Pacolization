@@ -270,15 +270,19 @@ public class ExtractClass
     //Este metodo recorre el proyecto entero en runtime para obtener las referencias a los scriptabes
     public void setScriptableRefereces()
     {
-        scriptObjRef.Clear();
-        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(ScriptableObject)), new String[] { scriptablePath });
-        for (int i = 0; i < guids.Length; i++)
+        //En caso de que no se ha escaneado Scriptables no se entra al metodo
+        if (scanScriptables)
         {
-            string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-            ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
-            if (asset != null)
+            scriptObjRef.Clear();
+            string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(ScriptableObject)), new String[] { scriptablePath });
+            for (int i = 0; i < guids.Length; i++)
             {
-                ExtractRefs(asset);
+                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                ScriptableObject asset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
+                if (asset != null)
+                {
+                    ExtractRefs(asset);
+                }
             }
         }
     }
